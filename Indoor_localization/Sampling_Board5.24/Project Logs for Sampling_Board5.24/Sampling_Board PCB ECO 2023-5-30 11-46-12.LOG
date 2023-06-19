@@ -1,0 +1,17 @@
+Removed Pin From Net: NetName=COM-C4 Pin=RN2-3
+Removed Pin From Net: NetName=COM-C3 Pin=RN2-4
+Removed Pin From Net: NetName=PS-X3 Pin=RN2-5
+Removed Pin From Net: NetName=PS-X4 Pin=RN2-6
+Removed Pin From Net: NetName=COM-C6 Pin=RN3-3
+Removed Pin From Net: NetName=COM-C5 Pin=RN3-4
+Removed Pin From Net: NetName=PS-X5 Pin=RN3-5
+Removed Pin From Net: NetName=PS-X6 Pin=RN3-6
+Added Pin To Net: NetName=PS-X4 Pin=RN2-3
+Added Pin To Net: NetName=PS-X3 Pin=RN2-4
+Added Pin To Net: NetName=COM-C3 Pin=RN2-5
+Added Pin To Net: NetName=COM-C4 Pin=RN2-6
+Added Pin To Net: NetName=COM-C5 Pin=RN3-3
+Added Pin To Net: NetName=COM-C6 Pin=RN3-4
+Added Pin To Net: NetName=PS-X6 Pin=RN3-5
+Added Pin To Net: NetName=PS-X5 Pin=RN3-6
+Added Member To Class: ClassName=Sampling_Board Member=Component U8 LD1117-1.2

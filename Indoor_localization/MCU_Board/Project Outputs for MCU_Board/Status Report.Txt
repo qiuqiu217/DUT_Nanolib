@@ -1,0 +1,11 @@
+Output: Generates pick and place files
+Type  : Pick Place
+From  : Variant [[No Variations]] of Project [MCU_Board.PrjPcb]
+   Generated File[Pick Place for MCU_Board.txt]
+   Generated File[Pick Place for MCU_Board.csv]
+
+
+Files Generated   : 2
+Documents Printed : 0
+
+Finished Output Generation At 12:19:23 On 2023/6/12

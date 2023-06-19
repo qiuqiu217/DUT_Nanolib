@@ -1,0 +1,13 @@
+Add Component: Footprint Not Found 
+Add Component: Footprint Not Found 
+Add Component: Footprint Not Found 
+Add Pin To Net: Unknown Pin: Pin D1-1
+Add Pin To Net: Unknown Pin: Pin D1-2
+Add Pin To Net: Unknown Pin: Pin D2-1
+Add Pin To Net: Unknown Pin: Pin D2-2
+Add Pin To Net: Unknown Pin: Pin D3-1
+Add Pin To Net: Unknown Pin: Pin D3-2
+Add Class Member: Failed to add class member : Component D1 LESD5D5.0CT1G
+Add Class Member: Failed to add class member : Component D2 LESD5D5.0CT1G
+Add Class Member: Failed to add class member : Component D3 LESD5D5.0CT1G
+Added Room: Name=MCU_Board

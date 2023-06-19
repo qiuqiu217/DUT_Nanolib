@@ -1,0 +1,5 @@
+Change Physical Footprint: Designator=R1 Old Footprint=R0603 New Footprint=R0603
+Change Physical Footprint: Designator=R2 Old Footprint=R0603 New Footprint=R0603
+Change Physical Footprint: Designator=RN1 Old Footprint=RES-ARRAY-SMD_0603-8P-L3.2-W1.6-BL New Footprint=RES-ARRAY-SMD_0603-8P-L3.2-W1.6-BL
+Change Physical Footprint: Designator=RN2 Old Footprint=RES-ARRAY-SMD_0603-8P-L3.2-W1.6-BL New Footprint=RES-ARRAY-SMD_0603-8P-L3.2-W1.6-BL
+Change Physical Footprint: Designator=U1 Old Footprint=JY901B New Footprint=JY901B

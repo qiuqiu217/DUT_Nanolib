@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [Sampling_Board5.24.PrjPcb]
+   Generated File[Sampling_Board-Plated.TXT]
+   Generated File[Sampling_Board.LDP]
+   Generated File[Sampling_Board.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 16:39:13 On 2023/6/5

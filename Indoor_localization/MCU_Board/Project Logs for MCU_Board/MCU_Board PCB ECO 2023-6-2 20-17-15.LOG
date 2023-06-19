@@ -1,0 +1,16 @@
+Added Component: Designator=D2(SOD-523_L1.2-W0.8-LS1.6-BI)
+Add component (AddParameter): Name = "Designer"; Value = "U?"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Device"; Value = "LESD5D5.0CT1G"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Name"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Symbol"; Value = "LESD5D5.0CT1G"; VariantName = "[No Variations]"
+Added Component: Designator=D3(SOD-523_L1.2-W0.8-LS1.6-BI)
+Add component (AddParameter): Name = "Designer"; Value = "U?"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Device"; Value = "LESD5D5.0CT1G"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Name"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Symbol"; Value = "LESD5D5.0CT1G"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=GND Pin=D2-1
+Added Pin To Net: NetName=D_N Pin=D2-2
+Added Pin To Net: NetName=GND Pin=D3-1
+Added Pin To Net: NetName=D_P Pin=D3-2
+Added Member To Class: ClassName=MCU_Board Member=Component D2 LESD5D5.0CT1G
+Added Member To Class: ClassName=MCU_Board Member=Component D3 LESD5D5.0CT1G

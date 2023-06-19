@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=VBAT-OUT Pin=SW2-1
+Removed Pin From Net: NetName=VBAT-IN Pin=SW2-3
+Added Pin To Net: NetName=VBAT-IN Pin=SW2-1
+Added Pin To Net: NetName=VBAT-OUT Pin=SW2-3
+Add Class Member: Failed to add class member : Component LED2 NCD0603G2
+Added Room: Name=MCU_Board

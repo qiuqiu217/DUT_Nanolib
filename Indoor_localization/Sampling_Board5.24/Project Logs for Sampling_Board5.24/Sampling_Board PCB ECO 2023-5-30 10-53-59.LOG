@@ -1,0 +1,19 @@
+Removed Pin From Net: NetName=COM-C2 Pin=RN1-3
+Removed Pin From Net: NetName=COM-C1 Pin=RN1-4
+Removed Pin From Net: NetName=PS-X1 Pin=RN1-5
+Removed Pin From Net: NetName=PS-X2 Pin=RN1-6
+Removed Pin From Net: NetName=GND Pin=U8-1
+Removed Pin From Net: NetName=Vref-1.2 Pin=U8-2
+Removed Pin From Net: NetName=VCC-3.3 Pin=U8-3
+Removed Pin From Net: NetName=Vref-1.2 Pin=U8-4
+Added Component: Designator=U8(SOT-223-3_L6.5-W3.4-P2.30-LS7.0-BR)
+Added Pin To Net: NetName=PS-X2 Pin=RN1-3
+Added Pin To Net: NetName=PS-X1 Pin=RN1-4
+Added Pin To Net: NetName=COM-C1 Pin=RN1-5
+Added Pin To Net: NetName=COM-C2 Pin=RN1-6
+Added Pin To Net: NetName=GND Pin=U8-1
+Added Pin To Net: NetName=Vref-1.2 Pin=U8-2
+Added Pin To Net: NetName=VCC-3.3 Pin=U8-3
+Added Pin To Net: NetName=Vref-1.2 Pin=U8-4
+Added Member To Class: ClassName=Sampling_Board Member=Component U8 LD1117-1.2
+Added Room: Name=Sampling_Board

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/toolBar">
+        <file>images/bluetooth.png</file>
+        <file>images/footPressure.png</file>
+        <file>images/footPressure2.png</file>
+        <file>images/footPressure3.png</file>
+        <file>images/imu.png</file>
+        <file>images/imu2.png</file>
+        <file>images/track.png</file>
+        <file>images/track2.png</file>
+        <file>images/track3.png</file>
+        <file>images/debug1.png</file>
+    </qresource>
+</RCC>
