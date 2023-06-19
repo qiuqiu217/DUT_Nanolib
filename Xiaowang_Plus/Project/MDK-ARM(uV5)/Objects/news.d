@@ -1,0 +1,10 @@
+.\objects\news.o: ..\..\emWin\Icon\news.c
+.\objects\news.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\news.o: ..\..\emWin\Include\GUI.h
+.\objects\news.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\news.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\news.o: ..\..\emWin\Include\GUIConf.h
+.\objects\news.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\news.o: ..\..\emWin\Include\LCD.h
+.\objects\news.o: ..\..\emWin\Include\Global.h
+.\objects\news.o: ..\..\emWin\Include\GUI_Version.h

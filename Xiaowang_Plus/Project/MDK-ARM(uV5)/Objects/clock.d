@@ -1,0 +1,10 @@
+.\objects\clock.o: ..\..\emWin\Icon\clock.c
+.\objects\clock.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\clock.o: ..\..\emWin\Include\GUI.h
+.\objects\clock.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\clock.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\clock.o: ..\..\emWin\Include\GUIConf.h
+.\objects\clock.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\clock.o: ..\..\emWin\Include\LCD.h
+.\objects\clock.o: ..\..\emWin\Include\Global.h
+.\objects\clock.o: ..\..\emWin\Include\GUI_Version.h

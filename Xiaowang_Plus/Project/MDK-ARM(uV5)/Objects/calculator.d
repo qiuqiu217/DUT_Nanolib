@@ -1,0 +1,10 @@
+.\objects\calculator.o: ..\..\emWin\Icon\calculator.c
+.\objects\calculator.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\calculator.o: ..\..\emWin\Include\GUI.h
+.\objects\calculator.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\calculator.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\calculator.o: ..\..\emWin\Include\GUIConf.h
+.\objects\calculator.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\calculator.o: ..\..\emWin\Include\LCD.h
+.\objects\calculator.o: ..\..\emWin\Include\Global.h
+.\objects\calculator.o: ..\..\emWin\Include\GUI_Version.h

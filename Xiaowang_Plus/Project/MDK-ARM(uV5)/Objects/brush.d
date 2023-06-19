@@ -1,0 +1,10 @@
+.\objects\brush.o: ..\..\emWin\Bitmap\brush.c
+.\objects\brush.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\brush.o: ..\..\emWin\Include\GUI.h
+.\objects\brush.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\brush.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\brush.o: ..\..\emWin\Include\GUIConf.h
+.\objects\brush.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\brush.o: ..\..\emWin\Include\LCD.h
+.\objects\brush.o: ..\..\emWin\Include\Global.h
+.\objects\brush.o: ..\..\emWin\Include\GUI_Version.h

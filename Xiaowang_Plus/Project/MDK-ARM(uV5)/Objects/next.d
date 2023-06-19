@@ -1,0 +1,10 @@
+.\objects\next.o: ..\..\emWin\Bitmap\next.c
+.\objects\next.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\next.o: ..\..\emWin\Include\GUI.h
+.\objects\next.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\next.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\next.o: ..\..\emWin\Include\GUIConf.h
+.\objects\next.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\next.o: ..\..\emWin\Include\LCD.h
+.\objects\next.o: ..\..\emWin\Include\Global.h
+.\objects\next.o: ..\..\emWin\Include\GUI_Version.h

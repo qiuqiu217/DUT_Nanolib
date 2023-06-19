@@ -1,0 +1,10 @@
+.\objects\equipment.o: ..\..\emWin\Icon\equipment.c
+.\objects\equipment.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\equipment.o: ..\..\emWin\Include\GUI.h
+.\objects\equipment.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\equipment.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\equipment.o: ..\..\emWin\Include\GUIConf.h
+.\objects\equipment.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\equipment.o: ..\..\emWin\Include\LCD.h
+.\objects\equipment.o: ..\..\emWin\Include\Global.h
+.\objects\equipment.o: ..\..\emWin\Include\GUI_Version.h

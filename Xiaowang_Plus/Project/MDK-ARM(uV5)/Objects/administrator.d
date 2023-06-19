@@ -1,0 +1,10 @@
+.\objects\administrator.o: ..\..\emWin\Icon\administrator.c
+.\objects\administrator.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\administrator.o: ..\..\emWin\Include\GUI.h
+.\objects\administrator.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\administrator.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\administrator.o: ..\..\emWin\Include\GUIConf.h
+.\objects\administrator.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\administrator.o: ..\..\emWin\Include\LCD.h
+.\objects\administrator.o: ..\..\emWin\Include\Global.h
+.\objects\administrator.o: ..\..\emWin\Include\GUI_Version.h

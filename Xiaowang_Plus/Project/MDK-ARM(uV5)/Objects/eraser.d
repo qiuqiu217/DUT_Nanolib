@@ -1,0 +1,10 @@
+.\objects\eraser.o: ..\..\emWin\Bitmap\eraser.c
+.\objects\eraser.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\eraser.o: ..\..\emWin\Include\GUI.h
+.\objects\eraser.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\eraser.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\eraser.o: ..\..\emWin\Include\GUIConf.h
+.\objects\eraser.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\eraser.o: ..\..\emWin\Include\LCD.h
+.\objects\eraser.o: ..\..\emWin\Include\Global.h
+.\objects\eraser.o: ..\..\emWin\Include\GUI_Version.h

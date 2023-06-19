@@ -1,0 +1,10 @@
+.\objects\num9.o: ..\..\emWin\Bitmap\num9.c
+.\objects\num9.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\num9.o: ..\..\emWin\Include\GUI.h
+.\objects\num9.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\num9.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\num9.o: ..\..\emWin\Include\GUIConf.h
+.\objects\num9.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\num9.o: ..\..\emWin\Include\LCD.h
+.\objects\num9.o: ..\..\emWin\Include\Global.h
+.\objects\num9.o: ..\..\emWin\Include\GUI_Version.h

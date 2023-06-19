@@ -1,0 +1,10 @@
+.\objects\background_clock.o: ..\..\emWin\Bitmap\Background_clock.c
+.\objects\background_clock.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\background_clock.o: ..\..\emWin\Include\GUI.h
+.\objects\background_clock.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\background_clock.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\background_clock.o: ..\..\emWin\Include\GUIConf.h
+.\objects\background_clock.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\background_clock.o: ..\..\emWin\Include\LCD.h
+.\objects\background_clock.o: ..\..\emWin\Include\Global.h
+.\objects\background_clock.o: ..\..\emWin\Include\GUI_Version.h

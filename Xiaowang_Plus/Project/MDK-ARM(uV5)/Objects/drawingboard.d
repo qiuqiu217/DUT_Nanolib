@@ -1,0 +1,10 @@
+.\objects\drawingboard.o: ..\..\emWin\Icon\drawingboard.c
+.\objects\drawingboard.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\drawingboard.o: ..\..\emWin\Include\GUI.h
+.\objects\drawingboard.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\drawingboard.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\drawingboard.o: ..\..\emWin\Include\GUIConf.h
+.\objects\drawingboard.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\drawingboard.o: ..\..\emWin\Include\LCD.h
+.\objects\drawingboard.o: ..\..\emWin\Include\Global.h
+.\objects\drawingboard.o: ..\..\emWin\Include\GUI_Version.h

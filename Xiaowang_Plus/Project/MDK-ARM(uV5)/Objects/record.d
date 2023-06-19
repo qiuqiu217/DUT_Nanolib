@@ -1,0 +1,10 @@
+.\objects\record.o: ..\..\emWin\Icon\record.c
+.\objects\record.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\record.o: ..\..\emWin\Include\GUI.h
+.\objects\record.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\record.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\record.o: ..\..\emWin\Include\GUIConf.h
+.\objects\record.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\record.o: ..\..\emWin\Include\LCD.h
+.\objects\record.o: ..\..\emWin\Include\Global.h
+.\objects\record.o: ..\..\emWin\Include\GUI_Version.h

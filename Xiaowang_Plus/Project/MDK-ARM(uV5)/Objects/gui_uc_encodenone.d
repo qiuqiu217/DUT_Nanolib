@@ -1,0 +1,13 @@
+.\objects\gui_uc_encodenone.o: ..\..\emWin\HanZi\GUI_UC_EncodeNone.c
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\GUI_Private.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\GUI.h
+.\objects\gui_uc_encodenone.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\GUIConf.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\LCD.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\Global.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\GUI_Version.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\LCD_Protected.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\GUI_Debug.h
+.\objects\gui_uc_encodenone.o: ..\..\emWin\Include\WM_GUI.h

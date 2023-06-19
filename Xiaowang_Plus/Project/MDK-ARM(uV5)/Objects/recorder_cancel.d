@@ -1,0 +1,10 @@
+.\objects\recorder_cancel.o: ..\..\emWin\Bitmap\recorder_cancel.c
+.\objects\recorder_cancel.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\recorder_cancel.o: ..\..\emWin\Include\GUI.h
+.\objects\recorder_cancel.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\recorder_cancel.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\recorder_cancel.o: ..\..\emWin\Include\GUIConf.h
+.\objects\recorder_cancel.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\recorder_cancel.o: ..\..\emWin\Include\LCD.h
+.\objects\recorder_cancel.o: ..\..\emWin\Include\Global.h
+.\objects\recorder_cancel.o: ..\..\emWin\Include\GUI_Version.h

@@ -1,0 +1,10 @@
+.\objects\lamplight.o: ..\..\emWin\Icon\lamplight.c
+.\objects\lamplight.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\lamplight.o: ..\..\emWin\Include\GUI.h
+.\objects\lamplight.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\lamplight.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\lamplight.o: ..\..\emWin\Include\GUIConf.h
+.\objects\lamplight.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\lamplight.o: ..\..\emWin\Include\LCD.h
+.\objects\lamplight.o: ..\..\emWin\Include\Global.h
+.\objects\lamplight.o: ..\..\emWin\Include\GUI_Version.h

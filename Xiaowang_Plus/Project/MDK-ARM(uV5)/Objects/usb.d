@@ -1,0 +1,10 @@
+.\objects\usb.o: ..\..\emWin\Icon\usb.c
+.\objects\usb.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\usb.o: ..\..\emWin\Include\GUI.h
+.\objects\usb.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\usb.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\usb.o: ..\..\emWin\Include\GUIConf.h
+.\objects\usb.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\usb.o: ..\..\emWin\Include\LCD.h
+.\objects\usb.o: ..\..\emWin\Include\Global.h
+.\objects\usb.o: ..\..\emWin\Include\GUI_Version.h

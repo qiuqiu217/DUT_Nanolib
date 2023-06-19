@@ -1,0 +1,9 @@
+.\objects\gui_font16.o: ..\..\emWin\HanZi\GUI_Font16.c
+.\objects\gui_font16.o: ..\..\emWin\Include\GUI.h
+.\objects\gui_font16.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\gui_font16.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\gui_font16.o: ..\..\emWin\Include\GUIConf.h
+.\objects\gui_font16.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\gui_font16.o: ..\..\emWin\Include\LCD.h
+.\objects\gui_font16.o: ..\..\emWin\Include\Global.h
+.\objects\gui_font16.o: ..\..\emWin\Include\GUI_Version.h

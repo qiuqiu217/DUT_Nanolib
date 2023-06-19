@@ -1,0 +1,10 @@
+.\objects\pause.o: ..\..\emWin\Bitmap\pause.c
+.\objects\pause.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\pause.o: ..\..\emWin\Include\GUI.h
+.\objects\pause.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\pause.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\pause.o: ..\..\emWin\Include\GUIConf.h
+.\objects\pause.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\pause.o: ..\..\emWin\Include\LCD.h
+.\objects\pause.o: ..\..\emWin\Include\Global.h
+.\objects\pause.o: ..\..\emWin\Include\GUI_Version.h

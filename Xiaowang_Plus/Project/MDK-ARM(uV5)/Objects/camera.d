@@ -1,0 +1,10 @@
+.\objects\camera.o: ..\..\emWin\Icon\camera.c
+.\objects\camera.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\camera.o: ..\..\emWin\Include\GUI.h
+.\objects\camera.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\camera.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\camera.o: ..\..\emWin\Include\GUIConf.h
+.\objects\camera.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\camera.o: ..\..\emWin\Include\LCD.h
+.\objects\camera.o: ..\..\emWin\Include\Global.h
+.\objects\camera.o: ..\..\emWin\Include\GUI_Version.h

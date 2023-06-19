@@ -1,0 +1,10 @@
+.\objects\calendar.o: ..\..\emWin\Icon\calendar.c
+.\objects\calendar.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\calendar.o: ..\..\emWin\Include\GUI.h
+.\objects\calendar.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\calendar.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\calendar.o: ..\..\emWin\Include\GUIConf.h
+.\objects\calendar.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\calendar.o: ..\..\emWin\Include\LCD.h
+.\objects\calendar.o: ..\..\emWin\Include\Global.h
+.\objects\calendar.o: ..\..\emWin\Include\GUI_Version.h

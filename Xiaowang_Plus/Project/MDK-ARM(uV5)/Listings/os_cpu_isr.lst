@@ -1,0 +1,126 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;*******************************************************
+                       *************************************************
+    2 00000000         ;                                              uC/OS-III
+                       
+    3 00000000         ;                                        The Real-Time K
+                       ernel
+    4 00000000         ;
+    5 00000000         ;                    Copyright 2009-2020 Silicon Laborat
+                       ories Inc. www.silabs.com
+    6 00000000         ;
+    7 00000000         ;                                 SPDX-License-Identifie
+                       r: APACHE-2.0
+    8 00000000         ;
+    9 00000000         ;               This software is subject to an open sour
+                       ce license and is distributed by
+   10 00000000         ;                Silicon Laboratories Inc. pursuant to t
+                       he terms of the Apache License,
+   11 00000000         ;                    Version 2.0 available at www.apache
+                       .org/licenses/LICENSE-2.0.
+   12 00000000         ;
+   13 00000000         ;*******************************************************
+                       *************************************************
+   14 00000000         
+   15 00000000         ;*******************************************************
+                       *************************************************
+   16 00000000         ;                                          designed by e
+                       ric2013
+   17 00000000         ;*******************************************************
+                       *************************************************
+   18 00000000                 PRESERVE8
+   19 00000000                 THUMB
+   20 00000000         
+   21 00000000                 AREA             CODE, CODE, READONLY
+   22 00000000         
+   23 00000000         
+   24 00000000                 IMPORT           OS_CPU_PendSVHandler
+   25 00000000                 IMPORT           OS_CPU_SysTickHandler
+   26 00000000         
+   27 00000000         
+   28 00000000                 EXPORT           PendSV_Handler
+   29 00000000         PendSV_Handler
+   30 00000000 F7FF BFFE       B                OS_CPU_PendSVHandler
+   31 00000004 E7FE            B                .
+   32 00000006         
+   33 00000006                 EXPORT           SysTick_Handler
+   34 00000006         SysTick_Handler
+   35 00000006 F7FF BFFE       B                OS_CPU_SysTickHandler
+   36 0000000A E7FE            B                .
+   37 0000000C         
+   38 0000000C                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M7.fp.dp --apcs=
+interwork --depend=.\objects\os_cpu_isr.d -o.\objects\os_cpu_isr.o -ID:\Keil_v5
+\Arm\Packs\Keil\STM32H7xx_DFP\3.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include -
+-predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 536" --prede
+fine="STM32H743xx SETA 1" --list=.\listings\os_cpu_isr.lst ..\..\uCOS-III\uCOS-
+III\Ports\ARM-Cortex-M\ARMv7-M\ARM\os_cpu_isr.asm
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+CODE 00000000
+
+Symbol: CODE
+   Definitions
+      At line 21 in file ..\..\uCOS-III\uCOS-III\Ports\ARM-Cortex-M\ARMv7-M\ARM
+\os_cpu_isr.asm
+   Uses
+      None
+Comment: CODE unused
+PendSV_Handler 00000000
+
+Symbol: PendSV_Handler
+   Definitions
+      At line 29 in file ..\..\uCOS-III\uCOS-III\Ports\ARM-Cortex-M\ARMv7-M\ARM
+\os_cpu_isr.asm
+   Uses
+      At line 28 in file ..\..\uCOS-III\uCOS-III\Ports\ARM-Cortex-M\ARMv7-M\ARM
+\os_cpu_isr.asm
+Comment: PendSV_Handler used once
+SysTick_Handler 00000006
+
+Symbol: SysTick_Handler
+   Definitions
+      At line 34 in file ..\..\uCOS-III\uCOS-III\Ports\ARM-Cortex-M\ARMv7-M\ARM
+\os_cpu_isr.asm
+   Uses
+      At line 33 in file ..\..\uCOS-III\uCOS-III\Ports\ARM-Cortex-M\ARMv7-M\ARM
+\os_cpu_isr.asm
+Comment: SysTick_Handler used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+OS_CPU_PendSVHandler 00000000
+
+Symbol: OS_CPU_PendSVHandler
+   Definitions
+      At line 24 in file ..\..\uCOS-III\uCOS-III\Ports\ARM-Cortex-M\ARMv7-M\ARM
+\os_cpu_isr.asm
+   Uses
+      At line 30 in file ..\..\uCOS-III\uCOS-III\Ports\ARM-Cortex-M\ARMv7-M\ARM
+\os_cpu_isr.asm
+Comment: OS_CPU_PendSVHandler used once
+OS_CPU_SysTickHandler 00000000
+
+Symbol: OS_CPU_SysTickHandler
+   Definitions
+      At line 25 in file ..\..\uCOS-III\uCOS-III\Ports\ARM-Cortex-M\ARMv7-M\ARM
+\os_cpu_isr.asm
+   Uses
+      At line 35 in file ..\..\uCOS-III\uCOS-III\Ports\ARM-Cortex-M\ARMv7-M\ARM
+\os_cpu_isr.asm
+Comment: OS_CPU_SysTickHandler used once
+2 symbols
+339 symbols in table

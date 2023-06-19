@@ -1,0 +1,10 @@
+.\objects\folder.o: ..\..\emWin\Icon\folder.c
+.\objects\folder.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\folder.o: ..\..\emWin\Include\GUI.h
+.\objects\folder.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\folder.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\folder.o: ..\..\emWin\Include\GUIConf.h
+.\objects\folder.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\folder.o: ..\..\emWin\Include\LCD.h
+.\objects\folder.o: ..\..\emWin\Include\Global.h
+.\objects\folder.o: ..\..\emWin\Include\GUI_Version.h

@@ -1,0 +1,10 @@
+.\objects\_settings.o: ..\..\emWin\Bitmap\_settings.c
+.\objects\_settings.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\_settings.o: ..\..\emWin\Include\GUI.h
+.\objects\_settings.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\_settings.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\_settings.o: ..\..\emWin\Include\GUIConf.h
+.\objects\_settings.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\_settings.o: ..\..\emWin\Include\LCD.h
+.\objects\_settings.o: ..\..\emWin\Include\Global.h
+.\objects\_settings.o: ..\..\emWin\Include\GUI_Version.h

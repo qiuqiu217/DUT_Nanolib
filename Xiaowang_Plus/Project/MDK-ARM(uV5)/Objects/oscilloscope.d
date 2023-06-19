@@ -1,0 +1,10 @@
+.\objects\oscilloscope.o: ..\..\emWin\Icon\oscilloscope.c
+.\objects\oscilloscope.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\oscilloscope.o: ..\..\emWin\Include\GUI.h
+.\objects\oscilloscope.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\oscilloscope.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\oscilloscope.o: ..\..\emWin\Include\GUIConf.h
+.\objects\oscilloscope.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\oscilloscope.o: ..\..\emWin\Include\LCD.h
+.\objects\oscilloscope.o: ..\..\emWin\Include\Global.h
+.\objects\oscilloscope.o: ..\..\emWin\Include\GUI_Version.h

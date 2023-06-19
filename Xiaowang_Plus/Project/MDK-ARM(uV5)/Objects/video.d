@@ -1,0 +1,10 @@
+.\objects\video.o: ..\..\emWin\Icon\video.c
+.\objects\video.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\video.o: ..\..\emWin\Include\GUI.h
+.\objects\video.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\video.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\video.o: ..\..\emWin\Include\GUIConf.h
+.\objects\video.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\video.o: ..\..\emWin\Include\LCD.h
+.\objects\video.o: ..\..\emWin\Include\Global.h
+.\objects\video.o: ..\..\emWin\Include\GUI_Version.h

@@ -1,0 +1,10 @@
+.\objects\colon.o: ..\..\emWin\Bitmap\colon.c
+.\objects\colon.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\colon.o: ..\..\emWin\Include\GUI.h
+.\objects\colon.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\colon.o: ..\..\emWin\Include\GUI_ConfDefaults.h
+.\objects\colon.o: ..\..\emWin\Include\GUIConf.h
+.\objects\colon.o: ..\..\emWin\Include\GUI_Type.h
+.\objects\colon.o: ..\..\emWin\Include\LCD.h
+.\objects\colon.o: ..\..\emWin\Include\Global.h
+.\objects\colon.o: ..\..\emWin\Include\GUI_Version.h
