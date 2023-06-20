@@ -1,0 +1,14 @@
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c
+st_samplingboard\stream_buffer.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+st_samplingboard\stream_buffer.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+st_samplingboard\stream_buffer.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+st_samplingboard\stream_buffer.o: ../Core/Inc/FreeRTOSConfig.h
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+st_samplingboard\stream_buffer.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/stream_buffer.h
