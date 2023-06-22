@@ -25,6 +25,13 @@
 extern "C" {
 #endif
 
+/* LOG打印设置 */
+#if 1
+	#define ADC_LOG     printf
+#else
+	#define ADC_LOG     (...)
+#endif
+
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
@@ -34,11 +41,16 @@ extern "C" {
 
 /* USER CODE BEGIN Private defines */
 
+/* ADC GPIO定义 */
+#define ADC_PIN	        LL_GPIO_PIN_1
+#define ADC_GPIO        GPIOA
+
 /* USER CODE END Private defines */
 
 void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+uint16_t ADC_OneShot_Read(void);
 
 /* USER CODE END Prototypes */
 

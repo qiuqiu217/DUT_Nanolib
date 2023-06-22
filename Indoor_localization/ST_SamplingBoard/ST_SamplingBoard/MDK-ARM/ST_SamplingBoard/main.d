@@ -1,5 +1,7 @@
 st_samplingboard\main.o: ../Core/Src/main.c
 st_samplingboard\main.o: ../Core/Inc/main.h
+st_samplingboard\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+st_samplingboard\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 st_samplingboard\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 st_samplingboard\main.o: ../Core/Inc/stm32f4xx_hal_conf.h
 st_samplingboard\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h

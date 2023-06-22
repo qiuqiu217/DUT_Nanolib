@@ -59,6 +59,15 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int fputc(int c, FILE *stream)    //重写fputc函数
+{
+ /*
+    huart1是工具生成代码定义的UART1结构体，
+    如果以后要使用其他串口打印，只需要把这个结构体改成其他UART结构体。
+*/
+    HAL_UART_Transmit(&huart1, (unsigned char *)&c, 1, 1000);   
+    return 1;
+}
 
 /* USER CODE END 0 */
 
@@ -89,11 +98,11 @@ int main(void)
     /* USER CODE END SysInit */
 
     /* Initialize all configured peripherals */
+    MX_USART1_UART_Init();
+    MX_USART2_UART_Init();
     MX_GPIO_Init();
     MX_ADC1_Init();
     MX_TIM2_Init();
-    MX_USART1_UART_Init();
-    MX_USART2_UART_Init();
     /* USER CODE BEGIN 2 */
 
     /* USER CODE END 2 */

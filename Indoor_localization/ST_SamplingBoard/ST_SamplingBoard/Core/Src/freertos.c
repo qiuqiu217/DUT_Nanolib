@@ -158,10 +158,13 @@ void AppTask_Start(void *argument)
 void AppTask_Led(void *argument)
 {
     /* USER CODE BEGIN AppTask_Led */
+    float temp;
     /* Infinite loop */
     for(;;)
     {
         LED_Toggle();
+        temp = ADC_OneShot_Read() * (3.3/4096);
+        printf("Voltage:%f",temp);
         osDelay(1000);
     }
     /* USER CODE END AppTask_Led */
@@ -180,7 +183,7 @@ void AppTask_DebugUsart(void *argument)
     /* Infinite loop */
     for(;;)
     {
-    osDelay(1);
+        osDelay(1);
     }
     /* USER CODE END AppTask_DebugUsart */
 }

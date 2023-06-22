@@ -50,30 +50,20 @@ void MX_GPIO_Init(void)
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
 
-    /**/
-    LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_13);
-
-    /**/
-    LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_0|LL_GPIO_PIN_1|LL_GPIO_PIN_10|LL_GPIO_PIN_12
-                          |LL_GPIO_PIN_14|LL_GPIO_PIN_15|LL_GPIO_PIN_3|LL_GPIO_PIN_4
-                          |LL_GPIO_PIN_5|LL_GPIO_PIN_6);
-
-    /**/
-    LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_8|LL_GPIO_PIN_15);
-
     /* 初始化用户LED GPIO */
-    GPIO_InitStruct.Pin = USERLED_GPIO;
+    GPIO_InitStruct.Pin = USERLED_PIN;
     GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
     GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-    LL_GPIO_Init(USERLED_PIN, &GPIO_InitStruct);
+    LL_GPIO_Init(USERLED_GPIO, &GPIO_InitStruct);
+    LL_GPIO_ResetOutputPin(USERLED_GPIO, USERLED_PIN);
 
     /* 初始化用户按键 GPIO */
-    GPIO_InitStruct.Pin = USERKEY_GPIO;
+    GPIO_InitStruct.Pin = USERKEY_PIN;
     GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-    LL_GPIO_Init(USERKEY_PIN, &GPIO_InitStruct);
+    LL_GPIO_Init(USERKEY_GPIO, &GPIO_InitStruct);
     
     /* 初始化BOOT1 GPIO */
     GPIO_InitStruct.Pin = LL_GPIO_PIN_2;
@@ -96,13 +86,13 @@ void MX_GPIO_Init(void)
     GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     LL_GPIO_Init(MUX_GPIOA, &GPIO_InitStruct);
+    
+    /* 初始化多路复用器控制IO电平 */
+    LL_GPIO_ResetOutputPin(MUX_GPIOA,MUX_PINA);
+    LL_GPIO_ResetOutputPin(MUX_GPIOB,MUX_PINB);
 
 }
 
 /* USER CODE BEGIN 2 */
-//void LED_Toggle(void)
-//{
-//    LL_GPIO_TogglePin(USERLED_PIN,USERLED_GPIO);
-//}
 
 /* USER CODE END 2 */
