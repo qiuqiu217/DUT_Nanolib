@@ -37,6 +37,8 @@ st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_c
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h
+st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
@@ -53,10 +55,14 @@ st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rc
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_utils.h
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_pwr.h
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h
+st_samplingboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+st_samplingboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+st_samplingboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 st_samplingboard\freertos.o: ../Core/Inc/gpio.h
 st_samplingboard\freertos.o: ../Core/Inc/main.h
 st_samplingboard\freertos.o: ../Core/Inc/usart.h
 st_samplingboard\freertos.o: ../Core/Inc/adc.h
 st_samplingboard\freertos.o: ../Core/Inc/tim.h
+st_samplingboard\freertos.o: ..\Function\Inc\Plantar.h
 st_samplingboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 st_samplingboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h

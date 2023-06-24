@@ -19,7 +19,7 @@
 
 /* 足底压力传感器阵列数量配置 */
 #define SENSOR_NUM_TOTAL 45 
-#define SENSOR_NUM_LINE 10
+#define SENSOR_NUM_ROW 10
 #define SENSOR_NUM_COLUMN 6
 
 #include "main.h"
@@ -41,11 +41,16 @@
 *	                                      函数声明
 *********************************************************************************************************
 */
+/* 足底压力传感器数据采集 */
 static inline void Row_Select(uint8_t Row);
 static inline void Column_Select(uint8_t Column);
-static void Channel_Sampling(uint8_t Row, uint8_t Column);
-void Array_Scanning_Sampling();
+static inline void Channel_Disable(void);
+int8_t Singal_Point_Sampling(uint8_t Row, uint8_t Column, uint16_t *buf);
+int8_t Array_Scanning_Sampling(void);
 
-
+/* 足底压力传感器数据处理 */
+void Plantar_Buff_Init(void);
+int8_t Plantar_Buff_Full_Judge(void);
+int8_t Plantar_Read_Write_Buff_Switch(void);
 
 #endif
