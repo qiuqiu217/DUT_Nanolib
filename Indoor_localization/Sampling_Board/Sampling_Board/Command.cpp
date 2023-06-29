@@ -199,9 +199,9 @@ int8_t Command::Change_IMU_Sampling_State(void)
     BaseType_t xResult;                     //事件组发送结果
     
     uint8_t Sampling_State_Receive = Json_Parsing["Sampling State"];
-    if(Sampling_State_Receive)      //开启压力传感器采集
+    if(Sampling_State_Receive)      //开启IMU采集
     {
-        /* 置位压力传感器采集事件位 */
+        /* 置位IMU采集事件位 */
         xResult = xEventGroupSetBits(Sampling_Event,
                                      IMU_SAMPLING);                     
         if( xResult == pdFAIL )
@@ -210,9 +210,9 @@ int8_t Command::Change_IMU_Sampling_State(void)
             ret = 0;
         }                 
     }
-    else                //关闭压力传感器采集
+    else                //关闭IMU采集
     {
-        /* 清除压力传感器采集事件位 */
+        /* 清除IMU采集事件位 */
         xResult = xEventGroupClearBits(Sampling_Event,
                                        IMU_SAMPLING);                     
         if( xResult == pdFAIL )

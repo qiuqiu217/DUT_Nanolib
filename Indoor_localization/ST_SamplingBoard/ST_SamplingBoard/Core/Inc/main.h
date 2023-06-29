@@ -33,6 +33,8 @@ extern "C" {
 */
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
+#include <math.h>
 /*
 *********************************************************************************************************
 *                                        HAL库及LL库
@@ -51,13 +53,16 @@ extern "C" {
 #include "stm32f4xx_ll_utils.h"
 #include "stm32f4xx_ll_pwr.h"
 #include "stm32f4xx_ll_dma.h"
+#include "stm32f4xx_ll_rtc.h"
 /*
 *********************************************************************************************************
 *                                         RTOS
 *********************************************************************************************************
 */
 #include "FreeRTOS.h"
+#include "cmsis_os2.h"
 #include "queue.h"
+#include "semphr.h"
 #include "event_groups.h"
 /*
 *********************************************************************************************************
@@ -68,41 +73,62 @@ extern "C" {
 #include "usart.h"
 #include "adc.h"
 #include "tim.h"
+
 /*
 *********************************************************************************************************
 *                                        FUNCTION
 *********************************************************************************************************
 */
 #include "Plantar.h"
-
+#include "Command.h"
+#include "IMU.h"                /* 惯性传感器 */
+#include "Solution.h"
+#include "Function.h"
 
 /* LOG打印设置 */
-#if 1
+#if 0
 	#define TASK_LOG     printf
 #else
-	#define TASK_LOG     (...)
+	#define TASK_LOG(...)
 #endif
 
-/* USER CODE BEGIN EFP */
+/* 串口宏定义 */
+#define DEBUG_COM   COM1
+#define SPP_COM     COM3
+#define IMU_COM     COM2
 
+/* 返回值宏定义 */
+#define RET_ERROR       -1
+#define RET_INVALID     0
+#define RET_OK          1
+
+/* USER CODE BEGIN EFP */
+/* Debug串口接收缓冲区大小 */
+#define RX_BUFF_SIZE    256
 /* 每个Buff储存多少帧数据 */
 #define FRAME_IN_BUFF           10
 
+
+/* 压力传感器阵列采集模式定义 */
+#define ARRAY_SAMPLINGMODE              0u       //传感阵列循环采样
+#define SINGLEPOINT_SAMPLINGMODE        1u       //指定单点循环采样
+#define INSTRUCTIONS_ARRAYMODE          2u       //收到指令执行阵列采样
+#define INSTRUCTIONS_SINGLEMODE         3u       //收到指令执行单点采样
 /* Debug命令消息定义 */
-#define DEBUG_UART_COMMAND              0       //Debug串口接收到命令
-#define BLUETOOTH_COMMAND               1       //蓝牙串口接收到命令
+#define DEBUG_UART_COMMAND              0u       //Debug串口接收到命令
+#define BLUETOOTH_COMMAND               1u       //蓝牙串口接收到命令
 /* 数据处理消息定义 */
-#define PRESSURE_SOLUTION               0       //进行压力数据处理
-#define IMU_SOLUTION                    1       //进行IMU数据处理
+#define PRESSURE_SOLUTION               0u       //进行压力数据处理
+#define IMU_SOLUTION                    1u       //进行IMU数据处理
 /* 数据发送消息定义 */
-#define PRESSURE_TRANSFER               0       //进行压力数据发送
-#define IMU_TRANSFER                    1       //进行IMU数据发送
+#define PRESSURE_TRANSFER               0u       //进行压力数据发送
+#define IMU_TRANSFER                    1u       //进行IMU数据发送
 /* 数据发送完成消息定义 */
-#define PRESSURE_DONE                   0       //进行压力数据发送完成
-#define IMU_DONE                        1       //进行IMU数据发送完成
+#define PRESSURE_DONE                   0u       //进行压力数据发送完成
+#define IMU_DONE                        1u       //进行IMU数据发送完成
 /* 指令采样消息定义 */
-#define SINGLE_INSTRUCTION              0       //进行压力数据发送完成
-#define ARRAY_INSTRUCTION               1       //进行IMU数据发送完成
+#define SINGLE_INSTRUCTION              0u       //进行压力数据发送完成
+#define ARRAY_INSTRUCTION               1u       //进行IMU数据发送完成
 /* 数据采集事件组定义 */
 #define PLANTAR_SAMPLING                (1 << 0)
 #define IMU_SAMPLING                    (1 << 1)
@@ -110,12 +136,7 @@ extern "C" {
 #define BLUETOOTH_CONNECT               (1 << 0)
 #define BLUETOOTH_TRANSFER              (1 << 1)
 #define BLUETOOTH_START_TRANSFER        (BLUETOOTH_CONNECT | BLUETOOTH_TRANSFER)
-/* 压力传感器阵列采集模式事件组定义 */
-#define ARRAY_SAMPLINGMODE              (1 << 0)       //传感阵列循环采样
-#define SINGLEPOINT_SAMPLINGMODE        (1 << 1)       //指定单点循环采样
-#define INSTRUCTIONS_ARRAYMODE          (1 << 2)       //收到指令执行阵列采样
-#define INSTRUCTIONS_SINGLEMODE         (1 << 3)       //收到指令执行单点采样
-#define PLANTAR_SAMPLING_MODE           (ARRAY_SAMPLINGMODE | SINGLEPOINT_SAMPLINGMODE | INSTRUCTIONS_ARRAYMODE | INSTRUCTIONS_SINGLEMODE)
+
 
 /* 压力传感器阵列数据缓冲区结构体定义 */
 typedef struct     /* 缓冲区结构体定义 */
@@ -149,13 +170,6 @@ typedef struct     /* 缓冲区结构体定义 */
     uint8_t Write_Frame;        //写入帧数
 } IMU_Buff_TypeDef;
 
-/* 压力传感器采集结构体定义 */
-typedef struct
-{
-    uint16_t Plantar_Sampling_Delay;        //压力传感器采样延时
-    uint8_t Selection_Row;                  //压力传感器单点选通行
-    uint8_t Selection_Column;               //压力传感器单点选通列
-}Plantar_Sampling_TypeDef;
 
 /* USER CODE BEGIN EFP */
 
@@ -165,6 +179,15 @@ typedef struct
 /* USER CODE BEGIN Private defines */
 void Error_Handler(void);
 /* USER CODE END Private defines */
+
+/**
+* @brief Get_TimeStamp 获取系统运行时间戳
+* @retval uint32_t  系统运行时间(ms)
+*/
+inline uint32_t Get_TimeStamp(void)
+{
+    return HAL_GetTick();
+}
 
 #ifdef __cplusplus
 }

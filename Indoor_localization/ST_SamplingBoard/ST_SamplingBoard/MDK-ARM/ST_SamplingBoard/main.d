@@ -2,6 +2,8 @@ st_samplingboard\main.o: ../Core/Src/main.c
 st_samplingboard\main.o: ../Core/Inc/main.h
 st_samplingboard\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 st_samplingboard\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+st_samplingboard\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+st_samplingboard\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 st_samplingboard\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 st_samplingboard\main.o: ../Core/Inc/stm32f4xx_hal_conf.h
 st_samplingboard\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
@@ -46,6 +48,7 @@ st_samplingboard\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rcc.h
 st_samplingboard\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_utils.h
 st_samplingboard\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_pwr.h
 st_samplingboard\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h
+st_samplingboard\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rtc.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 st_samplingboard\main.o: ../Core/Inc/FreeRTOSConfig.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
@@ -53,9 +56,11 @@ st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/port
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 st_samplingboard\main.o: ../Core/Inc/gpio.h
@@ -64,6 +69,12 @@ st_samplingboard\main.o: ../Core/Inc/usart.h
 st_samplingboard\main.o: ../Core/Inc/adc.h
 st_samplingboard\main.o: ../Core/Inc/tim.h
 st_samplingboard\main.o: ..\Function\Inc\Plantar.h
+st_samplingboard\main.o: ..\Function\Inc\Command.h
+st_samplingboard\main.o: ..\Function\Inc\cJSON.h
+st_samplingboard\main.o: ..\Function\Inc\IMU.h
+st_samplingboard\main.o: ..\Function\Inc\REG.h
+st_samplingboard\main.o: ..\Function\Inc\wit_c_sdk.h
+st_samplingboard\main.o: ..\Function\Inc\Solution.h
+st_samplingboard\main.o: ..\Function\Inc\Function.h
 st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
-st_samplingboard\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 st_samplingboard\main.o: ../Core/Inc/i2c.h

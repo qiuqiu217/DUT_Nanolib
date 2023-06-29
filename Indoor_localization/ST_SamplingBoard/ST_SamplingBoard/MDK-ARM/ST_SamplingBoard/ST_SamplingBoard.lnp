@@ -11,6 +11,12 @@
 "st_samplingboard\stm32f4xx_hal_msp.o"
 "st_samplingboard\stm32f4xx_hal_timebase_tim.o"
 "st_samplingboard\plantar.o"
+"st_samplingboard\cjson.o"
+"st_samplingboard\command.o"
+"st_samplingboard\wit_c_sdk.o"
+"st_samplingboard\imu.o"
+"st_samplingboard\solution.o"
+"st_samplingboard\function.o"
 "st_samplingboard\stm32f4xx_ll_gpio.o"
 "st_samplingboard\stm32f4xx_ll_adc.o"
 "st_samplingboard\stm32f4xx_ll_dma.o"
@@ -36,6 +42,7 @@
 "st_samplingboard\stm32f4xx_hal_tim_ex.o"
 "st_samplingboard\stm32f4xx_ll_tim.o"
 "st_samplingboard\stm32f4xx_hal_uart.o"
+"st_samplingboard\stm32f4xx_ll_rtc.o"
 "st_samplingboard\system_stm32f4xx.o"
 "st_samplingboard\croutine.o"
 "st_samplingboard\event_groups.o"
@@ -47,7 +54,7 @@
 "st_samplingboard\cmsis_os2.o"
 "st_samplingboard\heap_4.o"
 "st_samplingboard\port.o"
---strict --scatter "ST_SamplingBoard\ST_SamplingBoard.sct"
+--library_type=microlib --strict --scatter "ST_SamplingBoard\ST_SamplingBoard.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "ST_SamplingBoard.map" -o ST_SamplingBoard\ST_SamplingBoard.axf

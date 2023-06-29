@@ -3783,6 +3783,19 @@ ErrorStatus LL_RTC_WaitForSynchro(RTC_TypeDef *RTCx);
 /**
   * @}
   */
+  
+  /**
+  * @brief  Get Timestamp Seconds in BCD format
+  * @note helper macro __LL_RTC_CONVERT_BCD2BIN is available to convert Seconds from BCD to Binary format
+  * @rmtoll TSTR         ST            LL_RTC_TS_GetSecond\n
+  *         TSTR         SU            LL_RTC_TS_GetSecond
+  * @param  RTCx RTC Instance
+  * @retval Value between Min_Data=0x00 and Max_Data=0x59
+  */
+//__STATIC_INLINE uint32_t LL_RTC_TS_GetSubSecond(RTC_TypeDef *RTCx)
+//{
+//    return (uint32_t)(READ_BIT(RTCx->TSSSR, 0x0f));
+//}
 
 #ifdef __cplusplus
 }

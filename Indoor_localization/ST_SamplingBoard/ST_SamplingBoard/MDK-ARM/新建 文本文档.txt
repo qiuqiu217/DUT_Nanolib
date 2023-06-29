@@ -1,0 +1,304 @@
+/*
+*********************************************************************************************************
+*
+*	文件名称 : Command.c
+*	版    本 : V1.0
+*	说    明 : 这是室内定位项目串口调试指令集程序文件。
+*
+*	修改记录 :
+*		版本号      日期            作者          说明
+*		V1.0    2023-06-24         Qiuqiu       首次发布
+*
+*	Copyright (C), 2023-2028, c2403336037@mail.dlut.edu.cn
+*
+*********************************************************************************************************
+*/
+
+#include "Command.h"
+
+extern PLANTAR_S Plantar;                      // 压力传感器采集结构体
+extern osEventFlagsId_t Sampling_EventHandle;       //采集事件组
+extern osMutexId_t GV_MutexHandle;      //全局变量互斥锁
+
+/* Json储存区域 */
+cJSON* cJson_Error = NULL;
+
+/**
+ * @brief Command_Parsing  解析debug串口收到的命令
+ * @param const char *json_Command 需要解析的JSON命令
+ * @return int8_t -1 命令解析失败      0 无效命令/命令执行失败      1命令执行成功
+ */
+int8_t Command_Parsing(const char *json_Command)
+{
+    BaseType_t x_return = pdTRUE;           //定义一个创建信息返回值，默认为 pdTRUE 
+    uint32_t s_queue;                       //定义一个接收消息的变量
+    BaseType_t xResult;                     //事件组发送结果
+    int8_t ret = 1;
+    
+    /* Json储存区域 */
+	cJSON* cJson_Command = NULL;
+    
+    Command_LOG("JSON Command:%s \n\r",json_Command);
+    /* 解析整段JSO数据 */
+    cJson_Error = cJSON_Parse(json_Command);
+    if(cJson_Error == NULL)
+    {
+       Command_LOG("parse fail \n\r");
+       ret =  -1;
+    }
+    else
+    {
+        cJson_Command = cJSON_GetObjectItem(cJson_Error, "Command");
+        Command_LOG("The command received:%s\n\r",cJson_Command->valuestring);
+        /* 接收到的是否是 Change the bluetooth transfer state 命令 */
+        if(!strcmp(cJson_Command->valuestring,"Change the bluetooth transfer state"))
+        {
+            ret = Change_Bluetooth_Transfer_State();
+        }
+        /* 接收到的是否是 Change the plantar sampling state 命令 */
+        else if(!strcmp(cJson_Command->valuestring,"Change the plantar sampling state"))
+        {
+            ret = Change_Plantar_Sampling_State();
+        }
+        /* 接收到的是否是 Change the IMU sampling state 命令 */
+        else if(!strcmp(cJson_Command->valuestring,"Change the IMU sampling state"))
+        {
+            ret = Change_IMU_Sampling_State();
+        }
+        /* 接收到的是否是 Change the sampling mod 命令 */
+        else if(!strcmp(cJson_Command->valuestring,"Change the sampling mod"))
+        {
+            ret = Change_Plantar_SamplingMode();     
+        }
+        /* 接收到的是否是 Change the selection 命令 */
+        else if(!strcmp(cJson_Command->valuestring,"Change the selection"))
+        {
+            ret = Change_Plantar_Selection();
+        } 
+        /* 接收到的是否是 Change the sampling rate 命令 */
+        else if(!strcmp(cJson_Command->valuestring,"Change the sampling rate"))
+        {
+            //ret = Change_Plantar_SamplingRate();
+        }
+        /* 接收到的是否是 Single sampling 命令 */
+        else if(!strcmp(cJson_Command->valuestring,"Single sampling"))
+        {
+            //ret = Plantar_Single_Sampling();
+        }      
+        /* 接收到的是否是 Array sampling 命令 */
+        else if(!strcmp(cJson_Command->valuestring,"Array sampling"))
+        {
+            //ret = Plantar_Array_Sampling();
+        }
+        /* 接收到的是否是 IMU calibration 命令 */
+        else if(!strcmp(cJson_Command->valuestring,"IMU calibration"))
+        {
+            //ret = IMU_Calibration();
+        }
+        else 
+        {
+            ret = 0;
+        }
+        cJSON_Delete(cJson_Error);
+    }
+    return ret;
+}
+
+/**
+ * @brief Change_Bluetooth_Transfer_State  修改蓝牙串口传输状态
+ * @return int8_t 0 命令执行失败     1命令执行成功
+ */
+int8_t Change_Bluetooth_Transfer_State(void)
+{   
+    cJSON* cJson_TransferState = NULL;
+    BaseType_t xResult;                     //事件组发送结果
+    int8_t ret = 1;
+    
+    cJson_TransferState = cJSON_GetObjectItem(cJson_Error, "Transfer State");
+    if(cJson_TransferState->valueint)      //开启蓝牙传输
+    {    
+    }
+    else                //关闭蓝牙传输
+    {
+    }
+    return ret;
+}
+
+/**
+ * @brief Change_Plantar_Sampling_State  修改压力传感器采集状态
+ * @return int8_t 0 命令执行失败     1命令执行成功
+ */
+int8_t Change_Plantar_Sampling_State(void)
+{
+    cJSON* cJson_SamplingState = NULL;
+    BaseType_t xResult;                     //事件组发送结果
+    int8_t ret = 1;
+    
+    cJson_SamplingState = cJSON_GetObjectItem(cJson_Error, "Sampling State");
+    if(cJson_SamplingState->valueint)      //开启压力传感器采集
+    {
+         /* 置位压力传感器采集事件位 */
+        xResult = xEventGroupSetBits(Sampling_EventHandle,
+                                     PLANTAR_SAMPLING);                     
+        if( xResult == pdFAIL )
+        {
+            Command_LOG("Failed to enable plantar sampling \n\r");
+            ret = 0;
+        }  
+    }
+    else                //关闭压力传感器采集
+    {
+        /* 清除压力传感器采集事件位 */
+        xResult = xEventGroupClearBits(Sampling_EventHandle,
+                                       PLANTAR_SAMPLING);                     
+        if( xResult == pdFAIL )
+        {
+            Command_LOG("Failed to disable plantar sampling \n\r");
+            ret = 0;
+        }
+    }
+    return ret;
+}
+
+/**
+ * @brief Change_IMU_Sampling_State  修改IMU采集状态
+ * @return int8_t 0 命令执行失败     1命令执行成功
+ */
+int8_t Change_IMU_Sampling_State(void)
+{   
+    cJSON* cJson_SamplingState = NULL;
+    BaseType_t xResult;                     //事件组发送结果
+    int8_t ret = 1;
+    
+    cJson_SamplingState = cJSON_GetObjectItem(cJson_Error, "Sampling State");
+    if(cJson_SamplingState->valueint)      //开启压力传感器采集
+    {
+        /* 置位IMU采集事件位 */
+        xResult = xEventGroupSetBits(Sampling_EventHandle,
+                                     IMU_SAMPLING);                     
+        if( xResult == pdFAIL )
+        {
+            Command_LOG("Failed to enable IMU sampling \n\r");
+            ret = 0;
+        }
+    }
+    else                //关闭压力传感器采集
+    {
+       /* 清除IMU采集事件位 */
+        xResult = xEventGroupClearBits(Sampling_EventHandle,
+                                       IMU_SAMPLING);                     
+        if( xResult == pdFAIL )
+        {
+            Command_LOG("Failed to disable IMU sampling \n\r");
+            ret = 0;
+        }
+    }
+    return ret;
+}
+
+/**
+ * @brief Change_Plantar_SamplingMode  修改压力传感器采集模式
+ * @return int8_t 0 命令执行失败     1命令执行成功
+ */
+int8_t Change_Plantar_SamplingMode(void)
+{  
+    cJSON* cJson_Sampling_Mode = NULL;
+    int8_t ret = 1;
+    
+    cJson_Sampling_Mode = cJSON_GetObjectItem(cJson_Error, "Sampling Mode");
+    ret = Plantar_Mode_Change(cJson_Sampling_Mode->valueint);
+    return ret;
+}
+
+/**
+ * @brief Change_Plantar_Selection  修改压力传感器选通点
+ * @return int8_t 0 命令执行失败     1命令执行成功
+ */
+int8_t Change_Plantar_Selection(void)
+{
+    cJSON* cJson_Channel = NULL;
+    cJSON* cJson_Channel_Row = NULL;
+    cJSON* cJson_Channel_Column = NULL;
+    int8_t ret = 1;
+
+    cJson_Channel = cJSON_GetObjectItem(cJson_Error, "Channel");
+    cJson_Channel_Row = cJSON_GetObjectItem(cJson_Channel, "Line");
+    cJson_Channel_Column = cJSON_GetObjectItem(cJson_Channel, "Column");
+    /* 判断指令输入行列是否正确，修改选通项 */
+    if(Plantar_ChannelJudge(cJson_Channel_Row->valueint, cJson_Channel_Column->valueint) == 1)        //判断输入行列数据是否正确
+    {
+        if(Plantar_ChannelChange(cJson_Channel_Row->valueint, cJson_Channel_Column->valueint) == 1)       //修改单点循环采用的选通项
+        {
+            Command_LOG("Change the selection succeed");                  
+        }
+        else
+        {
+            Command_LOG("Change the selection failed");
+            ret = 0; 
+        }
+    }
+    else
+    {
+        Command_LOG("Selection input error");
+        ret = 0; 
+    }
+    return ret;
+}
+
+/**
+ * @brief Change_Plantar_SamplingRate  修改压力传感器采集延时
+ * @return int8_t 0 命令执行失败     1命令执行成功
+ */
+int8_t Change_Plantar_SamplingRate(void)
+{
+    cJSON* cJson_Sampling_Delay = NULL;
+    int8_t ret = 1;
+    
+    cJson_Sampling_Delay = cJSON_GetObjectItem(cJson_Error, "Sampling Rate");
+    ret = Plantar_Rate_Change(cJson_Sampling_Delay->valueint);
+    return ret;
+}
+
+
+/*
+*********************************************************************************************************
+*
+*	文件名称 : Command.h
+*	版    本 : V1.0
+*	说    明 : 这是室内定位项目串口调试指令集程序头文件。
+*
+*	修改记录 :
+*		版本号      日期            作者          说明
+*		V1.0    2023-03-12     Qiuqiu&Meipo    首次发布
+*
+*	Copyright (C), 2023-2028, c2403336037@mail.dlut.edu.cn
+*
+*********************************************************************************************************
+*/
+#ifndef COMMAND_H
+#define COMMAND_H
+
+#include  "cJSON.h"
+#include "main.h"
+
+/*
+*********************************************************************************************************
+*	                                      宏定义
+*********************************************************************************************************
+*/
+/* LOG打印设置 */
+#if 1
+	#define Command_LOG     printf
+#else
+	#define Command_LOG(...)
+#endif
+
+int8_t Command_Parsing(const char *json_Command);
+int8_t Change_Bluetooth_Transfer_State(void);
+int8_t Change_Plantar_Sampling_State(void);
+int8_t Change_IMU_Sampling_State(void);
+int8_t Change_Plantar_SamplingMode(void);
+int8_t Change_Plantar_Selection(void);
+int8_t Change_Plantar_SamplingRate(void);
+
+#endif

@@ -26,21 +26,37 @@
 
 
 /* LOG打印设置 */
-#if 1
+#if 0
 	#define PLANTAR_LOG     printf
 #else
-	#define PLANTAR_LOG     (...)
+	#define PLANTAR_LOG(...)
 #endif
-
+/* 宏定义 */
 #define ENABLE      1
 #define DISABLE     0
 
+/* 压力传感器采集设置结构体 */
+typedef struct
+{
+    uint8_t Sampling_Mode;      //压力阵列传感器采样模式
+    uint8_t Selection_Row;      //单点采样选通行
+    uint8_t Selection_Column;   //单点采样选通列
+    uint16_t Sampling_Delay;    //压力传感器采样延时
+    
+}PLANTAR_S;
 
 /*
 *********************************************************************************************************
 *	                                      函数声明
 *********************************************************************************************************
 */
+/* 足底压力传感器采集设置 */
+void Plantar_SettingsInit(void);
+int8_t Plantar_ChannelJudge(uint8_t Row, uint8_t Column);
+int8_t Plantar_ChannelChange(uint8_t Row, uint8_t Column);
+int8_t Plantar_Mode_Change(uint8_t Mode);
+int8_t Plantar_Rate_Change(uint8_t Rate);
+
 /* 足底压力传感器数据采集 */
 static inline void Row_Select(uint8_t Row);
 static inline void Column_Select(uint8_t Column);
@@ -52,5 +68,6 @@ int8_t Array_Scanning_Sampling(void);
 void Plantar_Buff_Init(void);
 int8_t Plantar_Buff_Full_Judge(void);
 int8_t Plantar_Read_Write_Buff_Switch(void);
+void Plantar_TimeStamp(void);       //存入压力传感器采集时间戳
 
 #endif

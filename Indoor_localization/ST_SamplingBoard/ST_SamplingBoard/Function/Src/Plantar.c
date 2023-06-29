@@ -19,9 +19,12 @@
 /* 压力传感器阵列行列数定义 */
 const uint8_t Sensor_Num_Row = SENSOR_NUM_ROW;       //压力传感器阵列行数
 const uint8_t Sensor_Num_Column[SENSOR_NUM_ROW][2] = { {0,2}, {0,3}, {0,3}, {0,3}, {0,3}, {0,4}, {0,5}, {0,5}, {1,5}, {2,5} };      //压力传感器阵列列数
+const uint16_t Plantar_Rate_Settings[10] = {5,10,15,20,50,100,200,500,1000,2000};      //可设置采样延时
+
+extern osMutexId_t GV_MutexHandle;      //全局变量互斥锁
+extern PLANTAR_S Plantar;                       //压力传感器采集结构体
 
 Plantar_Buff_TypeDef Plantar_Buff;              //压力传感器阵列Buff结构体声明
-IMU_Buff_TypeDef IMU_Buff;                      //惯性传感器Buff结构体声明
 
 /* 压力传感器阵列数据缓冲区变量声明 */
 uint16_t Plantar_Voltage_Buff_1[SENSOR_NUM_TOTAL*FRAME_IN_BUFF];          //压力传感器Buff1
@@ -40,6 +43,159 @@ void inline nop_delay(uint8_t num)
         __nop();
         num--;
     }
+}
+
+/**
+ * @brief Plantar_SettingsInit 足底压力传感器采集设置初始化
+ */
+void Plantar_SettingsInit(void)
+{
+    Plantar.Sampling_Mode  = ARRAY_SAMPLINGMODE;
+    Plantar.Selection_Row = 0;
+    Plantar.Selection_Column = 0; 
+    Plantar.Sampling_Delay = Plantar_Rate_Settings[3];
+}
+
+/**
+ * @brief Channel_Judge 判断压力传感器阵列选通项是否正确
+ * 
+ * @param uint8_t Line 需要选通的行
+ * @param uint8_t Column 需要选通的列
+ * @return int8_t -1 输入选通行列错误      1 输入选通行列正确
+ */
+int8_t Plantar_ChannelJudge(uint8_t Row, uint8_t Column)
+{
+    if(Row >= Sensor_Num_Row)     //判断输入行数据是否正确
+    {
+        PLANTAR_LOG("Channel select error \n\r");       //输入行数据错误
+        return -1;
+    }
+    if(Column < Sensor_Num_Column[Row][0] || Column > Sensor_Num_Column[Row][1])      //判断输入列数据是否正确
+    {
+        PLANTAR_LOG("Channel select error \n\r");       //输入列数据错误
+        return -1;
+    }
+    else
+    {
+        return 1;
+    }     
+}
+
+/**
+ * @brief Plantar_Channel_Change 改变压力传感器阵列选通项
+ * 
+ * @param uint8_t Line 需要选通的行
+ * @param uint8_t Column 需要选通的列
+ * @return int8_t -1 修改选通项失败      1 修改选通项成功
+ */
+int8_t Plantar_ChannelChange(uint8_t Row, uint8_t Column)
+{
+    int8_t ret = 1;
+    
+    if(GV_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
+    {
+        if(xSemaphoreTake(GV_MutexHandle, 200) == pdTRUE)       //申请全局变量修改互斥锁
+        {
+            Plantar.Selection_Row = Row;
+            Plantar.Selection_Column = Column;
+            PLANTAR_LOG("Change the selection Line:%d Column:%d \n\r", Plantar.Selection_Row, Plantar.Selection_Column);
+            xSemaphoreGive(GV_MutexHandle);           //释放修改选通项互斥锁
+        }
+        else
+        {
+            Command_LOG("Application for mutex failed \n\r");      //申请全局变量修改互斥锁失败
+            ret =  0;
+        }
+    }
+    else
+    {
+        Command_LOG("The mutex not created \n\r");      //全局变量修改互斥锁未创建
+        ret =  0;
+    }
+    return ret;
+}
+
+/**
+ * @brief Plantar_Mode_Change 改变压力传感器阵列采集模式
+ * @param uint8_t Mode 采集模式
+ * @return int8_t -1 修改采集模式失败      1 修改采集模式成功
+ */
+int8_t Plantar_Mode_Change(uint8_t Mode)
+{
+    char Print_buff[30];
+    int8_t ret = 1;
+    
+    if(GV_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
+    {
+        if(xSemaphoreTake(GV_MutexHandle, 200) == pdTRUE)       //申请全局变量修改互斥锁
+        {
+            if(Plantar.Sampling_Mode <= INSTRUCTIONS_SINGLEMODE)
+            {
+                Plantar.Sampling_Mode = Mode;
+                if(Mode == ARRAY_SAMPLINGMODE)              sprintf(Print_buff,"Array Samplingmode");
+                else if(Mode == SINGLEPOINT_SAMPLINGMODE)   sprintf(Print_buff,"Singlepoint Samplingmode");
+                else if(Mode == INSTRUCTIONS_ARRAYMODE)     sprintf(Print_buff,"Instructions Array Samplingmode");
+                else if(Mode == INSTRUCTIONS_SINGLEMODE)    sprintf(Print_buff,"Instructions Singlepoint Samplingmode");      
+                PLANTAR_LOG("Sampling Mode:%s \n\r", Print_buff);
+            }
+            else
+            {
+                PLANTAR_LOG("Invalid sampling mode \n\r");
+                ret =  0;
+            }
+            xSemaphoreGive(GV_MutexHandle);           //释放修改选通项互斥锁
+        }
+        else
+        {
+            PLANTAR_LOG("Application for mutex failed \n\r");      //申请全局变量修改互斥锁失败
+            ret =  0;
+        }
+    }
+    else
+    {
+        PLANTAR_LOG("The mutex not created \n\r");      //全局变量修改互斥锁未创建
+        ret =  0;
+    }
+    return ret;
+}
+
+/**
+ * @brief Plantar_Rate_Change 改变压力传感器阵列采集模式
+ * @param uint8_t Rate 采集速率
+ * @return int8_t -1 修改采集模式失败      1 修改采集模式成功
+ */
+int8_t Plantar_Rate_Change(uint8_t Rate)
+{
+    int8_t ret = 1;
+    
+    if(GV_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
+    {
+        if(xSemaphoreTake(GV_MutexHandle, 200) == pdTRUE)       //申请全局变量修改互斥锁
+        {
+            if(Plantar.Sampling_Delay <= 10)
+            {
+                Plantar.Sampling_Delay = Plantar_Rate_Settings[Rate];
+                PLANTAR_LOG("Sampling delay:%d \n\r", Plantar.Sampling_Delay);
+            }
+            else
+            {
+                PLANTAR_LOG("Invalid sampling delay \n\r");
+                ret =  0;
+            }
+            xSemaphoreGive(GV_MutexHandle);           //释放修改选通项互斥锁
+        }
+        else
+        {
+            PLANTAR_LOG("Application for mutex failed \n\r");      //申请全局变量修改互斥锁失败
+            ret =  0;
+        }
+    }
+    else
+    {
+        PLANTAR_LOG("The mutex not created \n\r");      //全局变量修改互斥锁未创建
+        ret =  0;
+    }
+    return ret;
 }
 
 /**
@@ -66,7 +222,6 @@ static inline void Row_Select(uint8_t Row)
         MUX_SetPin(GATE_R5_GPIO, GATE_R5_PIN, (Row & 4) >> 2);
         MUX_SetPin(EN_INH2_GPIO, EN_INH2_PIN, DISABLE);     //低电平-禁用选通器
         MUX_SetPin(EN_INH3_GPIO, EN_INH3_PIN, ENABLE);      //高电平-使能选通器
-
     }
 }
 
@@ -164,7 +319,7 @@ void Plantar_Buff_Init(void)
 int8_t Plantar_Buff_Full_Judge(void)
 {
     PLANTAR_LOG("Amount:%d \n\r",Plantar_Buff.Write_Frame); 
-    if(Plantar_Buff.Write_Frame == FRAME_IN_BUFF)
+    if(Plantar_Buff.Write_Frame >= FRAME_IN_BUFF)
     {
         PLANTAR_LOG("Plantar buffer overflow");
         return 1;
@@ -206,5 +361,13 @@ int8_t Plantar_Read_Write_Buff_Switch(void)
     /* 设置数据计数值 */
     Plantar_Buff.Write_Frame = 0;
     return 1;                     
+}
+
+/**
+ * @brief Plantar_TimeStamp 存入压力传感器采集时间戳
+ */
+void Plantar_TimeStamp(void)
+{
+    *(Plantar_Buff.Write_Time_Buff + Plantar_Buff.Write_Frame) = Get_TimeStamp();
 }
 
