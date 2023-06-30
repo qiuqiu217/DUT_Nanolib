@@ -53,7 +53,7 @@ void Plantar_SettingsInit(void)
     Plantar.Sampling_Mode  = ARRAY_SAMPLINGMODE;
     Plantar.Selection_Row = 0;
     Plantar.Selection_Column = 0; 
-    Plantar.Sampling_Delay = Plantar_Rate_Settings[3];
+    Plantar.Sampling_Delay = Plantar_Rate_Settings[1];
 }
 
 /**
@@ -207,9 +207,9 @@ static inline void Row_Select(uint8_t Row)
     if (Row < 5)            //选通项在前五行中
     {
         /* 进行行选通（前五行） */
-        MUX_SetPin(GATE_R0_GPIO, GATE_R0_PIN, Row & 1 >> 0);
-        MUX_SetPin(GATE_R1_GPIO, GATE_R1_PIN, Row & 2 >> 1);
-        MUX_SetPin(GATE_R2_GPIO, GATE_R2_PIN, Row & 4 >> 2);
+        MUX_SetPin(GATE_R0_GPIO, GATE_R0_PIN, (Row & 1) >> 0);
+        MUX_SetPin(GATE_R1_GPIO, GATE_R1_PIN, (Row & 2) >> 1);
+        MUX_SetPin(GATE_R2_GPIO, GATE_R2_PIN, (Row & 4) >> 2);
         MUX_SetPin(EN_INH2_GPIO, EN_INH2_PIN, ENABLE);      //高电平-使能选通器
         MUX_SetPin(EN_INH3_GPIO, EN_INH3_PIN, DISABLE);     //低电平-禁用选通器
     } 
@@ -269,8 +269,9 @@ int8_t Singal_Point_Sampling(uint8_t Row, uint8_t Column, uint16_t *buf)
     }
     Row_Select(Row);
     Column_Select(Column);
-    *buf = ADC_OneShot_Read()* (3.3/4096);
-    Channel_Disable();
+    nop_delay(240);           //模拟信号建立时间
+    *buf = (uint16_t)ADC_OneShot_Read()* (3.3/4096) *1000;
+    //Channel_Disable();
     return 1;
 }
 
@@ -289,10 +290,11 @@ int8_t Array_Scanning_Sampling(void)
         {
             Row_Select(i);          //选通对应行列
             Column_Select(j);
-            nop_delay(5);           //模拟信号建立时间
-            *(Plantar_Buff.Write_Buff + Plantar_Buff.Write_Frame*FRAME_IN_BUFF + num) = ADC_OneShot_Read()* (3.3/4096);
-            Channel_Disable();
+            nop_delay(240);           //模拟信号建立时间
+            *(Plantar_Buff.Write_Buff + Plantar_Buff.Write_Frame*SENSOR_NUM_TOTAL + num) = (uint16_t)ADC_OneShot_Read()* (3.3/4096) *1000;
+            num++;
             j++;
+            //Channel_Disable();
         }
         i++;
     }

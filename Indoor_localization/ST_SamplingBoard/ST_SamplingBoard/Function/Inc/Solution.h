@@ -25,16 +25,16 @@
 *********************************************************************************************************
 */
 /* LOG打印设置 */
-#if 1
+#if 0
 	#define Solution_LOG     printf
 #else
-	#define Solution_LOG     
+	#define Solution_LOG(...)     
 #endif
 
 
 
-float Singel_Point_Calculation(uint32_t *voltage);              //单点压力值计算
-float Conductance_Calculation(uint32_t *voltage);               //单点电导值计算
+float Singel_Point_Calculation(uint16_t *voltage);              //单点压力值计算
+float Conductance_Calculation(uint16_t *voltage);               //单点电导值计算
 int8_t Pressure_Calculation(float *buff);            //对缓冲区中的数据进行解算，得到压力值
 
 /* 传感器数据处理及传输 */

@@ -101,11 +101,11 @@ void MX_ADC1_Init(void)
 }
 
 /* USER CODE BEGIN 1 */
-uint16_t ADC_OneShot_Read(void)
+uint32_t ADC_OneShot_Read(void)
 {
-    uint16_t temp;
+    uint32_t temp;
     uint8_t i;
-    for(i=0;i<4;i++)
+    for(i=0;i<8;i++)
     {
         LL_ADC_REG_SetSequencerRanks(ADC1, LL_ADC_REG_RANK_1, LL_ADC_CHANNEL_1);
         LL_ADC_REG_StartConversionSWStart(ADC1);
@@ -113,10 +113,9 @@ uint16_t ADC_OneShot_Read(void)
         LL_ADC_ClearFlag_EOCS(ADC1);
         LL_ADC_REG_SetFlagEndOfConversion(ADC1,LL_ADC_REG_FLAG_EOC_SEQUENCE_CONV);
         temp += LL_ADC_REG_ReadConversionData12(ADC1);
-
     }
     
-    return temp>>2;
+    return temp>>3;
 }
 
 

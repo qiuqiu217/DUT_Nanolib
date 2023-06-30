@@ -50,7 +50,7 @@ extern "C" {
 void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-uint16_t ADC_OneShot_Read(void);
+uint32_t ADC_OneShot_Read(void);
 
 /* USER CODE END Prototypes */
 

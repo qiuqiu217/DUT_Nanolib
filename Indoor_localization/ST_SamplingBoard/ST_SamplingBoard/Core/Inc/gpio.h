@@ -79,7 +79,9 @@ extern "C" {
 #define MUX_PINB            LL_GPIO_PIN_1|LL_GPIO_PIN_3|LL_GPIO_PIN_4 |LL_GPIO_PIN_5|LL_GPIO_PIN_6|LL_GPIO_PIN_8|\
                             LL_GPIO_PIN_10|LL_GPIO_PIN_12|LL_GPIO_PIN_14|LL_GPIO_PIN_15
 /* LED灯电平翻转 */
-#define LED_Toggle()        LL_GPIO_TogglePin(USERLED_GPIO,USERLED_PIN)
+#define LED_TOGGLE()        LL_GPIO_TogglePin(USERLED_GPIO,USERLED_PIN)
+#define LED_SET()           LL_GPIO_SetOutputPin(USERLED_GPIO,USERLED_PIN)
+#define LED_RESET()         LL_GPIO_ResetOutputPin(USERLED_GPIO,USERLED_PIN)
 
 /* USER CODE END Private defines */
 /**
@@ -98,7 +100,8 @@ static inline void LED_SetPin(bool pin)
  */
 static inline void MUX_SetPin(GPIO_TypeDef *GPIOx, uint32_t PinMask, bool pin)
 {
-    WRITE_REG(GPIOx->BSRR, (PinMask << 16 * pin));
+    if(pin) WRITE_REG(GPIOx->BSRR, PinMask);
+    else WRITE_REG(GPIOx->BSRR, (PinMask << 16));
 }
 
 void MX_GPIO_Init(void);    //GPIO初始化

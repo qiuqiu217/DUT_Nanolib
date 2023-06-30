@@ -18,7 +18,8 @@
 
 extern PLANTAR_S Plantar;                      // 压力传感器采集结构体
 extern osEventFlagsId_t Sampling_EventHandle;       //采集事件组
-extern osMutexId_t GV_MutexHandle;      //全局变量互斥锁
+extern osEventFlagsId_t BluetoothEventHandle;       //蓝牙传输事件组
+extern osMutexId_t GV_MutexHandle;                  //全局变量互斥锁
 
 
 inline int8_t Command_Verify(_COMM_TYPE* COMM_Buf)
@@ -141,10 +142,26 @@ int8_t Change_Bluetooth_Transfer_State(_COMM_TYPE set)
     int8_t ret = 1;
     
     if(set)      //开启蓝牙传输
-    {    
+    {
+        /* 置位蓝牙链接事件位 */
+        xResult = xEventGroupSetBits(BluetoothEventHandle,
+                                     BLUETOOTH_TRANSFER);                     
+        if( xResult == pdFAIL )
+        {
+            Command_LOG("Failed to enable bluetooth transmission \n\r");
+            ret = 0;
+        }
     }
     else                //关闭蓝牙传输
     {
+        /* 清除蓝牙链接事件位 */
+        xResult = xEventGroupClearBits(BluetoothEventHandle,
+                                       BLUETOOTH_TRANSFER);                     
+        if( xResult == pdFAIL )
+        {
+            Command_LOG("Failed to disable bluetooth transmission \n\r");
+            ret = 0;
+        }
     }
     
     return ret;
@@ -248,6 +265,7 @@ int8_t Change_Plantar_Selection(_COMM_TYPE set)
     
     row = set>>4;
     column = set&0x0f;
+    printf("row:%d column:%d",row,column);
     /* 判断指令输入行列是否正确，修改选通项 */
     if(Plantar_ChannelJudge(row, column) == 1)        //判断输入行列数据是否正确
     {

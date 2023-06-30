@@ -27,7 +27,7 @@
 *********************************************************************************************************
 */
 uint8_t Receive_Buff[RX_BUFF_SIZE];     //Debug串口接收缓冲区
-uint8_t Command_Buff[13];       //接收指令缓冲区
+uint8_t Command_Buff[13];               //接收指令缓冲区
 PLANTAR_S Plantar;                      // 压力传感器采集结构体
 
 extern float Pressure_Buff[SENSOR_NUM_TOTAL*FRAME_IN_BUFF];     //压力传感器拟合压力值缓存区
@@ -40,7 +40,7 @@ osThreadId_t Task_StartHandle;
 const osThreadAttr_t Task_Start_attributes = 
 {
     .name = "Task_Start",
-    .stack_size = 128 * 4,
+    .stack_size = 128 * 2,
     .priority = (osPriority_t) osPriorityNormal,
 };
 /* 定义LED任务 */
@@ -49,7 +49,7 @@ const osThreadAttr_t Task_LED_attributes =
 {
     .name = "Task_LED",
     .stack_size = 128 * 4,
-    .priority = (osPriority_t) osPriorityNormal,
+    .priority = (osPriority_t) osPriorityLow,
 };
 /* 定义Debug串口任务 */
 osThreadId_t Task_DebugUsartHandle;
@@ -89,7 +89,7 @@ const osThreadAttr_t Task_Data_attributes =
 {
     .name = "Task_Data",
     .stack_size = 128 * 8,
-    .priority = (osPriority_t) osPriorityNormal,
+    .priority = (osPriority_t) osPriorityNormal4,
 };
 /* 定义数据发送任务 */
 osThreadId_t Task_TransferHandle;
@@ -214,12 +214,12 @@ void AppTask_Led(void *argument)
 {
     while(1)
     {
-        LED_Toggle();
+        LED_TOGGLE();
         osDelay(1000);
-        #if 0
-             taskENTER_CRITICAL();       //进入基本临界区
-             TASK_LOG("LED Toggle\n\r");
-             taskEXIT_CRITICAL();        //退出基本临界区
+        #if 1
+            taskENTER_CRITICAL();       //进入基本临界区
+            TASK_LOG("LED Toggle\n\r");
+            taskEXIT_CRITICAL();        //退出基本临界区
         #endif
     }
 }
@@ -259,7 +259,7 @@ void AppTask_DebugUsart(void *argument)
                 break;
             }
 		}
-        osDelay(200);
+        osDelay(400);
     }
 }
 
@@ -271,6 +271,7 @@ void AppTask_DebugUsart(void *argument)
 void AppTask_Command(void *argument)
 {
     int8_t result;
+    
     while(1)
     {
         if(Command_SemaphHandle != NULL)
@@ -326,13 +327,13 @@ void AppTask_Plantar(void *argument)
             /* 阵列循环扫描采集 */
             if(Plantar.Sampling_Mode == ARRAY_SAMPLINGMODE)
             {
-                //TASK_LOG("Start Time:%d \n\r",Get_TimeStamp());
+                //printf("Plantar:%d \n\r",Get_TimeStamp());
                 Plantar_TimeStamp();    //存入采集时间戳
                 Array_Scanning_Sampling();
                 Plantar_Buff.Write_Frame++;
                 if(Plantar_Buff_Full_Judge() == 1)        //如果缓冲区已经写满
                 {
-                    //TASK_LOG("Plantar write buff full \n\r");
+                    TASK_LOG("Plantar write buff full \n\r");
                     if(Plantar_Read_Write_Buff_Switch() == RET_ERROR)     //交换缓冲区     
                     {
                         TASK_LOG("Plantar buff switch failed \n\r");                    
@@ -352,7 +353,9 @@ void AppTask_Plantar(void *argument)
             else if(Plantar.Sampling_Mode == SINGLEPOINT_SAMPLINGMODE)
             {
                 Singal_Point_Sampling(Plantar.Selection_Row, Plantar.Selection_Column, &temp);
-                TASK_LOG("voltage:%d mV \n\r",temp);
+                Singel_Point_Calculation(&temp);
+                //TASK_LOG("voltage:%d mV \n\r",temp);
+                printf("voltage:%d mV \r\n",temp);
             }
             /* 指令阵列采集 */
             else if(Plantar.Sampling_Mode == INSTRUCTIONS_ARRAYMODE)
@@ -414,6 +417,7 @@ void AppTask_IMU(void *argument)
             /* 如果有IMU数据更新 */
             if(s_cDataUpdate)
             {
+                //printf("IMU:%d \n\r",Get_TimeStamp());
                 IMU_TimeStamp();     //存入采集时间戳
                 /* 处理IMU数据 */            
                 for(i = 0; i < 3; i++)
@@ -431,37 +435,37 @@ void AppTask_IMU(void *argument)
                 }
                 if(s_cDataUpdate & ACC_UPDATE)          //打印加速度数据
                 {
-                    //TASK_LOG("acc_x:%f acc_y:%f acc_z:%f \n\r", fAcc[0], fAcc[1], fAcc[2]);
+                    TASK_LOG("acc_x:%f acc_y:%f acc_z:%f \n\r", fAcc[0], fAcc[1], fAcc[2]);
                     s_cDataUpdate &= ~ACC_UPDATE;
                 }
                 if(s_cDataUpdate & GYRO_UPDATE)         //打印陀螺仪数据
                 {
-                    //TASK_LOG("gyro_x:%f gyro_y:%f gyro_z:%f \n\r", fGyro[0], fGyro[1], fGyro[2]);
+                    TASK_LOG("gyro_x:%f gyro_y:%f gyro_z:%f \n\r", fGyro[0], fGyro[1], fGyro[2]);
                     s_cDataUpdate &= ~GYRO_UPDATE;
                 }
                 if(s_cDataUpdate & ANGLE_UPDATE)        //打印倾角数据
                 {
-                    //TASK_LOG("angle_x:%f angle_y:%f angle_z:%f \n\r", fAngle[0], fAngle[1], fAngle[2]);
+                    TASK_LOG("angle_x:%f angle_y:%f angle_z:%f \n\r", fAngle[0], fAngle[1], fAngle[2]);
                     s_cDataUpdate &= ~ANGLE_UPDATE;
                 }
                 if(s_cDataUpdate & MAG_UPDATE)          //打印磁力计数据
                 {
-                    //TASK_LOG("mag_x:%d mag_y:%d mag_z:%d \n\r", sMag[0], sMag[1], sMag[2]);
+                    TASK_LOG("mag_x:%d mag_y:%d mag_z:%d \n\r", sMag[0], sMag[1], sMag[2]);
                     s_cDataUpdate &= ~MAG_UPDATE;
                 }
                 if(s_cDataUpdate & ATMO_UPDATE)          //打印气压数据
                 {
-                    //TASK_LOG("atmosphere pressure:%d \n\r", dATMO);
+                    TASK_LOG("atmosphere pressure:%d \n\r", dATMO);
                     s_cDataUpdate &= ~ATMO_UPDATE;
                 }
                 if(s_cDataUpdate & HEIGHT_UPDATE)          //打印高度数据
                 {
-                    //TASK_LOG("height:%d \n\r", dHEIGHT);
+                    TASK_LOG("height:%d \n\r", dHEIGHT);
                     s_cDataUpdate &= ~HEIGHT_UPDATE;
                 }
                 if(s_cDataUpdate & QUAT_UPDATE)          //打印四元数数据
                 {
-                    //TASK_LOG("q0:%f q1:%f q2:%f q3:%f \n\r", fQUAT[0], fQUAT[1], fQUAT[2], fQUAT[3]);
+                    TASK_LOG("q0:%f q1:%f q2:%f q3:%f \n\r", fQUAT[0], fQUAT[1], fQUAT[2], fQUAT[3]);
                     s_cDataUpdate &= ~QUAT_UPDATE;
                 }
                 s_cDataUpdate = 0;
@@ -483,7 +487,7 @@ void AppTask_IMU(void *argument)
                                                 0 );                    //等待时间 0   
                 }                    
             }
-            vTaskDelay(20);      //采集间隔设置
+            vTaskDelay(5);      //采集间隔设置
         }
     }
 }
@@ -503,14 +507,14 @@ void AppTask_Data(void *argument)
     
     while(1)
     {
-//        uxBits = xEventGroupWaitBits(BluetoothEventHandle,          //等待的事件组  
-//                                     BLUETOOTH_START_TRANSFER,      //等待的事件位
-//                                     pdFALSE,                       //返回前是否清除事件
-//                                     pdTRUE,                        //是否等待所有事件
-//                                     portMAX_DELAY);                //等待时间
-//        
-//        if((uxBits & BLUETOOTH_CONNECT) != 0)
-//        {
+        uxBits = xEventGroupWaitBits(BluetoothEventHandle,          //等待的事件组  
+                                     BLUETOOTH_START_TRANSFER,      //等待的事件位
+                                     pdFALSE,                       //返回前是否清除事件
+                                     pdFALSE,                       //是否等待所有事件
+                                     portMAX_DELAY);                //等待时间
+        
+        if((uxBits & BLUETOOTH_TRANSFER) != 0)
+        {
             x_return = osMessageQueueGet( Data_QueueHandle,         /* 消息队列的句柄 */ 
                                       &r_queue,                 /* 发送的消息内容 */ 
                                       0,
@@ -537,7 +541,7 @@ void AppTask_Data(void *argument)
                                                         5);                         //等待时间:5ms                                              
                             if (x_return == osOK && r_queue == PRESSURE_DONE)
                             {
-                                //TASK_LOG("no.%d plantar data transfer done \n\r",i);
+                                TASK_LOG("no.%d plantar data transfer done \n\r",i);
                             }
                             else
                             {
@@ -579,8 +583,8 @@ void AppTask_Data(void *argument)
             {
                 TASK_LOG("The received message value error \n\r");
             } 
-        //}
-        
+        }
+        vTaskDelay(10);      //采集间隔设置
     }
 }
 

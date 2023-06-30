@@ -30,7 +30,7 @@ extern IMU_Buff_TypeDef IMU_Buff;                      //¹ßÐÔ´«¸ÐÆ÷Buff½á¹¹ÌåÉùÃ
 const float para_a = 624.1;      /* º¯ÊýÐÎÊ½: y = a*exp(-((b*x)/c)^2) */
 const float para_b = 0.6779;
 const float para_c = 0.2652;
-const float vref = 0.6;
+const float vref = 0.56;
 const float Rf = 4700; 
 
 /* À¶ÑÀ´«ÊäÖ¡Êý¾Ý´æ´¢¿Õ¼ä */
@@ -55,12 +55,12 @@ uint8_t Quaternion_Transfer[16];
  *
  * @param uint32_t *voltage
  */
-float Singel_Point_Calculation(uint32_t *voltage)
+float Singel_Point_Calculation(uint16_t *voltage)
 {
     float vol;
     float conductance;
     float pressure;
-    vol = (float)(*voltage)/1000;       
+    vol = (float)(*voltage)/1000.0f;       
     conductance = ((vol/vref)-1)/Rf;
     float index = (conductance*1000 - para_b)/para_c;
     pressure = para_a*exp(-index*index);
@@ -75,12 +75,12 @@ float Singel_Point_Calculation(uint32_t *voltage)
  * @brief uint32_t *voltage  ²âÁ¿³öµÄµçÑ¹Öµ
  * @return float ·µ»Øµçµ¼Öµ
  */
-float Conductance_Calculation(uint32_t *voltage)
+float Conductance_Calculation(uint16_t *voltage)
 {
     float vol;
     float conductance;
     /* ¼ÆËãµçµ¼Öµ */
-    vol = (float)(*voltage)/1000;
+    vol = (float)(*voltage)/1000.0f;
     conductance = ((vol/vref)-1)/Rf;;
     Solution_LOG("Conductance :%f \n\r",conductance);     //Êä³öµçµ¼Öµ
 
@@ -105,17 +105,18 @@ int8_t Pressure_Calculation(float *buff)
         Solution_LOG("Read buffer pointer error \n\r");
         return RET_ERROR;       
     }
-    /* ½âËãÑ¹Á¦Öµ */
-    while(i < SENSOR_NUM_TOTAL*FRAME_IN_BUFF)
+    else
     {
-        voltage = (float)*(Plantar_Buff.Read_Buff + i)/1000;       
-        conductance = ((voltage/vref)-1)/Rf;;
-        float index = (conductance*1000 - para_b)/para_c;
-        buff[i] = para_a*exp(-index*index);
-        i++; 
-    }
-
-    return RET_OK;        
+        /* ½âËãÑ¹Á¦Öµ */
+        for(i=0; i<SENSOR_NUM_TOTAL*FRAME_IN_BUFF; i++)
+        {
+            voltage = (float)(*(Plantar_Buff.Read_Buff + i))/1000.0f;       
+            conductance = ((voltage/vref)-1)/Rf;;
+            float index = (conductance*1000 - para_b)/para_c;
+            *(buff + i) = para_a*exp(-index*index);
+        }
+        return RET_OK; 
+    }       
 }
 
 /**
