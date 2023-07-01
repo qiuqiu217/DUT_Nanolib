@@ -1,0 +1,22 @@
+Add Component: Footprint Not Found XH2.54-WI-4P
+Added Component: Designator=U4(ESOP-8_L4.9-W3.9-P1.27-LS6.0-BL-EP)
+Add component (AddParameter): Name = "Designer"; Value = "U?"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Device"; Value = "CH340N_C2977777"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Name"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Symbol"; Value = "CH340N_C2977777"; VariantName = "[No Variations]"
+Add Pin To Net: Unknown Pin: Pin SWD-1
+Add Pin To Net: Unknown Pin: Pin SWD-2
+Add Pin To Net: Unknown Pin: Pin SWD-3
+Add Pin To Net: Unknown Pin: Pin SWD-4
+Added Pin To Net: NetName=D_P Pin=U4-1
+Added Pin To Net: NetName=D_N Pin=U4-2
+Added Pin To Net: NetName=GND Pin=U4-3
+Added Pin To Net: NetName=VCC-3.3 Pin=U4-5
+Added Pin To Net: NetName=DE_RXD Pin=U4-6
+Added Pin To Net: NetName=DE_TXD Pin=U4-7
+Added Pin To Net: NetName=VCC-3.3 Pin=U4-8
+Added Member To Class: ClassName=ST_Board Member=Component L1 Inductor
+Add Class Member: Failed to add class member : Component SWD
+Added Member To Class: ClassName=ST_Board Member=Component U3 LD1117-3.3
+Added Member To Class: ClassName=ST_Board Member=Component U4 CH340N
+Added Room: Name=ST_Board

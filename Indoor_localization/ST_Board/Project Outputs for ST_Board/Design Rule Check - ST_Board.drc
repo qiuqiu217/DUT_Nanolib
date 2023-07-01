@@ -1,0 +1,81 @@
+Protel Design System Design Rule Check
+PCB File : D:\Git_Nanolib\Indoor_localization\ST_Board\ST_Board.PcbDoc
+Date     : 2023/7/1
+Time     : 16:07:45
+
+Processing Rule : Clearance Constraint (Gap=8mil) (InNetClass('Singnal') And (IsTrack Or IsArc)),(InNetClass('Singnal') And (IsTrack Or IsArc))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=8mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=12mil) (InPoly),(All)
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=6mil) (Max=40mil) (Preferred=10mil) (All)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=10mil) (Max=15mil) (Preferred=10mil) (InNetClass('Analog'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=10mil) (Max=50mil) (Preferred=25mil) (InNetClass('GND'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=10mil) (Max=30mil) (Preferred=20mil) (InNetClass('PWR'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=6mil) (Max=10mil) (Preferred=6mil) (InNetClass('Singnal'))
+Rule Violations :0
+
+Processing Rule : Routing Layers(All)
+Rule Violations :0
+
+Processing Rule : Routing Via (MinHoleWidth=12mil) (MaxHoleWidth=28mil) (PreferredHoleWidth=12mil) (MinWidth=25mil) (MaxWidth=50mil) (PreferedWidth=25mil) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Direct Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=1mil) (Max=100mil) (All)
+Rule Violations :0
+
+Processing Rule : Pads and Vias to follow the Drill pairs settings
+Rule Violations :0
+
+Processing Rule : Hole To Hole Clearance (Gap=8mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=0.5mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Net Antennae (Tolerance=0mil) (All)
+   Violation between Net Antennae: Via (1090mil,1055mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1145mil,1110mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1145mil,995mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1199.996mil,1055mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1200mil,1165mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1200mil,940mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1255mil,1110mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1255mil,995mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1310mil,1050mil) from Top Layer to Bottom Layer 
+Rule Violations :9
+
+Processing Rule : Matched Lengths(Tolerance=10mil) (InDifferentialPair('D'))
+Rule Violations :0
+
+Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
+Rule Violations :0
+
+
+Violations Detected : 9
+Waived Violations : 0
+Time Elapsed        : 00:00:02

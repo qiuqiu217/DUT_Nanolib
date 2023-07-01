@@ -70,6 +70,28 @@ void MX_GPIO_Init(void)
     GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     LL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    
+    /* 初始化SPP State GPIO */
+    GPIO_InitStruct.Pin = SPPSTATE_PIN;
+    GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+    LL_GPIO_Init(SPPSTATE_GPIO, &GPIO_InitStruct);
+    /* -2- Connect External Line to the GPIO*/
+	SPPSTATE_SYSCFG_SET_EXTI();
+	/*-3- Enable a falling trigger EXTI line 13 Interrupt */
+	SPPSTATE_EXTI_LINE_ENABLE();
+	SPPSTATE_EXTI_FALLING_TRIG_ENABLE();
+    /*-4- Configure NVIC for EXTI15_10_IRQn */
+	NVIC_EnableIRQ(SPPSTATE_EXTI_IRQn); 
+	NVIC_SetPriority(SPPSTATE_EXTI_IRQn,0);
+    
+    /* 初始化SPP Key GPIO */
+    GPIO_InitStruct.Pin = SPPKEY_PIN;
+    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+    LL_GPIO_Init(SPPKEY_GPIO, &GPIO_InitStruct);
 
     /* 初始化行列选通器控制 GPIO */
     GPIO_InitStruct.Pin = MUX_PINB;

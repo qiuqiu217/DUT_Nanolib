@@ -42,6 +42,25 @@ extern "C" {
 #define USERKEY_PIN	        LL_GPIO_PIN_0
 #define USERKEY_GPIO        GPIOA
 
+/* SPP State GPIO定义 */
+#define SPPSTATE_PIN	    LL_GPIO_PIN_9
+#define SPPSTATE_GPIO       GPIOB
+#define SPPSTATE_EXTI_LINE  LL_EXTI_LINE_9
+#define SPPSTATE_EXTI_IRQn  EXTI9_5_IRQn
+#define SPPSTATE_EXTI_LINE_ENABLE()             LL_EXTI_EnableIT_0_31(SPPSTATE_EXTI_LINE)
+#define SPPSTATE_EXTI_FALLING_TRIG_ENABLE()     LL_EXTI_EnableFallingTrig_0_31(SPPSTATE_EXTI_LINE)
+#define SPPSTATE_SYSCFG_SET_EXTI()          do{                                                                     \
+                                                LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);                \
+                                                LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE9);  \
+                                            } \
+                                            while(0)
+#define SPPSTATE_IRQHANDLER                 EXTI15_10_IRQHandler
+
+
+/* SPP Key GPIO定义 */
+#define SPPKEY_PIN	        LL_GPIO_PIN_4
+#define SPPKEY_GPIO         GPIOA
+
 /* 列选通控制 GPIO定义 */
 #define GATE_C0_PIN         LL_GPIO_PIN_3
 #define GATE_C0_GPIO        GPIOB
@@ -80,8 +99,8 @@ extern "C" {
                             LL_GPIO_PIN_10|LL_GPIO_PIN_12|LL_GPIO_PIN_14|LL_GPIO_PIN_15
 /* LED灯电平翻转 */
 #define LED_TOGGLE()        LL_GPIO_TogglePin(USERLED_GPIO,USERLED_PIN)
-#define LED_SET()           LL_GPIO_SetOutputPin(USERLED_GPIO,USERLED_PIN)
-#define LED_RESET()         LL_GPIO_ResetOutputPin(USERLED_GPIO,USERLED_PIN)
+#define LED_ON()            LL_GPIO_ResetOutputPin(USERLED_GPIO,USERLED_PIN)
+#define LED_OFF()           LL_GPIO_SetOutputPin(USERLED_GPIO,USERLED_PIN)
 
 /* USER CODE END Private defines */
 /**

@@ -204,6 +204,24 @@ void TIM2_IRQHandler(void)
 }
 
 
+/**
+  * @brief  This function handles external line 13 interrupt request.
+  * @param  None
+  * @retval None
+  */
+void EXTI9_5_IRQHandler(void)
+{
+    /* Manage Flags */
+    if(LL_EXTI_IsActiveFlag_0_31(SPPSTATE_EXTI_LINE) != RESET)
+    {
+      	LL_EXTI_ClearFlag_0_31(SPPSTATE_EXTI_LINE);
+    }
+	if (LL_GPIO_IsInputPinSet(SPPSTATE_GPIO,SPPSTATE_PIN) == 0)
+	{
+		printf("spp connect!! \r\n");
+	}
+}
+
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */

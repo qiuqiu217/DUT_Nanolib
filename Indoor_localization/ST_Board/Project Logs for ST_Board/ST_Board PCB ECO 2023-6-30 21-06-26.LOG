@@ -1,0 +1,9 @@
+Added Component: Designator=SWD(HDR-TH_4P-P2.54-V-F)
+Add component (AddParameter): Name = "BOM名称"; Value = "4P接插件"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "学习资源"; Value = "www.ooocke.com"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "版权归属"; Value = "源创客"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=VCC-3.3 Pin=SWD-1
+Added Pin To Net: NetName=SWDIO Pin=SWD-2
+Added Pin To Net: NetName=SWCLK Pin=SWD-3
+Added Pin To Net: NetName=GND Pin=SWD-4
+Added Member To Class: ClassName=ST_Board Member=Component SWD

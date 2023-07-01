@@ -1,0 +1,63 @@
+Add Component: Footprint Not Found XH2.54-WI-4P
+Added Component: Designator=U1(UFQFPN-48_L7.0-W7.0-P0.50-BL-EP)
+Add component (AddParameter): Name = "Designer"; Value = "U?"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Device"; Value = "STM32F411CEU6"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Name"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Symbol"; Value = "STM32F411CEU6"; VariantName = "[No Variations]"
+Add Component: Footprint Not Found 
+Add Pin To Net: Unknown Pin: Pin SWD-1
+Add Pin To Net: Unknown Pin: Pin SWD-2
+Add Pin To Net: Unknown Pin: Pin SWD-3
+Add Pin To Net: Unknown Pin: Pin SWD-4
+Added Pin To Net: NetName=VCC-3.3 Pin=U1-1
+Added Pin To Net: NetName=ULED Pin=U1-2
+Added Pin To Net: NetName=XTALC Pin=U1-3
+Added Pin To Net: NetName=XTALD Pin=U1-4
+Added Pin To Net: NetName=XTALA Pin=U1-5
+Added Pin To Net: NetName=XTALB Pin=U1-6
+Added Pin To Net: NetName=NRST Pin=U1-7
+Added Pin To Net: NetName=GND Pin=U1-8
+Added Pin To Net: NetName=VCC-3.3 Pin=U1-9
+Added Pin To Net: NetName=AIN Pin=U1-11
+Added Pin To Net: NetName=TXD2 Pin=U1-12
+Added Pin To Net: NetName=RXD2 Pin=U1-13
+Added Pin To Net: NetName=SPPKEY Pin=U1-14
+Added Pin To Net: NetName=MCU_C2 Pin=U1-18
+Added Pin To Net: NetName=MCU_R0 Pin=U1-19
+Added Pin To Net: NetName=BOOT1 Pin=U1-20
+Added Pin To Net: NetName=MCU_R1 Pin=U1-21
+Added Pin To Net: NetName=NetC1_2 Pin=U1-22
+Added Pin To Net: NetName=GND Pin=U1-23
+Added Pin To Net: NetName=VCC-3.3 Pin=U1-24
+Added Pin To Net: NetName=MCU_R2 Pin=U1-25
+Added Pin To Net: NetName=MCU_R3 Pin=U1-27
+Added Pin To Net: NetName=MCU_R4 Pin=U1-28
+Added Pin To Net: NetName=MCU_INH3 Pin=U1-29
+Added Pin To Net: NetName=TXD1 Pin=U1-30
+Added Pin To Net: NetName=RXD1 Pin=U1-31
+Added Pin To Net: NetName=TXD6 Pin=U1-32
+Added Pin To Net: NetName=RXD6 Pin=U1-33
+Added Pin To Net: NetName=SWDIO Pin=U1-34
+Added Pin To Net: NetName=GND Pin=U1-35
+Added Pin To Net: NetName=VCC-3.3 Pin=U1-36
+Added Pin To Net: NetName=SWCLK Pin=U1-37
+Added Pin To Net: NetName=MCU_C1 Pin=U1-38
+Added Pin To Net: NetName=MCU_C0 Pin=U1-39
+Added Pin To Net: NetName=MCU_INH2 Pin=U1-40
+Added Pin To Net: NetName=MCU_INH1 Pin=U1-41
+Added Pin To Net: NetName=MCU_R5 Pin=U1-42
+Added Pin To Net: NetName=BOOT0 Pin=U1-44
+Added Pin To Net: NetName=STATE Pin=U1-46
+Added Pin To Net: NetName=GND Pin=U1-47
+Added Pin To Net: NetName=VCC-3.3 Pin=U1-48
+Add Pin To Net: Unknown Pin: Pin U4-1
+Add Pin To Net: Unknown Pin: Pin U4-2
+Add Pin To Net: Unknown Pin: Pin U4-3
+Add Pin To Net: Unknown Pin: Pin U4-5
+Add Pin To Net: Unknown Pin: Pin U4-6
+Add Pin To Net: Unknown Pin: Pin U4-7
+Add Pin To Net: Unknown Pin: Pin U4-8
+Add Class Member: Failed to add class member : Component SWD
+Added Member To Class: ClassName=ST_Board Member=Component U1 STM32F411CEU6
+Add Class Member: Failed to add class member : Component U4 CH340N
+Added Room: Name=ST_Board
