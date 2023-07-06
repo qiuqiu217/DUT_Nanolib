@@ -92,17 +92,22 @@ extern "C" {
 	#define TASK_LOG(...)
 #endif
 
-/* 串口宏定义 */
-#define DEBUG_COM   COM1
-#define SPP_COM     COM3
-#define IMU_COM     COM2
-
+/* 使能定义 */
+#define ENABLE      1
+#define DISABLE     0
+/* 电平定义 */
+#define SET         1
+#define RESET       0
 /* 返回值宏定义 */
 #define RET_ERROR       -1
 #define RET_INVALID     0
 #define RET_OK          1
 
-/* USER CODE BEGIN EFP */
+/* 串口宏定义 */
+#define DEBUG_COM   COM1
+#define SPP_COM     COM3
+#define IMU_COM     COM2
+
 /* Debug串口接收缓冲区大小 */
 #define RX_BUFF_SIZE    256
 /* 每个Buff储存多少帧数据 */

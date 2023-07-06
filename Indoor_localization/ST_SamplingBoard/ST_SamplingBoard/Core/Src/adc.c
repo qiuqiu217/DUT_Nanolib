@@ -25,7 +25,7 @@
 /* USER CODE END 0 */
 
 /* ADC1 init function */
-void MX_ADC1_Init(void)
+void bsp_InitADC1(void)
 {
     uint16_t timeout = 1000;
 
@@ -105,7 +105,7 @@ uint32_t ADC_OneShot_Read(void)
 {
     uint32_t temp;
     uint8_t i;
-    for(i=0;i<8;i++)
+    for(i=0;i<16;i++)
     {
         LL_ADC_REG_SetSequencerRanks(ADC1, LL_ADC_REG_RANK_1, LL_ADC_CHANNEL_1);
         LL_ADC_REG_StartConversionSWStart(ADC1);
@@ -115,7 +115,7 @@ uint32_t ADC_OneShot_Read(void)
         temp += LL_ADC_REG_ReadConversionData12(ADC1);
     }
     
-    return temp>>3;
+    return temp>>4;
 }
 
 

@@ -31,9 +31,6 @@
 #else
 	#define PLANTAR_LOG(...)
 #endif
-/* 宏定义 */
-#define ENABLE      1
-#define DISABLE     0
 
 /* 压力传感器采集设置结构体 */
 typedef struct

@@ -39,14 +39,13 @@
         * EVENT_OUT
         * EXTI
 */
-void MX_GPIO_Init(void)
+void bsp_InitGPIO(void)
 {
 
     LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     /* GPIO Ports Clock Enable */
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
-    //LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOH);
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
 
@@ -76,14 +75,13 @@ void MX_GPIO_Init(void)
     GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
     LL_GPIO_Init(SPPSTATE_GPIO, &GPIO_InitStruct);
-    /* -2- Connect External Line to the GPIO*/
-	SPPSTATE_SYSCFG_SET_EXTI();
-	/*-3- Enable a falling trigger EXTI line 13 Interrupt */
-	SPPSTATE_EXTI_LINE_ENABLE();
-	SPPSTATE_EXTI_FALLING_TRIG_ENABLE();
-    /*-4- Configure NVIC for EXTI15_10_IRQn */
-	NVIC_EnableIRQ(SPPSTATE_EXTI_IRQn); 
-	NVIC_SetPriority(SPPSTATE_EXTI_IRQn,0);
+    /* 初始化SPP State GPIO中断设置 */     //此处放弃使用中断查询连接状态
+//	SPPSTATE_SYSCFG_SET_EXTI();           //SPP模块开启传输后State引脚电压有波动，一直触发外部中断
+//	SPPSTATE_EXTI_LINE_ENABLE();
+//	SPPSTATE_EXTI_FALLING_TRIG_ENABLE();
+//  SPPSTATE_EXTI_RISING_TRIG_ENABLE();
+//	NVIC_EnableIRQ(SPPSTATE_EXTI_IRQn); 
+//	NVIC_SetPriority(SPPSTATE_EXTI_IRQn,0);
     
     /* 初始化SPP Key GPIO */
     GPIO_InitStruct.Pin = SPPKEY_PIN;

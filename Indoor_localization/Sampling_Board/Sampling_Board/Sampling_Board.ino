@@ -200,7 +200,7 @@ void BSP_Init(void)
     COM_DEBUG.begin(115200);                    //设置波特率
     COM_DEBUG.onReceive(_cbComDebug);           //设置回调函数
     /* 蓝牙初始化 */
-    SerialBT.begin("ESP32_Slave_R");                //Bluetooth device name
+    SerialBT.begin("ESP32_Slave_L");                //Bluetooth device name
     SerialBT.register_callback(_cbBluetooth);       //设置蓝牙事件回调函数（连接 断开 发送 接收）
     /* 初始化串口及蓝牙缓冲区 */
     Serial_RxString.reserve(1024);
@@ -792,13 +792,13 @@ void _cbBluetooth(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
         {
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
         }
-        // xResult = xEventGroupSetBitsFromISR(Sampling_Event,
-        //                                     IMU_SAMPLING ,             
-        //                                     &xHigherPriorityTaskWoken );                     
-        // if( xResult != pdFAIL )
-        // {
-        //     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-        // }
+        xResult = xEventGroupSetBitsFromISR(Sampling_Event,
+                                            IMU_SAMPLING ,             
+                                            &xHigherPriorityTaskWoken );                     
+        if( xResult != pdFAIL )
+        {
+            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        }
     }
     else if(event == ESP_SPP_CLOSE_EVT)     //蓝牙断开连接标志
     {

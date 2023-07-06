@@ -47,14 +47,18 @@ extern "C" {
 #define SPPSTATE_GPIO       GPIOB
 #define SPPSTATE_EXTI_LINE  LL_EXTI_LINE_9
 #define SPPSTATE_EXTI_IRQn  EXTI9_5_IRQn
-#define SPPSTATE_EXTI_LINE_ENABLE()             LL_EXTI_EnableIT_0_31(SPPSTATE_EXTI_LINE)
-#define SPPSTATE_EXTI_FALLING_TRIG_ENABLE()     LL_EXTI_EnableFallingTrig_0_31(SPPSTATE_EXTI_LINE)
-#define SPPSTATE_SYSCFG_SET_EXTI()          do{                                                                     \
-                                                LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);                \
-                                                LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE9);  \
-                                            } \
-                                            while(0)
-#define SPPSTATE_IRQHANDLER                 EXTI15_10_IRQHandler
+#define SPPSTATE_EXTI_LINE_ENABLE()                 LL_EXTI_EnableIT_0_31(SPPSTATE_EXTI_LINE)
+#define SPPSTATE_EXTI_FALLING_TRIG_ENABLE()         LL_EXTI_EnableFallingTrig_0_31(SPPSTATE_EXTI_LINE)
+#define SPPSTATE_EXTI_FALLING_TRIG_DISABLE()        LL_EXTI_DisableFallingTrig_0_31(SPPSTATE_EXTI_LINE)
+#define SPPSTATE_EXTI_RISING_TRIG_ENABLE()          LL_EXTI_EnableRisingTrig_0_31(SPPSTATE_EXTI_LINE)
+#define SPPSTATE_EXTI_RISING_TRIG_DISABLE()         LL_EXTI_DisableRisingTrig_0_31(SPPSTATE_EXTI_LINE)
+#define SPPSTATE_SYSCFG_SET_EXTI()                  do{                                                                     \
+                                                        LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);                \
+                                                        LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE9);  \
+                                                    } \
+                                                    while(0)
+#define SPPSTATE_INPUTPINSET                        LL_GPIO_IsInputPinSet(SPPSTATE_GPIO, SPPSTATE_PIN)
+#define SPPSTATE_IRQHANDLER                         EXTI9_5_IRQHandler
 
 
 /* SPP Key GPIO定义 */
@@ -123,7 +127,7 @@ static inline void MUX_SetPin(GPIO_TypeDef *GPIOx, uint32_t PinMask, bool pin)
     else WRITE_REG(GPIOx->BSRR, (PinMask << 16));
 }
 
-void MX_GPIO_Init(void);    //GPIO初始化
+void bsp_InitGPIO(void);    //GPIO初始化
 
 /* USER CODE BEGIN Prototypes */
 

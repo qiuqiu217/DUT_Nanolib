@@ -27,10 +27,12 @@
 *********************************************************************************************************
 */
 uint8_t Receive_Buff[RX_BUFF_SIZE];     //Debug串口接收缓冲区
+uint8_t Receive_Buff1[RX_BUFF_SIZE];    //SPP接收缓冲区
 uint8_t Command_Buff[13];               //接收指令缓冲区
 PLANTAR_S Plantar;                      // 压力传感器采集结构体
 
 extern float Pressure_Buff[SENSOR_NUM_TOTAL*FRAME_IN_BUFF];     //压力传感器拟合压力值缓存区
+extern Plantar_Buff_TypeDef Plantar_Buff;              //压力传感器阵列Buff结构体声明
 extern UART_RXBUF Uart_Receive;         /* 串口指令接收缓冲区结构体声明 */
 extern volatile uint16_t s_cDataUpdate;
 extern volatile char s_cCmd;
@@ -59,6 +61,14 @@ const osThreadAttr_t Task_DebugUsart_attributes =
     .stack_size = 128 * 4,
     .priority = (osPriority_t) osPriorityNormal,
 };
+/* 定义SPP接收任务 */
+osThreadId_t Task_SPPRXHandle;
+const osThreadAttr_t Task_SPPRX_attributes = 
+{
+    .name = "Task_SPPReceive",
+    .stack_size = 128 * 4,
+    .priority = (osPriority_t) osPriorityNormal2,
+};
 /* 定义指令处理任务 */
 osThreadId_t Task_CommandHandle;
 const osThreadAttr_t Task_Command_attributes = 
@@ -73,7 +83,7 @@ const osThreadAttr_t Task_Plantar_attributes =
 {
     .name = "Task_Plantar",
     .stack_size = 128 * 8,
-    .priority = (osPriority_t) osPriorityRealtime,
+    .priority = (osPriority_t) osPriorityRealtime5,
 };
 /* 定义IMU采集任务 */
 osThreadId_t Task_IMUHandle;
@@ -81,7 +91,7 @@ const osThreadAttr_t Task_IMU_attributes =
 {
     .name = "Task_IMU",
     .stack_size = 128 * 8,
-    .priority = (osPriority_t) osPriorityRealtime1,
+    .priority = (osPriority_t) osPriorityRealtime7,
 };
 /* 定义数据处理打包任务 */
 osThreadId_t Task_DataHandle;
@@ -89,7 +99,7 @@ const osThreadAttr_t Task_Data_attributes =
 {
     .name = "Task_Data",
     .stack_size = 128 * 8,
-    .priority = (osPriority_t) osPriorityNormal4,
+    .priority = (osPriority_t) osPriorityHigh6,
 };
 /* 定义数据发送任务 */
 osThreadId_t Task_TransferHandle;
@@ -98,6 +108,14 @@ const osThreadAttr_t Task_Transfer_attributes =
     .name = "Task_Transfer",
     .stack_size = 128 * 8,
     .priority = (osPriority_t) osPriorityHigh7,
+};
+/* 判断蓝牙连接任务 */
+osThreadId_t Task_SPPConnectHandle;
+const osThreadAttr_t Task_SPPConnect_attributes = 
+{
+    .name = "Task_SPPConnect",
+    .stack_size = 128 * 2,
+    .priority = (osPriority_t) osPriorityNormal1,
 };
 
 
@@ -150,11 +168,13 @@ const osMessageQueueAttr_t TranDone_Queue_attributes =
 void AppTask_Start(void *argument);
 void AppTask_Led(void *argument);
 void AppTask_DebugUsart(void *argument);
+void AppTask_SPPReceive(void *argument);
 void AppTask_Command(void *argument);
 void AppTask_Plantar(void *argument);
 void AppTask_IMU(void *argument);
 void AppTask_Data(void *argument);
 void AppTask_Transfer(void *argument);
+void AppTask_SPPConnect(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -191,6 +211,8 @@ void AppTask_Start(void *argument)
     Task_LEDHandle = osThreadNew(AppTask_Led, NULL, &Task_LED_attributes);
     /* 创建DebugUsart任务 */
     Task_DebugUsartHandle = osThreadNew(AppTask_DebugUsart, NULL, &Task_DebugUsart_attributes);
+    /* 创建SPP接收任务 */
+    Task_SPPRXHandle = osThreadNew(AppTask_SPPReceive, NULL, &Task_SPPRX_attributes);
     /* 创建指令处理任务 */
     Task_CommandHandle = osThreadNew(AppTask_Command, NULL, &Task_Command_attributes);
     /* 创建压力传感器采集任务 */
@@ -201,6 +223,8 @@ void AppTask_Start(void *argument)
     Task_DataHandle = osThreadNew(AppTask_Data, NULL, &Task_Data_attributes);
     /* 创建数据传输任务 */
     Task_TransferHandle = osThreadNew(AppTask_Transfer, NULL, &Task_Transfer_attributes);
+    /* 创建SPP连接状态监测任务 */
+    Task_SPPConnectHandle = osThreadNew(AppTask_SPPConnect, NULL, &Task_SPPConnect_attributes);
     /* 删除自身任务 */
     vTaskDelete(NULL);
 }
@@ -216,13 +240,14 @@ void AppTask_Led(void *argument)
     {
         LED_TOGGLE();
         osDelay(1000);
-        #if 1
+        #if 0
             taskENTER_CRITICAL();       //进入基本临界区
             TASK_LOG("LED Toggle\n\r");
             taskEXIT_CRITICAL();        //退出基本临界区
         #endif
     }
 }
+
 
 /**
 * @brief AppTask_DebugUsart  调试串口任务
@@ -241,7 +266,47 @@ void AppTask_DebugUsart(void *argument)
 			Uart_RxBuf_Putin(&read);
             if(read == '\n')
             {
-                if(Load_Command() == RET_OK)
+                if(Uart_Load_Command() == RET_OK)
+                {
+                    /* 通知指令处理任务 */
+                    if(Command_SemaphHandle != NULL)
+                    {
+                        if(xSemaphoreGive(Command_SemaphHandle) != pdTRUE)
+                        {
+                            TASK_LOG("Failed to release the semaphore \n\r");
+                        }
+                    }
+                }
+                else
+                {
+                    TASK_LOG("Command error \n\r");
+                }
+                break;
+            }
+		}
+        osDelay(400);
+    }
+}
+
+/**
+* @brief AppTask_SPPReceive  蓝牙接收任务
+* @param argument: Not used
+* @retval None
+*/
+void AppTask_SPPReceive(void *argument)
+{
+    uint8_t read;
+    SPP_RxBuf_Init();
+    
+    while(1)
+    {
+        /* 接收到的串口命令处理 */
+		while(comGetChar(SPP_COM, &read))
+		{
+			SPP_RxBuf_Putin(&read);
+            if(read == '\n')
+            {
+                if(SPP_Load_Command() == RET_OK)
                 {
                     /* 通知指令处理任务 */
                     if(Command_SemaphHandle != NULL)
@@ -291,8 +356,6 @@ void AppTask_Command(void *argument)
         }
     }
 }
-
-extern Plantar_Buff_TypeDef Plantar_Buff;              //压力传感器阵列Buff结构体声明
 
 /**
 * @brief AppTask_Plantar 压力传感器采集任务
@@ -487,7 +550,7 @@ void AppTask_IMU(void *argument)
                                                 0 );                    //等待时间 0   
                 }                    
             }
-            vTaskDelay(5);      //采集间隔设置
+            osDelay(5);      //采集间隔设置
         }
     }
 }
@@ -539,15 +602,10 @@ void AppTask_Data(void *argument)
                                                         &r_queue,                   //发送的消息内容 
                                                         NULL,                       //消息优先级
                                                         5);                         //等待时间:5ms                                              
-                            if (x_return == osOK && r_queue == PRESSURE_DONE)
-                            {
-                                TASK_LOG("no.%d plantar data transfer done \n\r",i);
-                            }
-                            else
+                            if (x_return != osOK && r_queue != PRESSURE_DONE)
                             {
                                 TASK_LOG("no.%d plantar data transfer error \n\r",i);
-                            }             
-                            
+                            }       
                         }                        
                     }                
                 }
@@ -567,15 +625,10 @@ void AppTask_Data(void *argument)
                                                      &r_queue,                  //发送的消息内容 
                                                      NULL,                      //消息优先级
                                                      5);                        //等待时间:5ms
-                        if (x_return == osOK && r_queue == IMU_DONE)
-                        {
-                            //TASK_LOG("no.%d IMU data transfer done \n\r",i);
-                        }
-                        else
+                        if (x_return != osOK && r_queue != IMU_DONE)
                         {
                             TASK_LOG("no.%d IMU data transfer error \n\r",i);
                         }
-                        
                     }
                 }
             }
@@ -584,7 +637,7 @@ void AppTask_Data(void *argument)
                 TASK_LOG("The received message value error \n\r");
             } 
         }
-        vTaskDelay(10);      //采集间隔设置
+        osDelay(10);      //采集间隔设置
     }
 }
 
@@ -638,6 +691,66 @@ void AppTask_Transfer(void *argument)
     }
 }
 
-
+/**
+* @brief AppTask_SPPConnect  判断蓝牙链接任务
+* @param argument: Not used
+* @retval None
+*/
+void AppTask_SPPConnect(void *argument)
+{
+    EventBits_t uxBits;                 //接收到的事件组位
+    BaseType_t xResult;                     //事件组发送结果
+    
+    while(1)
+    {
+        uxBits = xEventGroupGetBits(BluetoothEventHandle);
+        if((uxBits & 0x01) == SPPSTATE_INPUTPINSET)
+        {
+            osDelay(20);
+            if(SPPSTATE_INPUTPINSET)
+            {
+                TASK_LOG("SPP disconnect!! \r\n");
+                xResult = xEventGroupClearBits(BluetoothEventHandle, 
+                                               BLUETOOTH_CONNECT);
+                if(  xResult == pdFAIL )
+                {
+                    TASK_LOG("Failed to set the event group \r\n");
+                }
+            }
+            else
+            {
+                TASK_LOG("SPP connect!! \r\n");
+                xResult = xEventGroupSetBits(BluetoothEventHandle,
+                                             BLUETOOTH_CONNECT);
+                if(  xResult == pdFAIL )
+                {
+                    TASK_LOG("Failed to set the event group \r\n");
+                }
+                /* 置位蓝牙链接事件位 */
+                xResult = xEventGroupSetBits(BluetoothEventHandle,
+                                             BLUETOOTH_TRANSFER);                     
+                if( xResult == pdFAIL )
+                {
+                    TASK_LOG("Failed to set the event group \r\n");
+                }
+                /* 置位压力传感器采集事件位 */
+                xResult = xEventGroupSetBits(Sampling_EventHandle,
+                                             PLANTAR_SAMPLING);                     
+                if( xResult == pdFAIL )
+                {
+                    TASK_LOG("Failed to set the event group \r\n");
+                }
+                /* 置位IMU采集事件位 */
+                xResult = xEventGroupSetBits(Sampling_EventHandle,
+                                             IMU_SAMPLING);                     
+                if( xResult == pdFAIL )
+                {
+                    TASK_LOG("Failed to set the event group \r\n");
+                }
+            }
+        }
+        osDelay(600);
+    }
+}
 
 

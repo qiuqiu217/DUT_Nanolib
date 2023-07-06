@@ -88,18 +88,18 @@ extern UART_HandleTypeDef huart6;
 /* 定义串口波特率和FIFO缓冲区大小，分为发送缓冲区和接收缓冲区, 支持全双工 */
 #if UART1_FIFO_EN == 1
 	#define UART1_BAUD			460800
-	#define UART1_TX_BUF_SIZE	1*1024
+	#define UART1_TX_BUF_SIZE	2*1024
 	#define UART1_RX_BUF_SIZE	2*1024
 #endif
 #if UART2_FIFO_EN == 1
 	#define UART2_BAUD			115200
-	#define UART2_TX_BUF_SIZE	1*1024
+	#define UART2_TX_BUF_SIZE	2*1024
 	#define UART2_RX_BUF_SIZE	4*1024
 #endif
 #if UART6_FIFO_EN == 1
 	#define UART6_BAUD			460800
-	#define UART6_TX_BUF_SIZE	5*1024
-	#define UART6_RX_BUF_SIZE	1*1024
+	#define UART6_TX_BUF_SIZE	8*1024
+	#define UART6_RX_BUF_SIZE	2*1024
 #endif
 
 /* 定义端口号 */
@@ -157,8 +157,11 @@ uint8_t UartTxEmpty(COM_PORT_E _ucPort);
 /* 串口指令接收处理函数 */
 void Uart_RxBuf_Init(void);
 void Uart_RxBuf_Putin(uint8_t *_pByte);
-int8_t Load_Command(void);
-
+int8_t Uart_Load_Command(void);
+/* SPP指令接收处理函数 */
+void SPP_RxBuf_Init(void);
+void SPP_RxBuf_Putin(uint8_t *_pByte);
+int8_t SPP_Load_Command(void);
     
 /* USER CODE END Prototypes */
 

@@ -47,7 +47,7 @@ extern "C" {
 
 /* USER CODE END Private defines */
 
-void MX_ADC1_Init(void);
+void bsp_InitADC1(void);
 
 /* USER CODE BEGIN Prototypes */
 uint32_t ADC_OneShot_Read(void);

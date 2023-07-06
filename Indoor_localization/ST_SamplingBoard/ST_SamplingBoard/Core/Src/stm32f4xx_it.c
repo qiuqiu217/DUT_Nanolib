@@ -196,11 +196,15 @@ void TIM1_UP_TIM10_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
     /* USER CODE BEGIN TIM2_IRQn 0 */
-
+	if(LL_TIM_IsActiveFlag_UPDATE(TIM2))
+	{
+	}
+	LL_TIM_ClearFlag_UPDATE(TIM2);
     /* USER CODE END TIM2_IRQn 0 */
     /* USER CODE BEGIN TIM2_IRQn 1 */
 
     /* USER CODE END TIM2_IRQn 1 */
+
 }
 
 
@@ -216,10 +220,14 @@ void EXTI9_5_IRQHandler(void)
     {
       	LL_EXTI_ClearFlag_0_31(SPPSTATE_EXTI_LINE);
     }
-	if (LL_GPIO_IsInputPinSet(SPPSTATE_GPIO,SPPSTATE_PIN) == 0)
+	if(LL_GPIO_IsInputPinSet(SPPSTATE_GPIO,SPPSTATE_PIN) == RESET)
 	{
 		printf("spp connect!! \r\n");
 	}
+    else
+    {
+        printf("spp disconnect!! \r\n");
+    }
 }
 
 /* USER CODE BEGIN 1 */

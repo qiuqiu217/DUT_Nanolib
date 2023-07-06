@@ -1,8 +1,8 @@
 Dependencies for Project 'ST_SamplingBoard', Target 'ST_SamplingBoard': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
 F (startup_stm32f411xe.s)(0x649A8A28)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1" -I ..\Core\Inc-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include--pd "__UVISION_VERSION SETA 536" --pd "_RTE_ SETA 1" --pd "STM32F411xE SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32f411xe.lst --xref -o st_samplingboard\startup_stm32f411xe.o --depend st_samplingboard\startup_stm32f411xe.d)
-F (../Core/Src/main.c)(0x649C563C)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\main.o --omf_browse st_samplingboard\main.crf --depend st_samplingboard\main.d)
-I (../Core/Inc/main.h)(0x649C53C4)
+F (../Core/Src/main.c)(0x64A56D6D)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\main.o --omf_browse st_samplingboard\main.crf --depend st_samplingboard\main.d)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -65,11 +65,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -79,9 +79,9 @@ I (..\Function\Inc\Solution.h)(0x649D7D09)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x64916438)
 I (../Core/Inc/i2c.h)(0x64951873)
-F (../Core/Src/gpio.c)(0x649E42BC)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\gpio.o --omf_browse st_samplingboard\gpio.crf --depend st_samplingboard\gpio.d)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/main.h)(0x649C53C4)
+F (../Core/Src/gpio.c)(0x64A56D49)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\gpio.o --omf_browse st_samplingboard\gpio.crf --depend st_samplingboard\gpio.d)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -144,10 +144,10 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -155,7 +155,7 @@ I (..\Function\Inc\REG.h)(0x646AC0DE)
 I (..\Function\Inc\wit_c_sdk.h)(0x646AC0DE)
 I (..\Function\Inc\Solution.h)(0x649D7D09)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
-F (../Core/Src/freertos.c)(0x649D8C5F)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\freertos.o --omf_browse st_samplingboard\freertos.crf --depend st_samplingboard\freertos.d)
+F (../Core/Src/freertos.c)(0x64A56EC8)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\freertos.o --omf_browse st_samplingboard\freertos.crf --depend st_samplingboard\freertos.d)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x64916438)
 I (D:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x6025237E)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -167,7 +167,7 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
-I (../Core/Inc/main.h)(0x649C53C4)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -219,11 +219,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -232,9 +232,9 @@ I (..\Function\Inc\wit_c_sdk.h)(0x646AC0DE)
 I (..\Function\Inc\Solution.h)(0x649D7D09)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x64916438)
-F (../Core/Src/adc.c)(0x649D3B1B)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\adc.o --omf_browse st_samplingboard\adc.crf --depend st_samplingboard\adc.d)
-I (../Core/Inc/adc.h)(0x649D3B1B)
-I (../Core/Inc/main.h)(0x649C53C4)
+F (../Core/Src/adc.c)(0x64A56D88)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\adc.o --omf_browse st_samplingboard\adc.crf --depend st_samplingboard\adc.d)
+I (../Core/Inc/adc.h)(0x64A56D6D)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -297,10 +297,10 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -310,7 +310,7 @@ I (..\Function\Inc\Solution.h)(0x649D7D09)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
 F (../Core/Src/i2c.c)(0x64951873)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\i2c.o --omf_browse st_samplingboard\i2c.crf --depend st_samplingboard\i2c.d)
 I (../Core/Inc/i2c.h)(0x64951873)
-I (../Core/Inc/main.h)(0x649C53C4)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -373,11 +373,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -385,9 +385,9 @@ I (..\Function\Inc\REG.h)(0x646AC0DE)
 I (..\Function\Inc\wit_c_sdk.h)(0x646AC0DE)
 I (..\Function\Inc\Solution.h)(0x649D7D09)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
-F (../Core/Src/tim.c)(0x64951873)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\tim.o --omf_browse st_samplingboard\tim.crf --depend st_samplingboard\tim.d)
+F (../Core/Src/tim.c)(0x64A56C45)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\tim.o --omf_browse st_samplingboard\tim.crf --depend st_samplingboard\tim.d)
 I (../Core/Inc/tim.h)(0x64951873)
-I (../Core/Inc/main.h)(0x649C53C4)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -450,10 +450,10 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -461,9 +461,9 @@ I (..\Function\Inc\REG.h)(0x646AC0DE)
 I (..\Function\Inc\wit_c_sdk.h)(0x646AC0DE)
 I (..\Function\Inc\Solution.h)(0x649D7D09)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
-F (../Core/Src/usart.c)(0x649D387D)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\usart.o --omf_browse st_samplingboard\usart.crf --depend st_samplingboard\usart.d)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/main.h)(0x649C53C4)
+F (../Core/Src/usart.c)(0x64A566E2)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\usart.o --omf_browse st_samplingboard\usart.crf --depend st_samplingboard\usart.d)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -526,10 +526,10 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -538,8 +538,8 @@ I (..\Function\Inc\wit_c_sdk.h)(0x646AC0DE)
 I (..\Function\Inc\Solution.h)(0x649D7D09)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
 I (D:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
-F (../Core/Src/stm32f4xx_it.c)(0x649E41F6)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\stm32f4xx_it.o --omf_browse st_samplingboard\stm32f4xx_it.crf --depend st_samplingboard\stm32f4xx_it.d)
-I (../Core/Inc/main.h)(0x649C53C4)
+F (../Core/Src/stm32f4xx_it.c)(0x64A56CBF)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\stm32f4xx_it.o --omf_browse st_samplingboard\stm32f4xx_it.crf --depend st_samplingboard\stm32f4xx_it.d)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -602,11 +602,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -616,7 +616,7 @@ I (..\Function\Inc\Solution.h)(0x649D7D09)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
 I (../Core/Inc/stm32f4xx_it.h)(0x64951873)
 F (../Core/Src/stm32f4xx_hal_msp.c)(0x64951873)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\stm32f4xx_hal_msp.o --omf_browse st_samplingboard\stm32f4xx_hal_msp.crf --depend st_samplingboard\stm32f4xx_hal_msp.d)
-I (../Core/Inc/main.h)(0x649C53C4)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -679,11 +679,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -725,8 +725,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x64916458)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x64916458)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x64916458)
 F (..\Function\Src\Plantar.c)(0x649D8509)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\plantar.o --omf_browse st_samplingboard\plantar.crf --depend st_samplingboard\plantar.d)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
-I (../Core/Inc/main.h)(0x649C53C4)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -789,9 +789,9 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
@@ -810,11 +810,11 @@ I (D:\Keil_v5\ARM\ARMCC\include\ctype.h)(0x60252376)
 I (D:\Keil_v5\ARM\ARMCC\include\float.h)(0x6025237E)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (D:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x6025237E)
-F (..\Function\Src\Command.c)(0x649D82A8)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\command.o --omf_browse st_samplingboard\command.crf --depend st_samplingboard\command.d)
+F (..\Function\Src\Command.c)(0x64A5653B)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\command.o --omf_browse st_samplingboard\command.crf --depend st_samplingboard\command.d)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (D:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x6025237E)
-I (../Core/Inc/main.h)(0x649C53C4)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -876,11 +876,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\IMU.h)(0x649C0539)
 I (..\Function\Inc\REG.h)(0x646AC0DE)
 I (..\Function\Inc\wit_c_sdk.h)(0x646AC0DE)
@@ -894,7 +894,7 @@ I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\Function\Inc\REG.h)(0x646AC0DE)
 F (..\Function\Src\IMU.c)(0x649ADCA8)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\imu.o --omf_browse st_samplingboard\imu.crf --depend st_samplingboard\imu.d)
 I (..\Function\Inc\IMU.h)(0x649C0539)
-I (../Core/Inc/main.h)(0x649C53C4)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -957,11 +957,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\Solution.h)(0x649D7D09)
@@ -970,7 +970,7 @@ I (..\Function\Inc\REG.h)(0x646AC0DE)
 I (..\Function\Inc\wit_c_sdk.h)(0x646AC0DE)
 F (..\Function\Src\Solution.c)(0x649D7D4E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\solution.o --omf_browse st_samplingboard\solution.crf --depend st_samplingboard\solution.d)
 I (..\Function\Inc\Solution.h)(0x649D7D09)
-I (../Core/Inc/main.h)(0x649C53C4)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -1033,11 +1033,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)
@@ -1046,7 +1046,7 @@ I (..\Function\Inc\wit_c_sdk.h)(0x646AC0DE)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
 F (..\Function\Src\Function.c)(0x649BFB7B)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ..\Function\Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_ST_SamplingBoard-ID:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-ID:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.16.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F411xE -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F411xE-o st_samplingboard\function.o --omf_browse st_samplingboard\function.crf --depend st_samplingboard\function.d)
 I (..\Function\Inc\Function.h)(0x649BFB7B)
-I (../Core/Inc/main.h)(0x649C53C4)
+I (../Core/Inc/main.h)(0x64A52D02)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (D:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
@@ -1109,11 +1109,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x64916438)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x64916438)
-I (../Core/Inc/gpio.h)(0x649E431D)
-I (../Core/Inc/usart.h)(0x649D7BAA)
-I (../Core/Inc/adc.h)(0x649D3B1B)
+I (../Core/Inc/gpio.h)(0x64A56D49)
+I (../Core/Inc/usart.h)(0x64A56238)
+I (../Core/Inc/adc.h)(0x64A56D6D)
 I (../Core/Inc/tim.h)(0x64951873)
-I (..\Function\Inc\Plantar.h)(0x649C0520)
+I (..\Function\Inc\Plantar.h)(0x64A51130)
 I (..\Function\Inc\Command.h)(0x649BD633)
 I (..\Function\Inc\cJSON.h)(0x6242AF23)
 I (..\Function\Inc\IMU.h)(0x649C0539)

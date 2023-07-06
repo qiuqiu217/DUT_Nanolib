@@ -52,7 +52,7 @@ int8_t Command_Parsing(_COMM_TYPE *COMM_Buf)
     
     if(Command_Verify(COMM_Buf) == RET_OK)
     {
-        //Command_LOG("Received command \n\r");
+        Command_LOG("Received command \n\r");
         command_type1 = *(COMM_Buf + 5);
         command_type2 = *(COMM_Buf + 6);
         command_set = *(COMM_Buf + 7);

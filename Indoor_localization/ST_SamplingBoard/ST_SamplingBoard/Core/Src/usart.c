@@ -28,8 +28,12 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart6;
 
 UART_RXBUF Uart_Receive;        /* 串口指令接收缓冲区结构体声明 */
+UART_RXBUF SPP_Receive;         /* 蓝牙指令接收缓冲区结构体声明 */
+
 /* Debug串口接收缓冲区 */
 extern uint8_t Receive_Buff[];
+/* SPP接收缓冲区 */
+extern uint8_t Receive_Buff1[];
 /* 接收指令缓冲区 */
 extern uint8_t Command_Buff[];
  
@@ -169,10 +173,6 @@ void comSendBuf(COM_PORT_E _ucPort, uint8_t *_ucaBuf, uint16_t _usLen)
 		return;
 	}
 
-//	if (pUart->SendBefor != 0)
-//	{
-//		pUart->SendBefor();		/* 如果是RS485通信，可以在这个函数中将RS485设置为发送模式 */
-//	}
 	UartSend(pUart, _ucaBuf, _usLen);
 }
 /*
@@ -408,7 +408,7 @@ static void InitHardUart(void)
         HAL_GPIO_Init(USART1_RX_GPIO_PORT, &GPIO_InitStruct);
 
         /* 配置NVIC the NVIC for UART */   
-        HAL_NVIC_SetPriority(USART1_IRQn, 0, 1);
+        HAL_NVIC_SetPriority(USART1_IRQn, 0, 2);
         HAL_NVIC_EnableIRQ(USART1_IRQn);
       
         /* 配置波特率、奇偶校验 */
@@ -441,11 +441,11 @@ static void InitHardUart(void)
         HAL_GPIO_Init(USART2_RX_GPIO_PORT, &GPIO_InitStruct);
 
         /* 配置NVIC the NVIC for UART */   
-        HAL_NVIC_SetPriority(USART2_IRQn, 0, 2);
+        HAL_NVIC_SetPriority(USART2_IRQn, 0, 3);
         HAL_NVIC_EnableIRQ(USART2_IRQn);
       
         /* 配置波特率、奇偶校验 */
-        bsp_SetUartParam(USART2,  UART2_BAUD, UART_PARITY_NONE, UART_MODE_RX);	// UART_MODE_TX_RX
+        bsp_SetUartParam(USART2,  UART2_BAUD, UART_PARITY_NONE, UART_MODE_TX_RX);	// UART_MODE_TX_RX
 
         CLEAR_BIT(USART2->SR, USART_SR_TC);   /* 清除TC发送完成标志 */
         CLEAR_BIT(USART2->SR, USART_SR_RXNE); /* 清除RXNE接收标志 */
@@ -474,7 +474,7 @@ static void InitHardUart(void)
         HAL_GPIO_Init(USART6_RX_GPIO_PORT, &GPIO_InitStruct);
 
         /* 配置NVIC the NVIC for UART */   
-        HAL_NVIC_SetPriority(USART6_IRQn, 0, 3);
+        HAL_NVIC_SetPriority(USART6_IRQn, 0, 1);
         HAL_NVIC_EnableIRQ(USART6_IRQn);
         
         /* 配置波特率、奇偶校验 */
@@ -647,7 +647,7 @@ static void UartIRQ(UART_T *_pUart)
 	if ( ((isrflags & USART_SR_TXE) != RESET) && (cr1its & USART_CR1_TXEIE) != RESET)
 	{
 		//if (_pUart->usTxRead == _pUart->usTxWrite)
-		if (_pUart->usTxCount == 0)
+		if(_pUart->usTxCount == 0)
 		{
 			/* 发送缓冲区的数据已取完时， 禁止发送缓冲区空中断 （注意：此时最后1个数据还未真正发送完毕）*/
 			//USART_ITConfig(_pUart->uart, USART_IT_TXE, DISABLE);
@@ -664,7 +664,7 @@ static void UartIRQ(UART_T *_pUart)
 			/* 从发送FIFO取1个字节写入串口发送数据寄存器 */
 			//USART_SendData(_pUart->uart, _pUart->pTxBuf[_pUart->usTxRead]);
 			_pUart->uart->DR = _pUart->pTxBuf[_pUart->usTxRead];
-			if (++_pUart->usTxRead >= _pUart->usTxBufSize)
+			if(++_pUart->usTxRead >= _pUart->usTxBufSize)
 			{
 				_pUart->usTxRead = 0;
 			}
@@ -675,18 +675,17 @@ static void UartIRQ(UART_T *_pUart)
 	if (((isrflags & USART_SR_TC) != RESET) && ((cr1its & USART_CR1_TCIE) != RESET))
 	{
 		//if (_pUart->usTxRead == _pUart->usTxWrite)
-		if (_pUart->usTxCount == 0)
+		if(_pUart->usTxCount == 0)
 		{
 			/* 如果发送FIFO的数据全部发送完毕，禁止数据发送完毕中断 */
 			//USART_ITConfig(_pUart->uart, USART_IT_TC, DISABLE);
 			CLEAR_BIT(_pUart->uart->CR1, USART_CR1_TCIE);
 
 			/* 回调函数, 一般用来处理RS485通信，将RS485芯片设置为接收模式，避免抢占总线 */
-			if (_pUart->SendOver)
+			if(_pUart->SendOver)
 			{
 				_pUart->SendOver();
 			}
-			
 			_pUart->Sending = 0;
 		}
 		else
@@ -696,7 +695,7 @@ static void UartIRQ(UART_T *_pUart)
 			/* 如果发送FIFO的数据还未完毕，则从发送FIFO取1个数据写入发送数据寄存器 */
 			//USART_SendData(_pUart->uart, _pUart->pTxBuf[_pUart->usTxRead]);
 			_pUart->uart->DR = _pUart->pTxBuf[_pUart->usTxRead];
-			if (++_pUart->usTxRead >= _pUart->usTxBufSize)
+			if(++_pUart->usTxRead >= _pUart->usTxBufSize)
 			{
 				_pUart->usTxRead = 0;
 			}
@@ -744,7 +743,7 @@ void USART6_IRQHandler(void)
 */
 int fputc(int ch, FILE *f)
 {
-    #if 0	/* 将需要printf的字符通过串口中断FIFO发送出去，printf函数会立即返回 */
+    #if 1	/* 将需要printf的字符通过串口中断FIFO发送出去，printf函数会立即返回 */
         comSendChar(DEBUG_COM, ch);
         
         return ch;
@@ -822,10 +821,10 @@ void Uart_RxBuf_Putin(uint8_t *_pByte)
 }
 
 /**
- * @brief Load_Command     存入命令
+ * @brief Uart_Load_Command     存入命令
  * @return int8_t -1命令提取错误  1命令提取成功
  */
-int8_t Load_Command(void)
+int8_t Uart_Load_Command(void)
 {
     uint16_t i;
     if(Uart_Receive.WriteCtr < 15)
@@ -839,6 +838,66 @@ int8_t Load_Command(void)
         printf("%02X ", Command_Buff[i]);
     }
     Uart_RxBuf_Clear();
+    #if 0
+        USART_LOG("Buff receive :%s\n\r",Command_Buff);
+    #endif
+    
+    return RET_OK;
+}
+
+/**
+ * @brief SPP_RxBuf_Init     SPP指令接收缓冲区初始化
+ */
+void SPP_RxBuf_Init(void)
+{
+    SPP_Receive.RxBuf = Receive_Buff1;                  //初始化指令接收缓冲区
+    SPP_Receive.BufSize = RX_BUFF_SIZE;                //初始化指令接收缓冲区大小
+    SPP_Receive.WriteCtr = 0;                          //初始化指令缓冲区写指针
+}
+
+/**
+ * @brief SPP_RxBuf_Clear     SPP指令接收缓冲区清空
+ */
+static inline void SPP_RxBuf_Clear(void)
+{
+    memset(SPP_Receive.RxBuf, '\0', SPP_Receive.BufSize);
+    SPP_Receive.WriteCtr = 0;
+}
+
+/**
+ * @brief SPP_RxBuf_Putin     SPP指令接收缓冲区存入
+ * @param uint8_t *_pByte   存入的字符
+ */
+void SPP_RxBuf_Putin(uint8_t *_pByte)
+{
+    *(SPP_Receive.RxBuf + SPP_Receive.WriteCtr) = *_pByte;
+    SPP_Receive.WriteCtr ++;
+    /* 指令缓冲区是否溢出 */
+    if(SPP_Receive.WriteCtr >= SPP_Receive.BufSize)
+    {
+        SPP_Receive.WriteCtr = 0;
+        USART_LOG("SPP receive buff full\n\r");
+    }
+}
+
+/**
+ * @brief SPP_Load_Command     存入命令
+ * @return int8_t -1命令提取错误  1命令提取成功
+ */
+int8_t SPP_Load_Command(void)
+{
+    uint16_t i;
+    if(SPP_Receive.WriteCtr < 15)
+    {
+        SPP_RxBuf_Clear();
+        return RET_ERROR;
+    }
+    for(i=0;i<13;i++)
+    {
+        Command_Buff[i] = *(SPP_Receive.RxBuf + i + SPP_Receive.WriteCtr - 14);
+        printf("%02X ", Command_Buff[i]);
+    }
+    SPP_RxBuf_Clear();
     #if 0
         USART_LOG("Buff receive :%s\n\r",Command_Buff);
     #endif

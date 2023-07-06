@@ -89,12 +89,11 @@ int main(void)
     /* USER CODE END SysInit */
 
     /* Initialize all configured peripherals */
-    MX_GPIO_Init();
+    bsp_InitGPIO();
     bsp_InitUart();		/* ³õÊ¼»¯´®¿Ú */
-    MX_ADC1_Init();
-    MX_TIM2_Init();
-    
-//  MX_I2C1_Init();
+    bsp_InitADC1();
+    //MX_TIM2_Init();
+    //MX_I2C1_Init();
     /* USER CODE BEGIN 2 */
 
     /* USER CODE END 2 */
