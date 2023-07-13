@@ -745,10 +745,6 @@ static void UartIRQ(UART_T *_pUart)
 	uint32_t cr1its     = READ_REG(_pUart->uart->CR1);
 	uint32_t cr3its     = READ_REG(_pUart->uart->CR3);
     
-    UBaseType_t uxSavedInterruptStatus;
-	
-    /* 进入临界段，临界段可以嵌套 */
-	uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
 	/* 处理接收中断  */
 	if ((isrflags & USART_SR_RXNE) != RESET)
 	{
@@ -828,9 +824,7 @@ static void UartIRQ(UART_T *_pUart)
 			_pUart->usTxCount--;
 		}
 	}
-    
-    /* 退出临界段 */
-	taskEXIT_CRITICAL_FROM_ISR(uxSavedInterruptStatus); 	
+    	
 }
 
 /*

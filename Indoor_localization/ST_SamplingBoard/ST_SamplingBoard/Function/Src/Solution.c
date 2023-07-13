@@ -33,7 +33,7 @@ float Pressure_Buff[SENSOR_NUM_TOTAL*FRAME_IN_BUFF];
 const float para_a = 624.1;      /* 函数形式: y = a*exp(-((b*x)/c)^2) */
 const float para_b = 0.6779;
 const float para_c = 0.2652;
-const float vref = 0.56;
+const float vref = 0.58;
 const float Rf = 4700; 
 
 /* 蓝牙传输帧数据存储空间 */
@@ -56,7 +56,6 @@ uint8_t Quaternion_Transfer[16];
 
 /**
  * @brief Singel_Point_Calculation  单采样点解算得到压力值
- *
  * @param uint32_t *voltage
  */
 float Singel_Point_Calculation(uint16_t *voltage)
@@ -93,7 +92,6 @@ float Conductance_Calculation(uint16_t *voltage)
 
 /**
  * @brief Pressure_Calculation  对缓冲区中的数据进行解算，得到压力值
- *
  * @param float *Buff
  * @return int8_t -1 解算失败      1 解算成功
  */
@@ -177,6 +175,10 @@ uint8_t Atmo_Transfer_Buffer[19];
 uint8_t Hight_Transfer_Buffer[19];
 uint8_t Quat_Transfer_Buffer[31];
 
+/**
+ * @brief Plantar_Data_Frame_Init 压力传感器数据帧初始化
+ * 
+ */
 void Plantar_Data_Frame_Init(void)
 {
     uint8_t i;
@@ -202,7 +204,7 @@ void Plantar_Data_Frame_Transmit(void)
     uint16_t i;
     if(Transfer_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
     {
-        if(xSemaphoreTake(Transfer_MutexHandle, 40) == pdTRUE)       //申请SPP发送互斥锁
+        if(xSemaphoreTake(Transfer_MutexHandle, pdMS_TO_TICKS(20)) == pdTRUE)       //申请SPP发送互斥锁
         {
             /* 压力传感器数据传输 */
             for(i=0; i<4; i++)
@@ -228,12 +230,11 @@ void Plantar_Data_Frame_Transmit(void)
 }
 
 
-uint32_t old_timestamp;
-uint32_t error_frame;
-uint32_t total_frame;
-uint32_t diff_time;
 
-
+/**
+ * @brief IMU_Data_Frame_Init IMU数据帧初始化
+ * 
+ */
 void IMU_Data_Frame_Init(void)
 {
     uint8_t i;
@@ -322,7 +323,7 @@ void IMU_Data_Frame_Transmit(void)
     
     if(Transfer_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
     {
-        if(xSemaphoreTake(Transfer_MutexHandle, 40) == pdTRUE)       //申请SPP发送互斥锁
+        if(xSemaphoreTake(Transfer_MutexHandle, pdMS_TO_TICKS(20)) == pdTRUE)       //申请SPP发送互斥锁
         {
             /* 加速度数据传输 */
             for(i=0; i<4; i++)

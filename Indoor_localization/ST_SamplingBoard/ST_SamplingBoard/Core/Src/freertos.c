@@ -38,13 +38,13 @@ uint8_t Command_Buff[13];               //接收指令缓冲区
 PLANTAR_S Plantar;                      // 压力传感器采集结构体
 uint8_t RET_OK_BUFF[]={0x71,0x71,0x71,0x71,0x71,0x60,0x10,0x01,0x68,0x68,0x68,0x68,0x68};
 uint8_t RET_ERROR_BUFF[]={0x71,0x71,0x71,0x71,0x71,0x60,0x10,0x00,0x68,0x68,0x68,0x68,0x68};
-
+char RunTimeInfo[400];          //任务运行统计结果储存区
 
 /* 定义初始任务 */
 osThreadId_t Task_StartHandle;
 const osThreadAttr_t Task_Start_attributes = 
 {
-    .name = "Task_Start",
+    .name = "Start",
     .stack_size = 128 * 2,
     .priority = (osPriority_t) osPriorityNormal,
 };
@@ -52,7 +52,7 @@ const osThreadAttr_t Task_Start_attributes =
 osThreadId_t Task_LEDHandle;
 const osThreadAttr_t Task_LED_attributes = 
 {
-    .name = "Task_LED",
+    .name = "LED",
     .stack_size = 128 * 1,
     .priority = (osPriority_t) osPriorityLow,
 };
@@ -60,7 +60,7 @@ const osThreadAttr_t Task_LED_attributes =
 osThreadId_t Task_DebugUsartHandle;
 const osThreadAttr_t Task_DebugUsart_attributes = 
 {
-    .name = "Task_DebugUsart",
+    .name = "Debug Usart",
     .stack_size = 128 * 4,
     .priority = (osPriority_t) osPriorityNormal,
 };
@@ -68,7 +68,7 @@ const osThreadAttr_t Task_DebugUsart_attributes =
 osThreadId_t Task_SPPRXHandle;
 const osThreadAttr_t Task_SPPRX_attributes = 
 {
-    .name = "Task_SPPReceive",
+    .name = "SPP Receive",
     .stack_size = 128 * 4,
     .priority = (osPriority_t) osPriorityNormal2,
 };
@@ -76,7 +76,7 @@ const osThreadAttr_t Task_SPPRX_attributes =
 osThreadId_t Task_CommandHandle;
 const osThreadAttr_t Task_Command_attributes = 
 {
-    .name = "Task_Command",
+    .name = "Command",
     .stack_size = 128 * 4,
     .priority = (osPriority_t) osPriorityNormal1,
 };
@@ -84,7 +84,7 @@ const osThreadAttr_t Task_Command_attributes =
 osThreadId_t Task_PlantarHandle;
 const osThreadAttr_t Task_Plantar_attributes = 
 {
-    .name = "Task_Plantar",
+    .name = "Plantar",
     .stack_size = 128 * 8,
     .priority = (osPriority_t) osPriorityRealtime,
 };
@@ -92,35 +92,42 @@ const osThreadAttr_t Task_Plantar_attributes =
 osThreadId_t Task_IMUHandle;
 const osThreadAttr_t Task_IMU_attributes = 
 {
-    .name = "Task_IMU",
+    .name = "IMU",
     .stack_size = 128 * 8,
     .priority = (osPriority_t) osPriorityRealtime1,
 };
-/* 定义数据处理打包任务 */
+/* 定义Plantar数据发送任务 */
 osThreadId_t Task_PlantarDataHandle;
 const osThreadAttr_t Task_PlantarData_attributes = 
 {
-    .name = "Task Plantar Transfer",
-    .stack_size = 128 * 8,
+    .name = "Plantar Data",
+    .stack_size = 128 * 10,
     .priority = (osPriority_t) osPriorityHigh6,
 };
-/* 定义数据发送任务 */
+/* 定义IMU数据发送任务 */
 osThreadId_t Task_IMUDataHandle;
 const osThreadAttr_t Task_IMUData_attributes = 
 {
-    .name = "Task IMU Transfer",
-    .stack_size = 128 * 8,
+    .name = "IMU Data",
+    .stack_size = 128 * 10,
     .priority = (osPriority_t) osPriorityHigh7,
 };
 /* 判断蓝牙连接任务 */
 osThreadId_t Task_SPPConnectHandle;
 const osThreadAttr_t Task_SPPConnect_attributes = 
 {
-    .name = "Task_SPPConnect",
+    .name = "SPP Connect",
     .stack_size = 128 * 2,
     .priority = (osPriority_t) osPriorityNormal1,
 };
-
+/* 任务运行时间统计任务 */
+osThreadId_t Task_RunTimeStatsHandle;
+const osThreadAttr_t Task_RunTimeStats_attributes = 
+{
+    .name = "RunTime Stats",
+    .stack_size = 128 * 4,
+    .priority = (osPriority_t) osPriorityNormal,
+};
 
 
 /* 全局变量修改互斥锁 */
@@ -159,6 +166,24 @@ const osSemaphoreAttr_t IMU_Semaph_attributes =
 {
     .name = "IMU Transfer Semaphore"
 };
+/* 指令单点采样信号量 */
+osSemaphoreId_t SingSamp_SemaphHandle;
+const osSemaphoreAttr_t SingSamp_Semaph_attributes = 
+{
+    .name = "SingSamp Semaphore"
+};
+/* 指令阵列采样信号量 */
+osSemaphoreId_t ArraySamp_SemaphHandle;
+const osSemaphoreAttr_t ArraySamp_Semaph_attributes = 
+{
+    .name = "ArraySamp Semaphore"
+};
+/* 任务运行统计信号量 */
+osSemaphoreId_t RunTime_SemaphHandle;
+const osSemaphoreAttr_t RunTime_Semaph_attributes = 
+{
+    .name = "RunTime Semaphore"
+};
 /* 蓝牙传输事件组 */
 osEventFlagsId_t BluetoothEventHandle;
 const osEventFlagsAttr_t Bluetooth_Event_attributes = 
@@ -186,7 +211,7 @@ static void AppTask_IMU(void *argument);
 static void AppTask_PlantarData(void *argument);
 static void AppTask_IMUData(void *argument);
 static void AppTask_SPPConnect(void *argument);
-
+static void AppTask_RunTimeStats(void *argument);
 
 
 
@@ -210,6 +235,9 @@ void MX_FREERTOS_Init(void)
     Command_SemaphHandle = osSemaphoreNew(1,0,&Command_Semaph_attributes);
     Plantar_SemaphHandle = osSemaphoreNew(1,0,&Plantar_Semaph_attributes);
     IMU_SemaphHandle = osSemaphoreNew(1,0,&IMU_Semaph_attributes);
+    SingSamp_SemaphHandle = osSemaphoreNew(1,0,&SingSamp_Semaph_attributes);
+    ArraySamp_SemaphHandle = osSemaphoreNew(1,0,&ArraySamp_Semaph_attributes);
+    RunTime_SemaphHandle = osSemaphoreNew(1,0,&RunTime_Semaph_attributes);
     /* 事件组创建 */
     BluetoothEventHandle = osEventFlagsNew(&Bluetooth_Event_attributes);
     Sampling_EventHandle = osEventFlagsNew(&Sampling_Event_attributes);    
@@ -242,6 +270,8 @@ static void AppTask_Start(void *argument)
     Task_IMUDataHandle = osThreadNew(AppTask_IMUData, NULL, &Task_IMUData_attributes);
     /* 创建SPP连接状态监测任务 */
     Task_SPPConnectHandle = osThreadNew(AppTask_SPPConnect, NULL, &Task_SPPConnect_attributes);
+    /* 创建任务运行时间统计任务 */
+    Task_RunTimeStatsHandle = osThreadNew(AppTask_RunTimeStats, NULL, &Task_RunTimeStats_attributes);
     /* 删除自身任务 */
     vTaskDelete(NULL);
 }
@@ -256,7 +286,7 @@ static void AppTask_Led(void *argument)
     while(true)
     {
         LED_TOGGLE();
-        osDelay(1000);
+        osDelay(pdMS_TO_TICKS(1000));
         #if 0
             taskENTER_CRITICAL();       //进入基本临界区
             TASK_LOG("LED Toggle\n\r");
@@ -302,7 +332,7 @@ static void AppTask_DebugUsart(void *argument)
                 break;
             }
 		}
-        osDelay(400);
+        osDelay(pdMS_TO_TICKS(400));
     }
 }
 
@@ -320,7 +350,7 @@ static void AppTask_SPPReceive(void *argument)
     {
         if(SPP_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
         {
-            if(xSemaphoreTake(SPP_MutexHandle, 100) == pdTRUE)       //申请SPP互斥锁
+            if(xSemaphoreTake(SPP_MutexHandle, pdMS_TO_TICKS(100)) == pdTRUE)       //申请SPP互斥锁
             {
                 /* 接收到的串口命令处理 */
                 while(comGetChar(SPP_COM, &read))
@@ -357,7 +387,7 @@ static void AppTask_SPPReceive(void *argument)
         {
             TASK_LOG("The mutex not created \n\r");      //SPP互斥锁未创建
         }
-        osDelay(400);
+        osDelay(pdMS_TO_TICKS(400));
     }
 }
 
@@ -380,17 +410,17 @@ static void AppTask_Command(void *argument)
                 if(result == RET_ERROR)
                 {
                     comSendBuf(SPP_COM, RET_OK_BUFF, sizeof(RET_ERROR_BUFF));
-                    TASK_LOG("Command parsing failure \n\r");
+                    TASK_LOG("Command parsing failure \r\n");
                 }
                 else if(result == RET_INVALID)
                 {
                     comSendBuf(SPP_COM, RET_OK_BUFF, sizeof(RET_ERROR_BUFF));
-                    TASK_LOG("Invalid command \n\r");
+                    TASK_LOG("Invalid command \r\n");
                 }
                 else
                 {
                     comSendBuf(SPP_COM, RET_OK_BUFF, sizeof(RET_OK_BUFF));
-                    TASK_LOG("Command executed successfully \n\r");
+                    TASK_LOG("Command executed successfully \r\n");
                 }
             }
         }
@@ -435,17 +465,17 @@ static void AppTask_Plantar(void *argument)
                 Plantar_Buff.Write_Frame++;
                 if(Plantar_Buff_Full_Judge() == RET_OK)        //如果缓冲区已经写满
                 {
-                    TASK_LOG("Plantar write buff full \n\r");
+                    TASK_LOG("Plantar write buff full \r\n");
                     if(Plantar_Read_Write_Buff_Switch() == RET_ERROR)     //交换缓冲区     
                     {
-                        TASK_LOG("Plantar buff switch failed \n\r");                    
+                        TASK_LOG("Plantar buff switch failed \r\n");                    
                     }
                     else
                     {
                         /* 发送消息给数据处理任务 */
                         if(xSemaphoreGive(Plantar_SemaphHandle) != pdTRUE)
                         {
-                            TASK_LOG("Failed to release the semaphore \n\r");
+                            TASK_LOG("Failed to release the semaphore \r\n");
                         }
                     }
                 }
@@ -455,23 +485,33 @@ static void AppTask_Plantar(void *argument)
             {
                 Singal_Point_Sampling(Plantar.Selection_Row, Plantar.Selection_Column, &temp);
                 Singel_Point_Calculation(&temp);
-                TASK_LOG("voltage:%d mV \n\r",temp);
+                TASK_LOG("voltage:%d mV \r\n",temp);
             }
             /* 指令阵列采集 */
             else if(Plantar.Sampling_Mode == INSTRUCTIONS_ARRAYMODE)
             {
+                if(xSemaphoreTake(ArraySamp_SemaphHandle,portMAX_DELAY) == pdTRUE)
+                {
+                    Instr_Array_Sampling();
+                }
             }
             /* 指令单点采集 */
             else if(Plantar.Sampling_Mode == INSTRUCTIONS_SINGLEMODE)
             {
+                if(xSemaphoreTake(SingSamp_SemaphHandle,portMAX_DELAY) == pdTRUE)
+                {
+                    Singal_Point_Sampling(Plantar.Selection_Row, Plantar.Selection_Column, &temp);
+                    Singel_Point_Calculation(&temp);
+                    TASK_LOG("voltage:%d mV \r\n",temp);
+                }
             }
             else
             {
                 taskENTER_CRITICAL();       //进入基本临界区
-                TASK_LOG("The sampling mode is incorrectly set\n\r");
+                TASK_LOG("The sampling mode is incorrectly set \r\n");
                 taskEXIT_CRITICAL();        //退出基本临界区
             }
-            osDelay(Plantar.Sampling_Delay);
+            osDelay(pdMS_TO_TICKS(Plantar.Sampling_Delay));
         }
     }
 }
@@ -534,37 +574,37 @@ static void AppTask_IMU(void *argument)
                 }
                 if(s_cDataUpdate & ACC_UPDATE)          //打印加速度数据
                 {
-                    TASK_LOG("acc_x:%f acc_y:%f acc_z:%f \n\r", fAcc[0], fAcc[1], fAcc[2]);
+                    TASK_LOG("acc_x:%f acc_y:%f acc_z:%f \r\n", fAcc[0], fAcc[1], fAcc[2]);
                     s_cDataUpdate &= ~ACC_UPDATE;
                 }
                 if(s_cDataUpdate & GYRO_UPDATE)         //打印陀螺仪数据
                 {
-                    TASK_LOG("gyro_x:%f gyro_y:%f gyro_z:%f \n\r", fGyro[0], fGyro[1], fGyro[2]);
+                    TASK_LOG("gyro_x:%f gyro_y:%f gyro_z:%f \r\n", fGyro[0], fGyro[1], fGyro[2]);
                     s_cDataUpdate &= ~GYRO_UPDATE;
                 }
                 if(s_cDataUpdate & ANGLE_UPDATE)        //打印倾角数据
                 {
-                    TASK_LOG("angle_x:%f angle_y:%f angle_z:%f \n\r", fAngle[0], fAngle[1], fAngle[2]);
+                    TASK_LOG("angle_x:%f angle_y:%f angle_z:%f \r\n", fAngle[0], fAngle[1], fAngle[2]);
                     s_cDataUpdate &= ~ANGLE_UPDATE;
                 }
                 if(s_cDataUpdate & MAG_UPDATE)          //打印磁力计数据
                 {
-                    TASK_LOG("mag_x:%d mag_y:%d mag_z:%d \n\r", sMag[0], sMag[1], sMag[2]);
+                    TASK_LOG("mag_x:%d mag_y:%d mag_z:%d \r\n", sMag[0], sMag[1], sMag[2]);
                     s_cDataUpdate &= ~MAG_UPDATE;
                 }
                 if(s_cDataUpdate & ATMO_UPDATE)          //打印气压数据
                 {
-                    TASK_LOG("atmosphere pressure:%d \n\r", dATMO);
+                    TASK_LOG("atmosphere pressure:%d \r\n", dATMO);
                     s_cDataUpdate &= ~ATMO_UPDATE;
                 }
                 if(s_cDataUpdate & HEIGHT_UPDATE)          //打印高度数据
                 {
-                    TASK_LOG("height:%d \n\r", dHEIGHT);
+                    TASK_LOG("height:%d \r\n", dHEIGHT);
                     s_cDataUpdate &= ~HEIGHT_UPDATE;
                 }
                 if(s_cDataUpdate & QUAT_UPDATE)          //打印四元数数据
                 {
-                    TASK_LOG("q0:%f q1:%f q2:%f q3:%f \n\r", fQUAT[0], fQUAT[1], fQUAT[2], fQUAT[3]);
+                    TASK_LOG("q0:%f q1:%f q2:%f q3:%f \r\n", fQUAT[0], fQUAT[1], fQUAT[2], fQUAT[3]);
                     s_cDataUpdate &= ~QUAT_UPDATE;
                 }
                 s_cDataUpdate = 0;
@@ -572,21 +612,21 @@ static void AppTask_IMU(void *argument)
             }
             if(IMU_Buff_Full_Judge() == RET_OK)        //如果缓冲区已经写满
             {
-                TASK_LOG("IMU write buff full \n\r");
+                TASK_LOG("IMU write buff full \r\n");
                 if(IMU_Read_Write_Buff_Switch() == RET_ERROR)     //交换缓冲区     
                 {
-                    TASK_LOG("IMU buff switch failed \n\r");                    
+                    TASK_LOG("IMU buff switch failed \r\n");                    
                 }
                 else
                 {
                     /* 发送消息给数据处理任务 */
                     if(xSemaphoreGive(IMU_SemaphHandle) != pdTRUE)
                     {
-                        TASK_LOG("Failed to release the semaphore \n\r");
+                        TASK_LOG("Failed to release the semaphore \r\n");
                     }
                 }                    
             }
-            osDelay(6);      //采集间隔设置
+            osDelay(pdMS_TO_TICKS(6));      //采集间隔设置
         }
     }
 }
@@ -606,10 +646,10 @@ static void AppTask_PlantarData(void *argument)
         if(xSemaphoreTake(Plantar_SemaphHandle,portMAX_DELAY) == pdTRUE)
         {
             uxBits = xEventGroupWaitBits(BluetoothEventHandle,          //等待的事件组  
-                             BLUETOOTH_START_TRANSFER,      //等待的事件位
-                             pdFALSE,                       //返回前是否清除事件
-                             pdFALSE,                       //是否等待所有事件
-                             2);                            //等待时间
+                             BLUETOOTH_START_TRANSFER,                  //等待的事件位
+                             pdFALSE,                                   //返回前是否清除事件
+                             pdFALSE,                                   //是否等待所有事件
+                             pdMS_TO_TICKS(2));                         //等待时间
         
             if((uxBits & BLUETOOTH_TRANSFER) != 0)
             {
@@ -642,10 +682,10 @@ static void AppTask_IMUData(void *argument)
         if(xSemaphoreTake(IMU_SemaphHandle,portMAX_DELAY) == pdTRUE)
         {
             uxBits = xEventGroupWaitBits(BluetoothEventHandle,          //等待的事件组  
-                             BLUETOOTH_START_TRANSFER,      //等待的事件位
-                             pdFALSE,                       //返回前是否清除事件
-                             pdFALSE,                       //是否等待所有事件
-                             2);                            //等待时间
+                             BLUETOOTH_START_TRANSFER,                  //等待的事件位
+                             pdFALSE,                                   //返回前是否清除事件
+                             pdFALSE,                                   //是否等待所有事件
+                             pdMS_TO_TICKS(2));                         //等待时间
         
             if((uxBits & BLUETOOTH_TRANSFER) != 0)
             {
@@ -669,7 +709,7 @@ static void AppTask_SPPConnect(void *argument)
     EventBits_t uxBits;                 //接收到的事件组位
     BaseType_t xResult;                     //事件组发送结果
     
-    osDelay(500);
+    osDelay(pdMS_TO_TICKS(500));
     if(HC04_Init() == RET_OK)
     {
         printf("SPP init succeeded!! \r\n");
@@ -684,7 +724,7 @@ static void AppTask_SPPConnect(void *argument)
         uxBits = xEventGroupGetBits(BluetoothEventHandle);
         if((uxBits & 0x01) == SPPSTATE_INPUTPINSET)
         {
-            osDelay(20);
+            osDelay(pdMS_TO_TICKS(20));
             if(SPPSTATE_INPUTPINSET)
             {
                 TASK_LOG("SPP disconnect!! \r\n");
@@ -750,8 +790,29 @@ static void AppTask_SPPConnect(void *argument)
                 }
             }
         }
-        osDelay(1000);
+        osDelay(pdMS_TO_TICKS(1000));
     }
 }
 
+/**
+* @brief AppTask_RunTimeStats  统计任务运行时间任务
+* @param argument: Not used
+* @retval None
+*/
+static void AppTask_RunTimeStats(void *argument)
+{
+	while(true)
+	{
+		if(RunTime_SemaphHandle != NULL)
+        {
+            if(xSemaphoreTake(RunTime_SemaphHandle,portMAX_DELAY) == pdTRUE)
+            {
+                memset(RunTimeInfo,'\0',400);				//信息缓冲区清零
+                vTaskGetRunTimeStats(RunTimeInfo);		//获取任务运行时间信息
+                printf("Task\t\tRunTime\t\tPercentage\r\n");
+                printf("%s\r\n",RunTimeInfo);
+            }
+        }
+	}
+}
 

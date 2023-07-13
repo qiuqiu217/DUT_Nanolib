@@ -14,3 +14,4 @@ st_samplingboard\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/tas
 st_samplingboard\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 st_samplingboard\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 st_samplingboard\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/stack_macros.h
+st_samplingboard\tasks.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

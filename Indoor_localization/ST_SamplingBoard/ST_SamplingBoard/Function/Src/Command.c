@@ -25,9 +25,12 @@
 extern osEventFlagsId_t Sampling_EventHandle;       //采集事件组
 extern osEventFlagsId_t BluetoothEventHandle;       //蓝牙传输事件组
 extern osMutexId_t GV_MutexHandle;                  //全局变量互斥锁
+extern osSemaphoreId_t SingSamp_SemaphHandle;       //指令单点采样信号量
+extern osSemaphoreId_t ArraySamp_SemaphHandle;      //指令阵列采样信号量
+extern osSemaphoreId_t RunTime_SemaphHandle;        //任务运行状态统计信号量
 
 extern PLANTAR_S Plantar;                      // 压力传感器采集结构体
-
+extern const uint16_t Plantar_Rate_Settings[10];      //可设置采样延时
 
 /*
 *********************************************************************************************************
@@ -82,6 +85,10 @@ _RET_TYPE Command_Parsing(_COMM_TYPE *COMM_Buf)
             {
                 ret = Change_Bluetooth_Transfer_State(command_set);
             }
+            else if(command_type2 == SYS_TASK)
+            {
+                ret = SYS_Task_RunTimeStats(command_set);
+            }
             /* 无效命令 */
             else ret = RET_INVALID;
         }
@@ -112,13 +119,13 @@ _RET_TYPE Command_Parsing(_COMM_TYPE *COMM_Buf)
             else if(command_type2 == PLA_INSA)
             {
                 ret = RET_OK;
-                //ret = Plantar_Array_Sampling(command_set); 
+                ret = Plantar_Array_Sampling(command_set); 
             }
             /* 指定延时时间的单点采样指令 */
             else if(command_type2 == PLA_INSS)
             {
                 ret = RET_OK;
-                //ret = Plantar_Single_Sampling(command_set);
+                ret = Plantar_Single_Sampling(command_set);
             }
             /* 无效命令 */
             else ret = RET_INVALID;
@@ -210,6 +217,24 @@ _RET_TYPE Change_Bluetooth_Transfer_State(_COMM_TYPE set)
             Command_LOG("Failed to disable bluetooth transmission \n\r");
             ret = RET_ERROR;
         }
+    }
+    
+    return ret;
+}
+
+
+/**
+ * @brief SYS_Task_RunTimeStats  执行任务状态统计
+ * @param _COMM_TYPE set  设置参数
+ * @return _RET_TYPE RET_ERROR 命令执行失败     RET_OK 命令执行成功
+ */
+_RET_TYPE SYS_Task_RunTimeStats(_COMM_TYPE set)
+{   
+    _RET_TYPE ret = RET_OK;
+    
+    if(xSemaphoreGive(RunTime_SemaphHandle) != pdTRUE)
+    {
+        ret = RET_ERROR;
     }
     
     return ret;
@@ -312,6 +337,43 @@ _RET_TYPE Change_Plantar_SamplingRate(_COMM_TYPE set)
     
     return ret;
 }
+
+/**
+ * @brief Plantar_Array_Sampling  指令阵列采样
+ * @param _COMM_TYPE set  设置参数
+ * @return _RET_TYPE RET_ERROR 命令执行失败     RET_OK 命令执行成功
+ */
+_RET_TYPE Plantar_Array_Sampling(_COMM_TYPE set)
+{
+    _RET_TYPE ret = RET_OK;
+    
+    osDelay(pdMS_TO_TICKS(Plantar_Rate_Settings[set]));
+    if(xSemaphoreGive(ArraySamp_SemaphHandle) != pdTRUE)
+    {
+        ret = RET_ERROR;
+    }
+
+    return ret;
+}
+
+/**
+ * @brief Plantar_Single_Sampling  指令单点采样
+ * @param _COMM_TYPE set  设置参数
+ * @return _RET_TYPE RET_ERROR 命令执行失败     RET_OK 命令执行成功
+ */
+_RET_TYPE Plantar_Single_Sampling(_COMM_TYPE set)
+{
+    _RET_TYPE ret = RET_OK;
+    
+    osDelay(pdMS_TO_TICKS(Plantar_Rate_Settings[set]));
+    if(xSemaphoreGive(SingSamp_SemaphHandle) != pdTRUE)
+    {
+        ret = RET_ERROR;
+    }
+                              
+    return ret;
+}
+
 
 /**
  * @brief Change_IMU_Sampling_State  修改IMU采集状态

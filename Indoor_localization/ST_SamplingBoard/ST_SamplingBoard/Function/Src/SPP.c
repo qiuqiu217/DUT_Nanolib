@@ -66,7 +66,7 @@ int8_t HC04_Init(void)
     
     if(SPP_MutexHandle != NULL)      //Plantarª∫≥Â«¯–ﬁ∏ƒª•≥‚À¯≤ªŒ™ø’
     {
-        if(xSemaphoreTake(SPP_MutexHandle, 100) == pdTRUE)       //…Í«ÎSPPª•≥‚À¯
+        if(xSemaphoreTake(SPP_MutexHandle, pdMS_TO_TICKS(100)) == pdTRUE)       //…Í«ÎSPPª•≥‚À¯
         {
             if(HC04_AutoBaud() == RET_OK)
             {
@@ -78,7 +78,7 @@ int8_t HC04_Init(void)
                 memset(SPP_RXBuffer, '\0', sizeof(SPP_RXBuffer));
                 comSendBuf(SPP_COM, send_at_cmd_buf, send_at_cmd_len);
                 SPP_LOG("Command send:%s \r\n",send_at_cmd_buf);
-                osDelay(800);
+                osDelay(pdMS_TO_TICKS(800));
                 ctr = 0;
                 while(comGetChar(SPP_COM, &SPP_RXBuffer[ctr]))
                 {
@@ -99,7 +99,7 @@ int8_t HC04_Init(void)
                 memset(SPP_RXBuffer, '\0', sizeof(SPP_RXBuffer));
                 comSendBuf(SPP_COM, send_at_cmd_buf, send_at_cmd_len);
                 SPP_LOG("Command send:%s \r\n",send_at_cmd_buf);
-                osDelay(800);
+                osDelay(pdMS_TO_TICKS(800));
                 ctr = 0;
                 while(comGetChar(SPP_COM, &SPP_RXBuffer[ctr]))
                 {
@@ -116,7 +116,7 @@ int8_t HC04_Init(void)
                 memset(SPP_RXBuffer, '\0', sizeof(SPP_RXBuffer));
                 comSendBuf(SPP_COM, send_at_cmd_buf, send_at_cmd_len);
                 SPP_LOG("Command send:%s \r\n",send_at_cmd_buf);
-                osDelay(800);
+                osDelay(pdMS_TO_TICKS(800));
                 ctr = 0;
                 while(comGetChar(SPP_COM, &SPP_RXBuffer[ctr]))
                 {
@@ -166,7 +166,7 @@ int8_t HC04_AutoBaud(void)
         comSetBaud(SPP_COM, bt_hc04_baud_sel_list[i]);
         comSendBuf(SPP_COM, send_at_cmd_buf, send_at_cmd_len);
         SPP_LOG("Command send:%s \n\r",send_at_cmd_buf);
-        osDelay(100);
+        osDelay(pdMS_TO_TICKS(100));
         ctr = 0;
         while(comGetChar(SPP_COM, &SPP_RXBuffer[ctr]))
         {

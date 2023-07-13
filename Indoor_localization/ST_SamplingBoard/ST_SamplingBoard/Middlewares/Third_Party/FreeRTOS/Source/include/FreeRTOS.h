@@ -712,6 +712,7 @@ hold explicit before calling the code. */
 	#define traceSTREAM_BUFFER_RECEIVE_FROM_ISR( xStreamBuffer, xReceivedLength )
 #endif
 
+
 #ifndef configGENERATE_RUN_TIME_STATS
 	#define configGENERATE_RUN_TIME_STATS 0
 #endif

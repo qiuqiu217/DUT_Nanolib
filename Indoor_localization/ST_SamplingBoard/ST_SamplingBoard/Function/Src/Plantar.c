@@ -96,7 +96,7 @@ _RET_TYPE Plantar_ChannelChange(uint8_t Row, uint8_t Column)
     
     if(GV_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
     {
-        if(xSemaphoreTake(GV_MutexHandle, 200) == pdTRUE)       //申请全局变量修改互斥锁
+        if(xSemaphoreTake(GV_MutexHandle, pdMS_TO_TICKS(100)) == pdTRUE)       //申请全局变量修改互斥锁
         {
             Plantar.Selection_Row = Row;
             Plantar.Selection_Column = Column;
@@ -129,7 +129,7 @@ _RET_TYPE Plantar_Mode_Change(uint8_t Mode)
     
     if(GV_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
     {
-        if(xSemaphoreTake(GV_MutexHandle, 200) == pdTRUE)       //申请全局变量修改互斥锁
+        if(xSemaphoreTake(GV_MutexHandle, pdMS_TO_TICKS(100)) == pdTRUE)       //申请全局变量修改互斥锁
         {
             if(Plantar.Sampling_Mode <= INSTRUCTIONS_SINGLEMODE)
             {
@@ -172,7 +172,7 @@ _RET_TYPE Plantar_Rate_Change(uint8_t Rate)
     
     if(GV_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
     {
-        if(xSemaphoreTake(GV_MutexHandle, 200) == pdTRUE)       //申请全局变量修改互斥锁
+        if(xSemaphoreTake(GV_MutexHandle, pdMS_TO_TICKS(100)) == pdTRUE)       //申请全局变量修改互斥锁
         {
             if(Plantar.Sampling_Delay <= 10)
             {
@@ -294,6 +294,31 @@ _RET_TYPE Array_Scanning_Sampling(void)
             Column_Select(j);
             nop_delay(200);           //模拟信号建立时间
             *(Plantar_Buff.Write_Buff + Plantar_Buff.Write_Frame*SENSOR_NUM_TOTAL + num) = (uint16_t)ADC_OneShot_Read()* (3.3/4096) *1000;
+            num++;
+            j++;
+            //Channel_Disable();
+        }
+        i++;
+    }
+    return RET_OK;
+}
+
+/**
+ * @brief Instr_Array_Sampling 指令阵列扫描采集
+ * @return _RET_TYPE    RET_ERROR 采集失败      RET_OK 采集成功
+ */
+_RET_TYPE Instr_Array_Sampling(void)
+{
+    uint8_t i = 0, j = 0, num = 0;
+    while(i < Sensor_Num_Row)          //从第一行开始按顺序采集
+    {
+        j = Sensor_Num_Column[i][0];
+        while(j <= Sensor_Num_Column[i][1])      //采集一行时从第一列开始顺序采集
+        {
+            Row_Select(i);          //选通对应行列
+            Column_Select(j);
+            nop_delay(200);           //模拟信号建立时间
+            PLANTAR_LOG("row:%d line:%d voltage:%d",i,j,(uint16_t)ADC_OneShot_Read()* (3.3/4096) *1000);
             num++;
             j++;
             //Channel_Disable();

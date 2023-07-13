@@ -37,6 +37,7 @@ extern "C" {
 /* USER CODE END Private defines */
 
 void MX_TIM2_Init(void);
+void ConfigureTimerForRunTimeStats(void);
 
 /* USER CODE BEGIN Prototypes */
 

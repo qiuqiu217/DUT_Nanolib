@@ -121,68 +121,6 @@ void ShowHelp(void)
 }
 
 /**
- * @brief 命令处理函数，根据CopeCmdData接收到的命令执行相应的操作
- */
-//static void CmdProcess(void)
-//{
-//	switch(s_cCmd)
-//	{
-//		case 'a':	
-//			if(WitStartAccCali() != WIT_HAL_OK) 
-//				printf("\r\nSet AccCali Error\r\n");
-//			break;
-//		case 'm':	
-//			if(WitStartMagCali() != WIT_HAL_OK) 
-//				printf("\r\nSet MagCali Error\r\n");
-//			break;
-//		case 'e':	
-//			if(WitStopMagCali() != WIT_HAL_OK)
-//				printf("\r\nSet MagCali Error\r\n");
-//			break;
-//		case 'u':	
-//			if(WitSetBandwidth(BANDWIDTH_5HZ) != WIT_HAL_OK) 
-//				printf("\r\nSet Bandwidth Error\r\n");
-//			break;
-//		case 'U':	
-//			if(WitSetBandwidth(BANDWIDTH_256HZ) != WIT_HAL_OK) 
-//				printf("\r\nSet Bandwidth Error\r\n");
-//			break;
-//		case 'B':	
-//			if(WitSetUartBaud(WIT_BAUD_115200) != WIT_HAL_OK) 
-//				printf("\r\nSet Baud Error\r\n");
-//			else 
-//				//Usart2Init(c_uiBaud[WIT_BAUD_115200]);											
-//			break;
-//		case 'b':	
-//			if(WitSetUartBaud(WIT_BAUD_9600) != WIT_HAL_OK)
-//				printf("\r\nSet Baud Error\r\n");
-//			else 
-//				//Usart2Init(c_uiBaud[WIT_BAUD_9600]);												
-//			break;
-//		case 'R':	
-//			if(WitSetOutputRate(RRATE_10HZ) != WIT_HAL_OK) 
-//				printf("\r\nSet Rate Error\r\n");
-//			break;
-//		case 'r':	
-//			if(WitSetOutputRate(RRATE_1HZ) != WIT_HAL_OK) 
-//				printf("\r\nSet Rate Error\r\n");
-//			break;
-//		case 'C':	
-//			if(WitSetContent(RSW_ACC|RSW_GYRO|RSW_ANGLE|RSW_MAG) != WIT_HAL_OK) 
-//				printf("\r\nSet RSW Error\r\n");
-//			break;
-//		case 'c':	
-//			if(WitSetContent(RSW_ACC) != WIT_HAL_OK) 
-//				printf("\r\nSet RSW Error\r\n");
-//			break;
-//		case 'h':
-//			ShowHelp();
-//			break;
-//	}
-//	s_cCmd = 0xff;
-//}
-
-/**
  * @brief 串口发送函数定义
  *
  * @param p_data 发送内容指针
@@ -196,7 +134,7 @@ void SensorUartSend(uint8_t *p_data, uint32_t uiSize)
 
  void Delayms(uint16_t ucMs)
 {
-    osDelay(ucMs);
+    osDelay(pdMS_TO_TICKS(ucMs));
 }
 
 
@@ -310,27 +248,27 @@ void IMU_Buff_Init(void)
 /**
  * @brief Buff_Full_Judge 判断缓冲区是否写满
  *
- * @return int8_t  0缓冲区未写满  1缓冲区已经写满
+ * @return _RET_TYPE  RET_ERROR缓冲区未写满  RET_OK缓冲区已经写满
  */
-int8_t IMU_Buff_Full_Judge(void)
+_RET_TYPE IMU_Buff_Full_Judge(void)
 {
     IMU_LOG("Number of write frames:%d \n\r",IMU_Buff.Write_Frame); 
     if(IMU_Buff.Write_Frame >= FRAME_IN_BUFF)
     {
-        return 1;
+        return RET_OK;
     }
     else
     {
-        return 0;
+        return RET_ERROR;
     }                         
 }
 
 /**
  * @brief Read_Write_Buff_Switch 交换读写缓冲区
  *
- * @return int8_t -1表示读写缓冲区异常  1表示读写缓冲区交换成功
+ * @return _RET_TYPE RET_ERROR表示读写缓冲区异常  RET_OK表示读写缓冲区交换成功
  */
-int8_t IMU_Read_Write_Buff_Switch(void)
+_RET_TYPE IMU_Read_Write_Buff_Switch(void)
 {
     float *read_acc_buff;        
     float *write_acc_buff;
@@ -352,7 +290,7 @@ int8_t IMU_Read_Write_Buff_Switch(void)
     if(IMU_Buff.Write_AccBuff == NULL || IMU_Buff.Read_AccBuff == NULL)         //读写缓冲区不指向NULL
     {
         IMU_LOG("Read write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     }
     read_gyro_buff = IMU_Buff.Read_AccBuff;
     write_gyro_buff = IMU_Buff.Write_AccBuff;
@@ -360,7 +298,7 @@ int8_t IMU_Read_Write_Buff_Switch(void)
     if(IMU_Buff.Write_GyroBuff == NULL || IMU_Buff.Read_GyroBuff == NULL)         //读写缓冲区不指向NULL
     {
         IMU_LOG("Read write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     }
     read_acc_buff = IMU_Buff.Read_GyroBuff;
     write_acc_buff = IMU_Buff.Write_GyroBuff;
@@ -368,7 +306,7 @@ int8_t IMU_Read_Write_Buff_Switch(void)
     if(IMU_Buff.Write_AngleBuff == NULL || IMU_Buff.Read_AngleBuff == NULL)         //读写缓冲区不指向NULL
     {
         IMU_LOG("Read write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     }
     read_angle_buff = IMU_Buff.Read_AngleBuff;
     write_angle_buff = IMU_Buff.Write_AngleBuff;
@@ -376,7 +314,7 @@ int8_t IMU_Read_Write_Buff_Switch(void)
     if(IMU_Buff.Write_MagBuff == NULL || IMU_Buff.Read_MagBuff == NULL)         //读写缓冲区不指向NULL
     {
         IMU_LOG("Read write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     }
     read_mag_buff = IMU_Buff.Read_MagBuff;
     write_mag_buff = IMU_Buff.Write_MagBuff;
@@ -384,7 +322,7 @@ int8_t IMU_Read_Write_Buff_Switch(void)
     if(IMU_Buff.Write_AtmoBuff == NULL || IMU_Buff.Read_AtmoBuff == NULL)         //读写缓冲区不指向NULL
     {
         IMU_LOG("Read write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     }
     read_atmo_buff = IMU_Buff.Read_AtmoBuff;
     write_atmo_buff = IMU_Buff.Write_AtmoBuff;
@@ -392,7 +330,7 @@ int8_t IMU_Read_Write_Buff_Switch(void)
     if(IMU_Buff.Write_HightBuff == NULL || IMU_Buff.Read_HightBuff == NULL)         //读写缓冲区不指向NULL
     {
         IMU_LOG("Read write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     }
     read_hight_buff = IMU_Buff.Read_HightBuff;
     write_hight_buff = IMU_Buff.Write_HightBuff;
@@ -400,7 +338,7 @@ int8_t IMU_Read_Write_Buff_Switch(void)
     if(IMU_Buff.Write_QuatBuff == NULL || IMU_Buff.Read_QuatBuff == NULL)         //读写缓冲区不指向NULL
     {
         IMU_LOG("Read write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     }
     read_quat_buff = IMU_Buff.Read_QuatBuff;
     write_quat_buff = IMU_Buff.Write_QuatBuff;
@@ -408,7 +346,7 @@ int8_t IMU_Read_Write_Buff_Switch(void)
     if(IMU_Buff.Write_Time_Buff == NULL || IMU_Buff.Read_Time_Buff == NULL)         //读写缓冲区不指向NULL
     {
         IMU_LOG("Read write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     }
     read_timestamp_buff = IMU_Buff.Read_Time_Buff;
     write_timestamp_buff = IMU_Buff.Write_Time_Buff;
@@ -434,23 +372,23 @@ int8_t IMU_Read_Write_Buff_Switch(void)
     /* 设置读写帧 */
     IMU_Buff.Write_Frame = 0;
    
-    return 1;                     
+    return RET_OK;                     
 }
 
 /**
  * @brief Put_into_Buff 将采集出来的IMU数据存入相应缓冲区
  *
  * @param float *acc, float *gyro, float *angle, int16_t *mag, int32_t atom, int32_t hight, float *quat
- * @return int8_t -1 存入Buff失败      1 存入Buff成功
+ * @return _RET_TYPE RET_ERROR 存入Buff失败      RET_OK 存入Buff成功
  */
-int8_t IMU_Put_into_Buff(float *acc, float *gyro, float *angle, int16_t *mag, int32_t atom, int32_t hight, float *quat)
+_RET_TYPE IMU_Put_into_Buff(float *acc, float *gyro, float *angle, int16_t *mag, int32_t atom, int32_t hight, float *quat)
 {
     uint8_t i = 0;
     /* 判断写缓冲区状态是否异常 */
     if(IMU_Buff.Read_AccBuff == NULL || IMU_Buff.Read_GyroBuff == NULL || IMU_Buff.Read_AngleBuff == NULL || IMU_Buff.Read_MagBuff == NULL)         //写缓冲区不指向NULL
     {
         IMU_LOG("Write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     } 
     /* 向缓冲区写入数据 */  
     for(i=0; i<3; i++)
@@ -468,7 +406,7 @@ int8_t IMU_Put_into_Buff(float *acc, float *gyro, float *angle, int16_t *mag, in
     }                
     IMU_Buff.Write_Frame++;                
 
-    return 1;                     
+    return RET_OK;                     
 }
 
 /**

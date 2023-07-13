@@ -82,6 +82,7 @@ static inline void Column_Select(uint8_t Column);
 static inline void Channel_Disable(void);
 int8_t Singal_Point_Sampling(uint8_t Row, uint8_t Column, uint16_t *buf);
 int8_t Array_Scanning_Sampling(void);
+_RET_TYPE Instr_Array_Sampling(void);
 
 /* 足底压力传感器数据处理 */
 void Plantar_Buff_Init(void);

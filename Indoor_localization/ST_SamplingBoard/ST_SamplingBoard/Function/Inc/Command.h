@@ -40,6 +40,7 @@ typedef int8_t _RET_TYPE;
 
 /* 系统控制指令定义 */
 #define SPP_TRAN        0x10
+#define SYS_TASK        0x11
 
 /* 压力传感器控制指令定义 */
 #define PLA_SAMP        0x10
@@ -66,11 +67,14 @@ typedef int8_t _RET_TYPE;
 _RET_TYPE Command_Parsing(uint8_t *RX_Buf);
 
 _RET_TYPE Change_Bluetooth_Transfer_State(_COMM_TYPE set);
+_RET_TYPE SYS_Task_RunTimeStats(_COMM_TYPE set);
 
 _RET_TYPE Change_Plantar_Sampling_State(_COMM_TYPE set);
 _RET_TYPE Change_Plantar_SamplingMode(_COMM_TYPE set);
 _RET_TYPE Change_Plantar_Selection(_COMM_TYPE set);
 _RET_TYPE Change_Plantar_SamplingRate(_COMM_TYPE set);
+_RET_TYPE Plantar_Array_Sampling(_COMM_TYPE set); 
+_RET_TYPE Plantar_Single_Sampling(_COMM_TYPE set);
 
 _RET_TYPE Change_IMU_Sampling_State(_COMM_TYPE set);
 _RET_TYPE Change_IMU_Content(_COMM_TYPE set);

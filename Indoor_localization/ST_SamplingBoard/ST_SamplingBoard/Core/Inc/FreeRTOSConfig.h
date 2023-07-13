@@ -168,4 +168,14 @@ standard names. */
 /* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
 /* USER CODE END Defines */
 
+/* 任务运行时间统计功能 */
+extern volatile unsigned long long FreeRTOSRunTimeTicks;
+void ConfigureTimerForRunTimeStats(void);
+
+#define configGENERATE_RUN_TIME_STATS	1               //为1时启用运行时间统计功能
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()  ConfigureTimerForRunTimeStats()
+#define portGET_RUN_TIME_COUNTER_VALUE()	FreeRTOSRunTimeTicks
+#define configUSE_STATS_FORMATTING_FUNCTIONS	1
+
+
 #endif /* FREERTOS_CONFIG_H */
