@@ -35,10 +35,6 @@ extern "C" {
 	#define USART_LOG(...)
 #endif
 
-extern UART_HandleTypeDef huart1;
-extern UART_HandleTypeDef huart2;
-extern UART_HandleTypeDef huart6;
-
 /*-------------------------------- 串口GPIO定义 ----------------------------------*/
 /* 串口1的GPIO  PA9, PA10   RS323 DB9接口 */
 #define USART1_CLK_ENABLE()              __HAL_RCC_USART1_CLK_ENABLE()
@@ -88,19 +84,21 @@ extern UART_HandleTypeDef huart6;
 /* 定义串口波特率和FIFO缓冲区大小，分为发送缓冲区和接收缓冲区, 支持全双工 */
 #if UART1_FIFO_EN == 1
 	#define UART1_BAUD			460800
-	#define UART1_TX_BUF_SIZE	2*1024
-	#define UART1_RX_BUF_SIZE	2*1024
+	#define UART1_TX_BUF_SIZE	4*1024
+	#define UART1_RX_BUF_SIZE	4*1024   
 #endif
 #if UART2_FIFO_EN == 1
 	#define UART2_BAUD			115200
-	#define UART2_TX_BUF_SIZE	2*1024
-	#define UART2_RX_BUF_SIZE	4*1024
+	#define UART2_TX_BUF_SIZE	1*1024
+	#define UART2_RX_BUF_SIZE	6*1024
 #endif
 #if UART6_FIFO_EN == 1
 	#define UART6_BAUD			460800
-	#define UART6_TX_BUF_SIZE	8*1024
-	#define UART6_RX_BUF_SIZE	2*1024
+	#define UART6_TX_BUF_SIZE	6*1024
+	#define UART6_RX_BUF_SIZE	1*1024
 #endif
+
+
 
 /* 定义端口号 */
 typedef enum
@@ -126,8 +124,6 @@ typedef struct
 	__IO uint16_t usRxRead;		/* 接收缓冲区读指针 */
 	__IO uint16_t usRxCount;	/* 还未读取的新数据个数 */
 
-	void (*SendBefor)(void); 	/* 开始发送之前的回调函数指针（主要用于RS485切换到发送模式） */
-	void (*SendOver)(void); 	/* 发送完毕的回调函数指针（主要用于RS485将发送模式切换为接收模式） */
 	void (*ReciveNew)(uint8_t _byte);	/* 串口收到数据的回调函数指针 */
 	uint8_t Sending;			/* 正在发送中 */
 }UART_T;
@@ -141,7 +137,11 @@ typedef struct
 }UART_RXBUF;
 
 
-/* USER CODE BEGIN Prototypes */
+/*
+*********************************************************************************************************
+*	                                      函数声明
+*********************************************************************************************************
+*/
 void bsp_InitUart(void);
 void comSendBuf(COM_PORT_E _ucPort, uint8_t *_ucaBuf, uint16_t _usLen);
 void comSendChar(COM_PORT_E _ucPort, uint8_t _ucByte);
@@ -162,7 +162,11 @@ int8_t Uart_Load_Command(void);
 void SPP_RxBuf_Init(void);
 void SPP_RxBuf_Putin(uint8_t *_pByte);
 int8_t SPP_Load_Command(void);
-    
+
+#if UART6_FIFO_EN == 0u
+void SPP_SendString(uint8_t *str, uint16_t size);
+#endif
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

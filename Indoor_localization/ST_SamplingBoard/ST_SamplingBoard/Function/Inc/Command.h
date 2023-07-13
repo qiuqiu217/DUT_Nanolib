@@ -20,6 +20,7 @@
 #include "main.h"
 
 typedef uint8_t _COMM_TYPE;
+typedef int8_t _RET_TYPE;
 /*
 *********************************************************************************************************
 *	                                      宏定义
@@ -50,13 +51,33 @@ typedef uint8_t _COMM_TYPE;
 
 /* IMU控制指令定义 */
 #define IMU_SAMP        0x10
+#define IMU_OUT         0x11
+#define IMU_RATE        0x12
+#define IMU_BAUD        0x13
+#define IMU_BW          0x14
+#define IMU_ACC         0x15
+#define IMU_MAG         0x16
 
-int8_t Command_Parsing(uint8_t *RX_Buf);
-int8_t Change_Bluetooth_Transfer_State(_COMM_TYPE set);
-int8_t Change_Plantar_Sampling_State(_COMM_TYPE set);
-int8_t Change_IMU_Sampling_State(_COMM_TYPE set);
-int8_t Change_Plantar_SamplingMode(_COMM_TYPE set);
-int8_t Change_Plantar_Selection(_COMM_TYPE set);
-int8_t Change_Plantar_SamplingRate(_COMM_TYPE set);
+/*
+*********************************************************************************************************
+*	                                      函数声明
+*********************************************************************************************************
+*/
+_RET_TYPE Command_Parsing(uint8_t *RX_Buf);
+
+_RET_TYPE Change_Bluetooth_Transfer_State(_COMM_TYPE set);
+
+_RET_TYPE Change_Plantar_Sampling_State(_COMM_TYPE set);
+_RET_TYPE Change_Plantar_SamplingMode(_COMM_TYPE set);
+_RET_TYPE Change_Plantar_Selection(_COMM_TYPE set);
+_RET_TYPE Change_Plantar_SamplingRate(_COMM_TYPE set);
+
+_RET_TYPE Change_IMU_Sampling_State(_COMM_TYPE set);
+_RET_TYPE Change_IMU_Content(_COMM_TYPE set);
+_RET_TYPE Change_IMU_OutputRate(_COMM_TYPE set);
+_RET_TYPE Change_IMU_Baud(_COMM_TYPE set);
+_RET_TYPE Change_IMU_Bandwidth(_COMM_TYPE set);
+_RET_TYPE Change_IMU_AccCali(_COMM_TYPE set);
+_RET_TYPE Change_IMU_MagCali(_COMM_TYPE set);
 
 #endif

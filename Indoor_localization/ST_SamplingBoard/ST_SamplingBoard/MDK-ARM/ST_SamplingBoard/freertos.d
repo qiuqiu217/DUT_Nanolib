@@ -12,9 +12,10 @@ st_samplingboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/
 st_samplingboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 st_samplingboard\freertos.o: ../Core/Inc/main.h
 st_samplingboard\freertos.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-st_samplingboard\freertos.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 st_samplingboard\freertos.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 st_samplingboard\freertos.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+st_samplingboard\freertos.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+st_samplingboard\freertos.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 st_samplingboard\freertos.o: ../Core/Inc/stm32f4xx_hal_conf.h
 st_samplingboard\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
@@ -69,11 +70,12 @@ st_samplingboard\freertos.o: ../Core/Inc/usart.h
 st_samplingboard\freertos.o: ../Core/Inc/adc.h
 st_samplingboard\freertos.o: ../Core/Inc/tim.h
 st_samplingboard\freertos.o: ..\Function\Inc\Plantar.h
-st_samplingboard\freertos.o: ..\Function\Inc\Command.h
-st_samplingboard\freertos.o: ..\Function\Inc\cJSON.h
 st_samplingboard\freertos.o: ..\Function\Inc\IMU.h
 st_samplingboard\freertos.o: ..\Function\Inc\REG.h
 st_samplingboard\freertos.o: ..\Function\Inc\wit_c_sdk.h
+st_samplingboard\freertos.o: ..\Function\Inc\SPP.h
+st_samplingboard\freertos.o: ..\Function\Inc\Command.h
+st_samplingboard\freertos.o: ..\Function\Inc\cJSON.h
 st_samplingboard\freertos.o: ..\Function\Inc\Solution.h
 st_samplingboard\freertos.o: ..\Function\Inc\Function.h
 st_samplingboard\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h

@@ -17,14 +17,14 @@
 #ifndef PLANTAR_H
 #define PLANTAR_H
 
-/* 足底压力传感器阵列数量配置 */
-#define SENSOR_NUM_TOTAL 45 
-#define SENSOR_NUM_ROW 10
-#define SENSOR_NUM_COLUMN 6
-
 #include "main.h"
 
-
+typedef int8_t _RET_TYPE;
+/*
+*********************************************************************************************************
+*	                                   宏定义
+*********************************************************************************************************
+*/
 /* LOG打印设置 */
 #if 0
 	#define PLANTAR_LOG     printf
@@ -32,6 +32,16 @@
 	#define PLANTAR_LOG(...)
 #endif
 
+/* 足底压力传感器阵列数量配置 */
+#define SENSOR_NUM_TOTAL 45 
+#define SENSOR_NUM_ROW 10
+#define SENSOR_NUM_COLUMN 6
+
+/*
+*********************************************************************************************************
+*	                                      数据结构定义
+*********************************************************************************************************
+*/
 /* 压力传感器采集设置结构体 */
 typedef struct
 {
@@ -47,6 +57,18 @@ typedef struct
 *	                                      函数声明
 *********************************************************************************************************
 */
+/**
+ * @brief nop_delay
+ */
+void inline nop_delay(uint8_t num)
+{
+    while(num)
+    {
+        __nop();
+        num--;
+    }
+}
+
 /* 足底压力传感器采集设置 */
 void Plantar_SettingsInit(void);
 int8_t Plantar_ChannelJudge(uint8_t Row, uint8_t Column);

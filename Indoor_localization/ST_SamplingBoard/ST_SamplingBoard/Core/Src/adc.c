@@ -52,7 +52,7 @@ void bsp_InitADC1(void)
     LL_GPIO_Init(ADC_GPIO, &GPIO_InitStruct);
 
     /* ADC1 interrupt Init */
-    NVIC_SetPriority(ADC_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),5, 0));
+    NVIC_SetPriority(ADC_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),3, 0));
     NVIC_EnableIRQ(ADC_IRQn);
 
     /* USER CODE BEGIN ADC1_Init 1 */

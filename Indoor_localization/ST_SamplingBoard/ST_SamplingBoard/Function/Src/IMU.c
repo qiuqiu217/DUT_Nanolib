@@ -24,9 +24,10 @@
 /* IMU数据及命令标志位 */
 volatile uint16_t s_cDataUpdate;
 volatile char s_cCmd;
+/* IMU串口通讯波特率列表 */
 const uint32_t c_uiBaud[10] = {0,4800, 9600, 19200, 38400, 57600, 115200, 230400, 256000, 460800};
-IMU_Buff_TypeDef IMU_Buff;                      //惯性传感器Buff结构体声明
-
+/* 惯性传感器Buff结构体声明 */
+IMU_Buff_TypeDef IMU_Buff;
 /* IMU数据缓冲区变量声明 */
 float IMU_Accelerated_Buff_1[3*FRAME_IN_BUFF];              //IMU加速度Buff1
 float IMU_Accelerated_Buff_2[3*FRAME_IN_BUFF];              //IMU加速度Buff2
@@ -46,6 +47,12 @@ float IMU_Quaternion_Buff_2[4*FRAME_IN_BUFF];               //IMU四元数Buff2
 uint32_t IMU_Time_Stamp_1[FRAME_IN_BUFF];
 uint32_t IMU_Time_Stamp_2[FRAME_IN_BUFF];
 
+
+/*
+*********************************************************************************************************
+*	                                      函数定义
+*********************************************************************************************************
+*/
 /**
  * @brief IMU_Init  十轴惯性传感器初始化
  *
@@ -471,3 +478,5 @@ void IMU_TimeStamp(void)
 {
     *(IMU_Buff.Write_Time_Buff + IMU_Buff.Write_Frame) = Get_TimeStamp();
 }
+
+

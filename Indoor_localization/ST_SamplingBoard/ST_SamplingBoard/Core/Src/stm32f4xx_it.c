@@ -55,8 +55,6 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern UART_HandleTypeDef huart1;
-extern UART_HandleTypeDef huart2;
 extern TIM_HandleTypeDef htim1;
 
 /* USER CODE BEGIN EV */
@@ -190,45 +188,45 @@ void TIM1_UP_TIM10_IRQHandler(void)
     /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
 }
 
-/**
-  * @brief This function handles TIM2 global interrupt.
-  */
-void TIM2_IRQHandler(void)
-{
-    /* USER CODE BEGIN TIM2_IRQn 0 */
-	if(LL_TIM_IsActiveFlag_UPDATE(TIM2))
-	{
-	}
-	LL_TIM_ClearFlag_UPDATE(TIM2);
-    /* USER CODE END TIM2_IRQn 0 */
-    /* USER CODE BEGIN TIM2_IRQn 1 */
+///**
+//  * @brief This function handles TIM2 global interrupt.
+//  */
+//void TIM2_IRQHandler(void)
+//{
+//    /* USER CODE BEGIN TIM2_IRQn 0 */
+//	if(LL_TIM_IsActiveFlag_UPDATE(TIM2))
+//	{
+//	}
+//	LL_TIM_ClearFlag_UPDATE(TIM2);
+//    /* USER CODE END TIM2_IRQn 0 */
+//    /* USER CODE BEGIN TIM2_IRQn 1 */
 
-    /* USER CODE END TIM2_IRQn 1 */
+//    /* USER CODE END TIM2_IRQn 1 */
 
-}
+//}
 
 
-/**
-  * @brief  This function handles external line 13 interrupt request.
-  * @param  None
-  * @retval None
-  */
-void EXTI9_5_IRQHandler(void)
-{
-    /* Manage Flags */
-    if(LL_EXTI_IsActiveFlag_0_31(SPPSTATE_EXTI_LINE) != RESET)
-    {
-      	LL_EXTI_ClearFlag_0_31(SPPSTATE_EXTI_LINE);
-    }
-	if(LL_GPIO_IsInputPinSet(SPPSTATE_GPIO,SPPSTATE_PIN) == RESET)
-	{
-		printf("spp connect!! \r\n");
-	}
-    else
-    {
-        printf("spp disconnect!! \r\n");
-    }
-}
+///**
+//  * @brief  This function handles external line 13 interrupt request.
+//  * @param  None
+//  * @retval None
+//  */
+//void EXTI9_5_IRQHandler(void)
+//{
+//    /* Manage Flags */
+//    if(LL_EXTI_IsActiveFlag_0_31(SPPSTATE_EXTI_LINE) != RESET)
+//    {
+//      	LL_EXTI_ClearFlag_0_31(SPPSTATE_EXTI_LINE);
+//    }
+//	if(LL_GPIO_IsInputPinSet(SPPSTATE_GPIO,SPPSTATE_PIN) == RESET)
+//	{
+//		printf("spp connect!! \r\n");
+//	}
+//    else
+//    {
+//        printf("spp disconnect!! \r\n");
+//    }
+//}
 
 /* USER CODE BEGIN 1 */
 

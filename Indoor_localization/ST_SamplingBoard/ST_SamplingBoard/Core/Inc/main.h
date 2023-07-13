@@ -28,20 +28,20 @@ extern "C" {
 
 /*
 *********************************************************************************************************
-*                                         标准库
+*                                          标准库
 *********************************************************************************************************
 */
 #include <stdio.h>
-#include <stdbool.h>
 #include <string.h>
 #include <math.h>
+#include <stdlib.h>
+#include <stdbool.h>
 /*
 *********************************************************************************************************
 *                                        HAL库及LL库
 *********************************************************************************************************
 */
 #include "stm32f4xx_hal.h"
-
 #include "stm32f4xx_ll_adc.h"
 #include "stm32f4xx_ll_tim.h"
 #include "stm32f4xx_ll_system.h"
@@ -56,7 +56,7 @@ extern "C" {
 #include "stm32f4xx_ll_rtc.h"
 /*
 *********************************************************************************************************
-*                                         RTOS
+*                                           RTOS
 *********************************************************************************************************
 */
 #include "FreeRTOS.h"
@@ -66,7 +66,7 @@ extern "C" {
 #include "event_groups.h"
 /*
 *********************************************************************************************************
-*                                          BSP
+*                                           BSP
 *********************************************************************************************************
 */
 #include "gpio.h"
@@ -79,12 +79,18 @@ extern "C" {
 *                                        FUNCTION
 *********************************************************************************************************
 */
-#include "Plantar.h"
-#include "Command.h"
-#include "IMU.h"                /* 惯性传感器 */
-#include "Solution.h"
-#include "Function.h"
+#include "Plantar.h"            //足底压力传感器
+#include "IMU.h"                //惯性传感器
+#include "SPP.h"                //蓝牙串口
+#include "Command.h"            //指令处理
+#include "Solution.h"           //数据处理解析
+#include "Function.h"           //功能函数
 
+/*
+*********************************************************************************************************
+*	                                   系统相关宏定义
+*********************************************************************************************************
+*/
 /* LOG打印设置 */
 #if 0
 	#define TASK_LOG     printf
@@ -109,10 +115,9 @@ extern "C" {
 #define IMU_COM     COM2
 
 /* Debug串口接收缓冲区大小 */
-#define RX_BUFF_SIZE    256
+#define RX_BUFF_SIZE            256
 /* 每个Buff储存多少帧数据 */
 #define FRAME_IN_BUFF           10
-
 
 /* 压力传感器阵列采集模式定义 */
 #define ARRAY_SAMPLINGMODE              0u       //传感阵列循环采样
@@ -122,15 +127,6 @@ extern "C" {
 /* Debug命令消息定义 */
 #define DEBUG_UART_COMMAND              0u       //Debug串口接收到命令
 #define BLUETOOTH_COMMAND               1u       //蓝牙串口接收到命令
-/* 数据处理消息定义 */
-#define PRESSURE_SOLUTION               0u       //进行压力数据处理
-#define IMU_SOLUTION                    1u       //进行IMU数据处理
-/* 数据发送消息定义 */
-#define PRESSURE_TRANSFER               0u       //进行压力数据发送
-#define IMU_TRANSFER                    1u       //进行IMU数据发送
-/* 数据发送完成消息定义 */
-#define PRESSURE_DONE                   0u       //进行压力数据发送完成
-#define IMU_DONE                        1u       //进行IMU数据发送完成
 /* 指令采样消息定义 */
 #define SINGLE_INSTRUCTION              0u       //进行压力数据发送完成
 #define ARRAY_INSTRUCTION               1u       //进行IMU数据发送完成
@@ -142,7 +138,11 @@ extern "C" {
 #define BLUETOOTH_TRANSFER              (1 << 1)
 #define BLUETOOTH_START_TRANSFER        (BLUETOOTH_CONNECT | BLUETOOTH_TRANSFER)
 
-
+/*
+*********************************************************************************************************
+*	                                      数据结构定义
+*********************************************************************************************************
+*/
 /* 压力传感器阵列数据缓冲区结构体定义 */
 typedef struct     /* 缓冲区结构体定义 */
 {
@@ -175,15 +175,12 @@ typedef struct     /* 缓冲区结构体定义 */
     uint8_t Write_Frame;        //写入帧数
 } IMU_Buff_TypeDef;
 
-
-/* USER CODE BEGIN EFP */
-
-/* USER CODE END EFP */
-
-/* Private defines -----------------------------------------------------------*/
-/* USER CODE BEGIN Private defines */
+/*
+*********************************************************************************************************
+*	                                      函数声明
+*********************************************************************************************************
+*/
 void Error_Handler(void);
-/* USER CODE END Private defines */
 
 /**
 * @brief Get_TimeStamp 获取系统运行时间戳

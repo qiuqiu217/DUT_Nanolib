@@ -414,11 +414,6 @@
               <FilePath>../Core/Src/adc.c</FilePath>
             </File>
             <File>
-              <FileName>i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/i2c.c</FilePath>
-            </File>
-            <File>
               <FileName>tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/tim.c</FilePath>
@@ -454,11 +449,6 @@
               <FilePath>..\Function\Src\Plantar.c</FilePath>
             </File>
             <File>
-              <FileName>cJSON.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Function\Src\cJSON.c</FilePath>
-            </File>
-            <File>
               <FileName>Command.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Function\Src\Command.c</FilePath>
@@ -482,6 +472,11 @@
               <FileName>Function.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Function\Src\Function.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPP.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Function\Src\SPP.c</FilePath>
             </File>
           </Files>
         </Group>

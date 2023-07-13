@@ -24,12 +24,12 @@
 *	                                      函数声明
 *********************************************************************************************************
 */
-float u8Arry_float(uint8_t *data, bool key);        //uint8_t数组转化为float
+float u8Arry_float(uint8_t *data, bool key);                        //uint8_t数组转化为float
 void float_u8Arry(uint8_t *u8Arry, float *floatdata, bool key);     //float转化为uint8_t数组
-void u32_u8Arry(uint32_t u32data, uint8_t *u8Arry);         //uint32_t转化为uint8_t数组
-uint32_t u8Arry_u32(uint8_t *u8Arry);           //uint8_t数组转化为uint32_t
-void u16_u8Arry(uint16_t u16data, uint8_t *u8Arry);         //uint16_t转化为uint8_t数组
-uint16_t u8Arry_u16(uint8_t *u8Arry);       //uint8_t数组转化为uint16_t
+void u32_u8Arry(uint32_t u32data, uint8_t *u8Arry);                 //uint32_t转化为uint8_t数组
+uint32_t u8Arry_u32(uint8_t *u8Arry);                               //uint8_t数组转化为uint32_t
+void u16_u8Arry(uint16_t u16data, uint8_t *u8Arry);                 //uint16_t转化为uint8_t数组
+uint16_t u8Arry_u16(uint8_t *u8Arry);                               //uint8_t数组转化为uint16_t
 
 
 #endif

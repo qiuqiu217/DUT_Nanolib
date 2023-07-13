@@ -16,13 +16,21 @@
 
 #include "Plantar.h"
 
+
+/*
+*********************************************************************************************************
+*	                                      变量声明
+*********************************************************************************************************
+*/
+/* RTOS相关变量 */
+extern osMutexId_t GV_MutexHandle;      //全局变量互斥锁
+
+extern PLANTAR_S Plantar;                       //压力传感器采集结构体
+
 /* 压力传感器阵列行列数定义 */
 const uint8_t Sensor_Num_Row = SENSOR_NUM_ROW;       //压力传感器阵列行数
 const uint8_t Sensor_Num_Column[SENSOR_NUM_ROW][2] = { {0,2}, {0,3}, {0,3}, {0,3}, {0,3}, {0,4}, {0,5}, {0,5}, {1,5}, {2,5} };      //压力传感器阵列列数
 const uint16_t Plantar_Rate_Settings[10] = {5,10,15,20,50,100,200,500,1000,2000};      //可设置采样延时
-
-extern osMutexId_t GV_MutexHandle;      //全局变量互斥锁
-extern PLANTAR_S Plantar;                       //压力传感器采集结构体
 
 Plantar_Buff_TypeDef Plantar_Buff;              //压力传感器阵列Buff结构体声明
 
@@ -33,18 +41,11 @@ uint16_t Plantar_Voltage_Buff_2[SENSOR_NUM_TOTAL*FRAME_IN_BUFF];          //压力
 uint32_t Plantar_Time_Stamp_1[FRAME_IN_BUFF];
 uint32_t Plantar_Time_Stamp_2[FRAME_IN_BUFF];
 
-/**
- * @brief nop_delay
- */
-void inline nop_delay(uint8_t num)
-{
-    while(num)
-    {
-        __nop();
-        num--;
-    }
-}
-
+/*
+*********************************************************************************************************
+*	                                      函数定义
+*********************************************************************************************************
+*/
 /**
  * @brief Plantar_SettingsInit 足底压力传感器采集设置初始化
  */
@@ -54,6 +55,7 @@ void Plantar_SettingsInit(void)
     Plantar.Selection_Row = 0;
     Plantar.Selection_Column = 0; 
     Plantar.Sampling_Delay = Plantar_Rate_Settings[1];
+    Channel_Disable();
 }
 
 /**
@@ -61,23 +63,23 @@ void Plantar_SettingsInit(void)
  * 
  * @param uint8_t Line 需要选通的行
  * @param uint8_t Column 需要选通的列
- * @return int8_t -1 输入选通行列错误      1 输入选通行列正确
+ * @return _RET_TYPE RET_ERROR 输入选通行列错误      RET_OK 输入选通行列正确
  */
-int8_t Plantar_ChannelJudge(uint8_t Row, uint8_t Column)
+_RET_TYPE Plantar_ChannelJudge(uint8_t Row, uint8_t Column)
 {
     if(Row >= Sensor_Num_Row)     //判断输入行数据是否正确
     {
         PLANTAR_LOG("Channel select error \n\r");       //输入行数据错误
-        return -1;
+        return RET_ERROR;
     }
     if(Column < Sensor_Num_Column[Row][0] || Column > Sensor_Num_Column[Row][1])      //判断输入列数据是否正确
     {
         PLANTAR_LOG("Channel select error \n\r");       //输入列数据错误
-        return -1;
+        return RET_ERROR;
     }
     else
     {
-        return 1;
+        return RET_OK;
     }     
 }
 
@@ -86,11 +88,11 @@ int8_t Plantar_ChannelJudge(uint8_t Row, uint8_t Column)
  * 
  * @param uint8_t Line 需要选通的行
  * @param uint8_t Column 需要选通的列
- * @return int8_t -1 修改选通项失败      1 修改选通项成功
+ * @return _RET_TYPE RET_ERROR 修改选通项失败      RET_OK 修改选通项成功
  */
-int8_t Plantar_ChannelChange(uint8_t Row, uint8_t Column)
+_RET_TYPE Plantar_ChannelChange(uint8_t Row, uint8_t Column)
 {
-    int8_t ret = 1;
+    _RET_TYPE ret = RET_OK;
     
     if(GV_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
     {
@@ -104,13 +106,13 @@ int8_t Plantar_ChannelChange(uint8_t Row, uint8_t Column)
         else
         {
             Command_LOG("Application for mutex failed \n\r");      //申请全局变量修改互斥锁失败
-            ret =  0;
+            ret =  RET_ERROR;
         }
     }
     else
     {
         Command_LOG("The mutex not created \n\r");      //全局变量修改互斥锁未创建
-        ret =  0;
+        ret =  RET_ERROR;
     }
     return ret;
 }
@@ -118,12 +120,12 @@ int8_t Plantar_ChannelChange(uint8_t Row, uint8_t Column)
 /**
  * @brief Plantar_Mode_Change 改变压力传感器阵列采集模式
  * @param uint8_t Mode 采集模式
- * @return int8_t -1 修改采集模式失败      1 修改采集模式成功
+ * @return _RET_TYPE RET_ERROR 修改采集模式失败      RET_OK 修改采集模式成功
  */
-int8_t Plantar_Mode_Change(uint8_t Mode)
+_RET_TYPE Plantar_Mode_Change(uint8_t Mode)
 {
-    char Print_buff[30];
-    int8_t ret = 1;
+    char print_buff[30];
+    _RET_TYPE ret = RET_OK;
     
     if(GV_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
     {
@@ -132,29 +134,29 @@ int8_t Plantar_Mode_Change(uint8_t Mode)
             if(Plantar.Sampling_Mode <= INSTRUCTIONS_SINGLEMODE)
             {
                 Plantar.Sampling_Mode = Mode;
-                if(Mode == ARRAY_SAMPLINGMODE)              sprintf(Print_buff,"Array Samplingmode");
-                else if(Mode == SINGLEPOINT_SAMPLINGMODE)   sprintf(Print_buff,"Singlepoint Samplingmode");
-                else if(Mode == INSTRUCTIONS_ARRAYMODE)     sprintf(Print_buff,"Instructions Array Samplingmode");
-                else if(Mode == INSTRUCTIONS_SINGLEMODE)    sprintf(Print_buff,"Instructions Singlepoint Samplingmode");      
-                PLANTAR_LOG("Sampling Mode:%s \n\r", Print_buff);
+                if(Mode == ARRAY_SAMPLINGMODE)              sprintf(print_buff,"Array Samplingmode");
+                else if(Mode == SINGLEPOINT_SAMPLINGMODE)   sprintf(print_buff,"Singlepoint Samplingmode");
+                else if(Mode == INSTRUCTIONS_ARRAYMODE)     sprintf(print_buff,"Instructions Array Samplingmode");
+                else if(Mode == INSTRUCTIONS_SINGLEMODE)    sprintf(print_buff,"Instructions Singlepoint Samplingmode");      
+                PLANTAR_LOG("Sampling Mode:%s \n\r", print_buff);
             }
             else
             {
                 PLANTAR_LOG("Invalid sampling mode \n\r");
-                ret =  0;
+                ret =  RET_ERROR;
             }
             xSemaphoreGive(GV_MutexHandle);           //释放修改选通项互斥锁
         }
         else
         {
             PLANTAR_LOG("Application for mutex failed \n\r");      //申请全局变量修改互斥锁失败
-            ret =  0;
+            ret =  RET_ERROR;
         }
     }
     else
     {
         PLANTAR_LOG("The mutex not created \n\r");      //全局变量修改互斥锁未创建
-        ret =  0;
+        ret =  RET_ERROR;
     }
     return ret;
 }
@@ -162,11 +164,11 @@ int8_t Plantar_Mode_Change(uint8_t Mode)
 /**
  * @brief Plantar_Rate_Change 改变压力传感器阵列采集模式
  * @param uint8_t Rate 采集速率
- * @return int8_t -1 修改采集模式失败      1 修改采集模式成功
+ * @return _RET_TYPE RET_ERROR 修改采集模式失败      RET_OK 修改采集模式成功
  */
-int8_t Plantar_Rate_Change(uint8_t Rate)
+_RET_TYPE Plantar_Rate_Change(uint8_t Rate)
 {
-    int8_t ret = 1;
+    _RET_TYPE ret = RET_OK;
     
     if(GV_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
     {
@@ -180,20 +182,20 @@ int8_t Plantar_Rate_Change(uint8_t Rate)
             else
             {
                 PLANTAR_LOG("Invalid sampling delay \n\r");
-                ret =  0;
+                ret =  RET_ERROR;
             }
             xSemaphoreGive(GV_MutexHandle);           //释放修改选通项互斥锁
         }
         else
         {
             PLANTAR_LOG("Application for mutex failed \n\r");      //申请全局变量修改互斥锁失败
-            ret =  0;
+            ret =  RET_ERROR;
         }
     }
     else
     {
         PLANTAR_LOG("The mutex not created \n\r");      //全局变量修改互斥锁未创建
-        ret =  0;
+        ret =  RET_ERROR;
     }
     return ret;
 }
@@ -247,40 +249,40 @@ static inline void Channel_Disable(void)
     MUX_SetPin(EN_INH2_GPIO, EN_INH2_PIN, DISABLE);     //低电平-禁用选通器
     MUX_SetPin(EN_INH3_GPIO, EN_INH3_PIN, DISABLE);     //低电平-禁用选通器
 }
-    
+
 /**
  * @brief Singal_Point_Sampling 单点采样
  * @param uint8_t Row  选通行
  * @param uint8_t Column  选通列
  * @param uint16_t *buf  数据存储区域
- * @return int8_t -1 采集失败      1 采集成功
+ * @return _RET_TYPE    RET_ERROR 采集失败      RET_OK 采集成功
  */
-int8_t Singal_Point_Sampling(uint8_t Row, uint8_t Column, uint16_t *buf)
+_RET_TYPE Singal_Point_Sampling(uint8_t Row, uint8_t Column, uint16_t *buf)
 {
     if(buf == NULL)
     {
         PLANTAR_LOG("Invalid memory address");
-        return -1;
+        return RET_ERROR;
     }
     if((Row >Sensor_Num_Row) || (Column > Sensor_Num_Column[Row][1]))
     {
         PLANTAR_LOG("Invalid row and column value");
-        return -1;
+        return RET_ERROR;
     }
     Row_Select(Row);
     Column_Select(Column);
-    nop_delay(240);           //模拟信号建立时间
+    nop_delay(200);           //模拟信号建立时间
     *buf = (uint16_t)ADC_OneShot_Read()* (3.3/4096) *1000;
     //Channel_Disable();
-    return 1;
+    return RET_OK;
 }
 
 
 /**
  * @brief Array_Scanning_Sampling 阵列扫描采集
- * @return int8_t -1 采集失败      1 采集成功
+ * @return _RET_TYPE    RET_ERROR 采集失败      RET_OK 采集成功
  */
-int8_t Array_Scanning_Sampling(void)
+_RET_TYPE Array_Scanning_Sampling(void)
 {
     uint8_t i = 0, j = 0, num = 0;
     while(i < Sensor_Num_Row)          //从第一行开始按顺序采集
@@ -290,7 +292,7 @@ int8_t Array_Scanning_Sampling(void)
         {
             Row_Select(i);          //选通对应行列
             Column_Select(j);
-            nop_delay(240);           //模拟信号建立时间
+            nop_delay(200);           //模拟信号建立时间
             *(Plantar_Buff.Write_Buff + Plantar_Buff.Write_Frame*SENSOR_NUM_TOTAL + num) = (uint16_t)ADC_OneShot_Read()* (3.3/4096) *1000;
             num++;
             j++;
@@ -298,7 +300,7 @@ int8_t Array_Scanning_Sampling(void)
         }
         i++;
     }
-    return 1;
+    return RET_OK;
 }
 
 /**
@@ -316,7 +318,7 @@ void Plantar_Buff_Init(void)
 
 /**
  * @brief Plantar_Buff_Init 压力传感器阵列采集数据缓存区
- * @return int8_t  -1缓冲区未写满    1缓冲区已经写满
+ * @return _RET_TYPE  RET_ERROR 缓冲区未写满    RET_OK 缓冲区已经写满
  */
 int8_t Plantar_Buff_Full_Judge(void)
 {
@@ -324,31 +326,32 @@ int8_t Plantar_Buff_Full_Judge(void)
     if(Plantar_Buff.Write_Frame >= FRAME_IN_BUFF)
     {
         PLANTAR_LOG("Plantar buffer overflow");
-        return 1;
+        return RET_OK;
     }
     else
     {
         PLANTAR_LOG("Plantar buffer not overflow");
-        return -1;
+        return RET_ERROR;
     }
 }
 
 /**
  * @brief Read_Write_Buff_Switch 交换读写缓冲区
  *
- * @return int8_t -1表示读写缓冲区异常  1表示读写缓冲区交换成功
+ * @return _RET_TYPE    RET_ERROR 表示读写缓冲区异常      RET_OK 表示读写缓冲区交换成功
  */
-int8_t Plantar_Read_Write_Buff_Switch(void)
+_RET_TYPE Plantar_Read_Write_Buff_Switch(void)
 {
     uint16_t *read_buff;        
     uint16_t *write_buff;
     uint32_t *read_time_buff;        
     uint32_t *write_time_buff;
+    
     /* 判断读写缓冲区状态是否异常 */
     if(Plantar_Buff.Write_Buff == NULL || Plantar_Buff.Read_Buff == NULL)         //读写缓冲区不指向NULL
     {
         PLANTAR_LOG("Read write buffer pointer error \n\r");
-        return -1;       
+        return RET_ERROR;       
     }
     read_buff = Plantar_Buff.Read_Buff;
     write_buff = Plantar_Buff.Write_Buff;
@@ -362,7 +365,7 @@ int8_t Plantar_Read_Write_Buff_Switch(void)
     Plantar_Buff.Write_Time_Buff = read_time_buff;
     /* 设置数据计数值 */
     Plantar_Buff.Write_Frame = 0;
-    return 1;                     
+    return RET_OK;                     
 }
 
 /**

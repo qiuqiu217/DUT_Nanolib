@@ -21,10 +21,13 @@
 *	                                      变量声明
 *********************************************************************************************************
 */
+/* RTOS相关变量 */
+extern osMutexId_t Transfer_MutexHandle;        /* SPP发送互斥锁 */
+
 /* 压力数据缓存区 */
-float Pressure_Buff[SENSOR_NUM_TOTAL*FRAME_IN_BUFF];
 extern Plantar_Buff_TypeDef Plantar_Buff;              //压力传感器阵列Buff结构体声明
 extern IMU_Buff_TypeDef IMU_Buff;                      //惯性传感器Buff结构体声明
+float Pressure_Buff[SENSOR_NUM_TOTAL*FRAME_IN_BUFF];
 
 /* 采集板压力计算参数 */
 const float para_a = 624.1;      /* 函数形式: y = a*exp(-((b*x)/c)^2) */
@@ -44,9 +47,10 @@ uint8_t Magnetic_Transfer[6];
 uint8_t Atmospheric_Transfer[4];
 uint8_t Height_Transfer[4];
 uint8_t Quaternion_Transfer[16];
+
 /*
 *********************************************************************************************************
-*	                                      函数声明
+*	                                      函数定义
 *********************************************************************************************************
 */
 
@@ -173,6 +177,22 @@ uint8_t Atmo_Transfer_Buffer[19];
 uint8_t Hight_Transfer_Buffer[19];
 uint8_t Quat_Transfer_Buffer[31];
 
+void Plantar_Data_Frame_Init(void)
+{
+    uint8_t i;
+    
+    /* 压力传感器数据传输 */
+    for(i=0; i<5; i++)
+    {
+        Plantar_Transfer_Buffer[i] = 0x71;          //协议头
+    }
+    Plantar_Transfer_Buffer[5] = 0x40;              //数据类型
+    for(i=0; i<5; i++)
+    {
+        Plantar_Transfer_Buffer[4*SENSOR_NUM_TOTAL + 10 +i] = 0x68;         //协议尾
+    }
+}
+
 /**
  * @brief Plantar_Data_Frame_Transmit 发送压力传感器数据帧
  * 
@@ -180,33 +200,41 @@ uint8_t Quat_Transfer_Buffer[31];
 void Plantar_Data_Frame_Transmit(void)
 {
     uint16_t i;
- 
-    /* 压力传感器数据传输 */
-    for(i=0; i<5; i++)
+    if(Transfer_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
     {
-        Plantar_Transfer_Buffer[i] = 0x71;          //协议头
+        if(xSemaphoreTake(Transfer_MutexHandle, 40) == pdTRUE)       //申请SPP发送互斥锁
+        {
+            /* 压力传感器数据传输 */
+            for(i=0; i<4; i++)
+            {
+                Plantar_Transfer_Buffer[6+i] = Plantar_TimeStamp_Transfer[i];           //时间戳
+            }
+            for(i=0; i<4*SENSOR_NUM_TOTAL; i++)
+            {
+                Plantar_Transfer_Buffer[10+i] = Plantar_Transfer[i];            //数据位
+            }
+            comSendBuf(SPP_COM, Plantar_Transfer_Buffer, sizeof(Plantar_Transfer_Buffer));
+            xSemaphoreGive(Transfer_MutexHandle);           //释放SPP发送互斥锁
+        }
+        else
+        {
+           TASK_LOG("Application for mutex failed \n\r");      //申请SPP发送互斥锁失败
+        }
     }
-    Plantar_Transfer_Buffer[5] = 0x40;              //数据类型
-    for(i=0; i<4; i++)
+    else
     {
-        Plantar_Transfer_Buffer[6+i] = Plantar_TimeStamp_Transfer[i];           //时间戳
+        TASK_LOG("The mutex not created \n\r");      //SPP发送互斥锁未创建
     }
-    for(i=0; i<4*SENSOR_NUM_TOTAL; i++)
-    {
-        Plantar_Transfer_Buffer[10+i] = Plantar_Transfer[i];            //数据位
-    }
-    for(i=0; i<5; i++)
-    {
-        Plantar_Transfer_Buffer[4*SENSOR_NUM_TOTAL + 10 +i] = 0x68;         //协议尾
-    }
-    comSendBuf(SPP_COM, Plantar_Transfer_Buffer, sizeof(Plantar_Transfer_Buffer));
 }
 
-/**
- * @brief IMU_Data_Frame_Transmit 发送IMU数据帧
- * 
- */
-void IMU_Data_Frame_Transmit(void)
+
+uint32_t old_timestamp;
+uint32_t error_frame;
+uint32_t total_frame;
+uint32_t diff_time;
+
+
+void IMU_Data_Frame_Init(void)
 {
     uint8_t i;
     
@@ -216,133 +244,168 @@ void IMU_Data_Frame_Transmit(void)
         Acc_Transfer_Buffer[i] = 0x71;          //协议头
     }
     Acc_Transfer_Buffer[5] = 0x50;              //数据类型
-    for(i=0; i<4; i++)
-    {
-        Acc_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];           //时间戳
-    }
-    for(i=0; i<12; i++)
-    {
-        Acc_Transfer_Buffer[10 + i] = Accelerated_Transfer[i];        //数据位
-    }
     for(i=0; i<5; i++)
     {
         Acc_Transfer_Buffer[22 + i] = 0x68;         //协议尾
     }
-    comSendBuf(SPP_COM, Acc_Transfer_Buffer, sizeof(Acc_Transfer_Buffer));
     /* 陀螺仪数据传输 */
     for(i=0; i<5; i++)
     {
         Gyro_Transfer_Buffer[i] = 0x71;         //协议头
     }
     Gyro_Transfer_Buffer[5] = 0x51;             //数据类型
-    for(i=0; i<4; i++)
-    {
-        Gyro_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];            //时间戳
-    }
-    for(i=0; i<12; i++)
-    {
-        Gyro_Transfer_Buffer[10 + i] = Gyroscope_Transfer[i];           //数据位
-    }
     for(i=0; i<5; i++)
     {
         Gyro_Transfer_Buffer[22 + i] = 0x68;        //协议尾
     }
-    comSendBuf(SPP_COM, Gyro_Transfer_Buffer, sizeof(Gyro_Transfer_Buffer));
     /* 角度数据传输 */
     for(i=0; i<5; i++)
     {
         Angle_Transfer_Buffer[i] = 0x71;        //协议头
     }
     Angle_Transfer_Buffer[5] = 0x52;            //数据类型
-    for(i=0; i<4; i++)
-    {
-        Angle_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];           //时间戳
-    }
-    for(i=0; i<12; i++)
-    {
-        Angle_Transfer_Buffer[10 + i] = Angle_Transfer[i];              //数据位
-    }
     for(i=0; i<5; i++)
     {
         Angle_Transfer_Buffer[22 + i] = 0x68;        //协议尾
     }
-    comSendBuf(SPP_COM, Angle_Transfer_Buffer, sizeof(Angle_Transfer_Buffer));
     /* 磁力计数据传输 */
     for(i=0; i<5; i++)
     {
         Mag_Transfer_Buffer[i] = 0x71;          //协议头
     }
     Mag_Transfer_Buffer[5] = 0x53;              //数据类型
-    for(i=0; i<4; i++)
-    {
-        Mag_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];              //时间戳
-    }
-    for(i=0; i<6; i++)
-    {
-        Mag_Transfer_Buffer[10 + i] = Magnetic_Transfer[i];             //数据位
-    }
     for(i=0; i<5; i++)
     {
         Mag_Transfer_Buffer[16 + i] = 0x68;         //协议尾
     }
-    comSendBuf(SPP_COM, Mag_Transfer_Buffer, sizeof(Mag_Transfer_Buffer));
     /* 气压计数据传输 */
     for(i=0; i<5; i++)
     {
         Atmo_Transfer_Buffer[i] = 0x71;          //协议头
     }
     Atmo_Transfer_Buffer[5] = 0x54;              //数据类型
-    for(i=0; i<4; i++)
-    {
-        Atmo_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];              //时间戳
-    }
-    for(i=0; i<4; i++)
-    {
-        Atmo_Transfer_Buffer[10 + i] = Atmospheric_Transfer[i];             //数据位
-    }
     for(i=0; i<5; i++)
     {
         Atmo_Transfer_Buffer[14 + i] = 0x68;         //协议尾
     }
-    comSendBuf(SPP_COM, Atmo_Transfer_Buffer, sizeof(Atmo_Transfer_Buffer));
     /* 高度数据传输 */
     for(i=0; i<5; i++)
     {
         Hight_Transfer_Buffer[i] = 0x71;          //协议头
     }
     Hight_Transfer_Buffer[5] = 0x55;              //数据类型
-    for(i=0; i<4; i++)
-    {
-        Hight_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];              //时间戳
-    }
-    for(i=0; i<4; i++)
-    {
-        Hight_Transfer_Buffer[10 + i] = Height_Transfer[i];             //数据位
-    }
     for(i=0; i<5; i++)
     {
         Hight_Transfer_Buffer[14 + i] = 0x68;         //协议尾
     }
-    comSendBuf(SPP_COM, Hight_Transfer_Buffer, sizeof(Hight_Transfer_Buffer));
     /* 四元数数据传输 */
     for(i=0; i<5; i++)
     {
         Quat_Transfer_Buffer[i] = 0x71;          //协议头
     }
     Quat_Transfer_Buffer[5] = 0x56;              //数据类型
-    for(i=0; i<4; i++)
-    {
-        Quat_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];              //时间戳
-    }
-    for(i=0; i<16; i++)
-    {
-        Quat_Transfer_Buffer[10 + i] = Quaternion_Transfer[i];             //数据位
-    }
     for(i=0; i<5; i++)
     {
         Quat_Transfer_Buffer[26 + i] = 0x68;         //协议尾
     }
-    comSendBuf(SPP_COM, Quat_Transfer_Buffer, sizeof(Quat_Transfer_Buffer));
+}
+
+extern UART_HandleTypeDef huart6;
+
+/**
+ * @brief IMU_Data_Frame_Transmit 发送IMU数据帧
+ * 
+ */
+void IMU_Data_Frame_Transmit(void)
+{
+    uint8_t i;
+    
+    if(Transfer_MutexHandle != NULL)      //Plantar缓冲区修改互斥锁不为空
+    {
+        if(xSemaphoreTake(Transfer_MutexHandle, 40) == pdTRUE)       //申请SPP发送互斥锁
+        {
+            /* 加速度数据传输 */
+            for(i=0; i<4; i++)
+            {
+                Acc_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];           //时间戳
+            }
+            for(i=0; i<12; i++)
+            {
+                Acc_Transfer_Buffer[10 + i] = Accelerated_Transfer[i];        //数据位
+            }
+            comSendBuf(SPP_COM, Acc_Transfer_Buffer, sizeof(Acc_Transfer_Buffer));
+            /* 陀螺仪数据传输 */
+            for(i=0; i<4; i++)
+            {
+                Gyro_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];            //时间戳
+            }
+            for(i=0; i<12; i++)
+            {
+                Gyro_Transfer_Buffer[10 + i] = Gyroscope_Transfer[i];           //数据位
+            }
+            comSendBuf(SPP_COM, Gyro_Transfer_Buffer, sizeof(Gyro_Transfer_Buffer));
+            /* 角度数据传输 */
+            for(i=0; i<4; i++)
+            {
+                Angle_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];           //时间戳
+            }
+            for(i=0; i<12; i++)
+            {
+                Angle_Transfer_Buffer[10 + i] = Angle_Transfer[i];              //数据位
+            }
+            comSendBuf(SPP_COM, Angle_Transfer_Buffer, sizeof(Angle_Transfer_Buffer));
+            /* 磁力计数据传输 */
+            for(i=0; i<4; i++)
+            {
+                Mag_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];              //时间戳
+            }
+            for(i=0; i<6; i++)
+            {
+                Mag_Transfer_Buffer[10 + i] = Magnetic_Transfer[i];             //数据位
+            }
+            comSendBuf(SPP_COM, Mag_Transfer_Buffer, sizeof(Mag_Transfer_Buffer));
+            /* 气压计数据传输 */
+            for(i=0; i<4; i++)
+            {
+                Atmo_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];              //时间戳
+            }
+            for(i=0; i<4; i++)
+            {
+                Atmo_Transfer_Buffer[10 + i] = Atmospheric_Transfer[i];             //数据位
+            }
+            comSendBuf(SPP_COM, Atmo_Transfer_Buffer, sizeof(Atmo_Transfer_Buffer));
+            /* 高度数据传输 */
+            for(i=0; i<4; i++)
+            {
+                Hight_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];              //时间戳
+            }
+            for(i=0; i<4; i++)
+            {
+                Hight_Transfer_Buffer[10 + i] = Height_Transfer[i];             //数据位
+            }
+            comSendBuf(SPP_COM, Hight_Transfer_Buffer, sizeof(Hight_Transfer_Buffer));
+            /* 四元数数据传输 */
+            for(i=0; i<4; i++)
+            {
+                Quat_Transfer_Buffer[6 + i] = IMU_TimeStamp_Transfer[i];              //时间戳
+            }
+            for(i=0; i<16; i++)
+            {
+                Quat_Transfer_Buffer[10 + i] = Quaternion_Transfer[i];             //数据位
+            }
+            comSendBuf(SPP_COM, Quat_Transfer_Buffer, sizeof(Quat_Transfer_Buffer));
+            xSemaphoreGive(Transfer_MutexHandle);           //释放SPP发送互斥锁
+        }
+        else
+        {
+           TASK_LOG("Application for mutex failed \n\r");      //申请SPP发送互斥锁失败
+        }
+    }
+    else
+    {
+        TASK_LOG("The mutex not created \n\r");      //SPP发送互斥锁未创建
+    }
+
 }
 
 

@@ -2,9 +2,10 @@ st_samplingboard\tim.o: ../Core/Src/tim.c
 st_samplingboard\tim.o: ../Core/Inc/tim.h
 st_samplingboard\tim.o: ../Core/Inc/main.h
 st_samplingboard\tim.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-st_samplingboard\tim.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 st_samplingboard\tim.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 st_samplingboard\tim.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+st_samplingboard\tim.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+st_samplingboard\tim.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 st_samplingboard\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 st_samplingboard\tim.o: ../Core/Inc/stm32f4xx_hal_conf.h
 st_samplingboard\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
@@ -70,10 +71,11 @@ st_samplingboard\tim.o: ../Core/Inc/usart.h
 st_samplingboard\tim.o: ../Core/Inc/adc.h
 st_samplingboard\tim.o: ../Core/Inc/tim.h
 st_samplingboard\tim.o: ..\Function\Inc\Plantar.h
-st_samplingboard\tim.o: ..\Function\Inc\Command.h
-st_samplingboard\tim.o: ..\Function\Inc\cJSON.h
 st_samplingboard\tim.o: ..\Function\Inc\IMU.h
 st_samplingboard\tim.o: ..\Function\Inc\REG.h
 st_samplingboard\tim.o: ..\Function\Inc\wit_c_sdk.h
+st_samplingboard\tim.o: ..\Function\Inc\SPP.h
+st_samplingboard\tim.o: ..\Function\Inc\Command.h
+st_samplingboard\tim.o: ..\Function\Inc\cJSON.h
 st_samplingboard\tim.o: ..\Function\Inc\Solution.h
 st_samplingboard\tim.o: ..\Function\Inc\Function.h

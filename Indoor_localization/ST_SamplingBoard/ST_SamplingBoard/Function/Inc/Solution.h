@@ -32,16 +32,23 @@
 #endif
 
 
-
+/*
+*********************************************************************************************************
+*	                                      函数声明
+*********************************************************************************************************
+*/
+/* 压力传感器数据解析与压力值拟合 */
 float Singel_Point_Calculation(uint16_t *voltage);              //单点压力值计算
 float Conductance_Calculation(uint16_t *voltage);               //单点电导值计算
-int8_t Pressure_Calculation(float *buff);            //对缓冲区中的数据进行解算，得到压力值
-
+int8_t Pressure_Calculation(float *buff);                       //对缓冲区中的数据进行解算，得到压力值
 /* 传感器数据处理及传输 */
 void Plantar_Data_Frame_Handling(uint8_t frame);        //压力传感器数据帧处理
 void IMU_Data_Frame_Handling(uint8_t frame);            //IMU数据帧处理
 void Plantar_Data_Frame_Transmit(void);                 //发送压力传感器数据帧
 void IMU_Data_Frame_Transmit(void);                     //发送IMU数据帧
+void Plantar_Data_Frame_Init(void);
+void IMU_Data_Frame_Init(void);
 
 #endif
+
 

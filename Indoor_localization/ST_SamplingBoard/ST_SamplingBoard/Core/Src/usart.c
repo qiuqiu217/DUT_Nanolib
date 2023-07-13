@@ -19,13 +19,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-UART_HandleTypeDef huart1;
-UART_HandleTypeDef huart2;
-UART_HandleTypeDef huart6;
 
 UART_RXBUF Uart_Receive;        /* 串口指令接收缓冲区结构体声明 */
 UART_RXBUF SPP_Receive;         /* 蓝牙指令接收缓冲区结构体声明 */
@@ -59,6 +52,19 @@ static void InitHardUart(void);
 static void UartSend(UART_T *_pUart, uint8_t *_ucaBuf, uint16_t _usLen);
 static uint8_t UartGetChar(UART_T *_pUart, uint8_t *_pByte);
 static void UartIRQ(UART_T *_pUart);
+
+
+/* 定义串口结构体，用于阻塞型串口收发 */
+#if UART1_FIFO_EN == 0u
+    UART_HandleTypeDef Uart1Handle;
+#endif
+#if UART2_FIFO_EN == 0u
+    UART_HandleTypeDef Uart2Handle;
+#endif
+#if UART6_FIFO_EN == 0u
+    UART_HandleTypeDef Uart6Handle;
+#endif
+
  /*
 *********************************************************************************************************
 *	函 数 名: bsp_InitUart
@@ -295,8 +301,6 @@ static void UartVarInit(void)
         g_tUart1.usRxRead = 0;						/* 接收FIFO读索引 */
         g_tUart1.usRxCount = 0;						/* 接收到的新数据个数 */
         g_tUart1.usTxCount = 0;						/* 待发送的数据个数 */
-        g_tUart1.SendBefor = 0;						/* 发送数据前的回调函数 */
-        g_tUart1.SendOver = 0;						/* 发送完毕后的回调函数 */
         g_tUart1.ReciveNew = 0;						/* 接收到新数据后的回调函数 */
         g_tUart1.Sending = 0;						/* 正在发送中标志 */
     #endif
@@ -313,8 +317,6 @@ static void UartVarInit(void)
         g_tUart2.usRxRead = 0;						/* 接收FIFO读索引 */
         g_tUart2.usRxCount = 0;						/* 接收到的新数据个数 */
         g_tUart2.usTxCount = 0;						/* 待发送的数据个数 */
-        g_tUart2.SendBefor = 0;						/* 发送数据前的回调函数 */
-        g_tUart2.SendOver = 0;						/* 发送完毕后的回调函数 */
         g_tUart2.ReciveNew = 0;						/* 接收到新数据后的回调函数 */
         g_tUart2.Sending = 0;						/* 正在发送中标志 */
     #endif
@@ -331,8 +333,6 @@ static void UartVarInit(void)
         g_tUart6.usRxRead = 0;						/* 接收FIFO读索引 */
         g_tUart6.usRxCount = 0;						/* 接收到的新数据个数 */
         g_tUart6.usTxCount = 0;						/* 待发送的数据个数 */
-        g_tUart6.SendBefor = 0;						/* 发送数据前的回调函数 */
-        g_tUart6.SendOver = 0;						/* 发送完毕后的回调函数 */
         g_tUart6.ReciveNew = 0;						/* 接收到新数据后的回调函数 */
         g_tUart6.Sending = 0;						/* 正在发送中标志 */
     #endif
@@ -408,11 +408,53 @@ static void InitHardUart(void)
         HAL_GPIO_Init(USART1_RX_GPIO_PORT, &GPIO_InitStruct);
 
         /* 配置NVIC the NVIC for UART */   
-        HAL_NVIC_SetPriority(USART1_IRQn, 0, 2);
+        HAL_NVIC_SetPriority(USART1_IRQn, 4, 0);
         HAL_NVIC_EnableIRQ(USART1_IRQn);
       
         /* 配置波特率、奇偶校验 */
         bsp_SetUartParam(USART1,  UART1_BAUD, UART_PARITY_NONE, UART_MODE_TX_RX);
+
+        CLEAR_BIT(USART1->SR, USART_SR_TC);   /* 清除TC发送完成标志 */
+        CLEAR_BIT(USART1->SR, USART_SR_RXNE); /* 清除RXNE接收标志 */
+        SET_BIT(USART1->CR1, USART_CR1_RXNEIE);	/* 使能PE. RX接受中断 */
+    #else
+        /* 使能 GPIO TX/RX 时钟 */
+        USART1_TX_GPIO_CLK_ENABLE();
+        USART1_RX_GPIO_CLK_ENABLE();
+        
+        /* 使能 USARTx 时钟 */
+        USART1_CLK_ENABLE();	
+
+        /* 配置TX引脚 */
+        GPIO_InitStruct.Pin       = USART1_TX_PIN;
+        GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull      = GPIO_PULLUP;
+        GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = USART1_TX_AF;
+        HAL_GPIO_Init(USART1_TX_GPIO_PORT, &GPIO_InitStruct);	
+        
+        /* 配置RX引脚 */
+        GPIO_InitStruct.Pin = USART1_RX_PIN;
+        GPIO_InitStruct.Alternate = USART1_RX_AF;
+        HAL_GPIO_Init(USART1_RX_GPIO_PORT, &GPIO_InitStruct);
+
+        /* 配置NVIC the NVIC for UART */   
+        HAL_NVIC_SetPriority(USART1_IRQn, 0, 2);
+        HAL_NVIC_EnableIRQ(USART1_IRQn);
+      
+        /* 配置波特率、奇偶校验 */
+        Uart1Handle.Instance        = USART1;
+        Uart1Handle.Init.BaudRate   = 460800;
+        Uart1Handle.Init.WordLength = UART_WORDLENGTH_8B;
+        Uart1Handle.Init.StopBits   = UART_STOPBITS_1;
+        Uart1Handle.Init.Parity     = UART_PARITY_NONE;
+        Uart1Handle.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
+        Uart1Handle.Init.Mode       = UART_MODE_TX_RX;
+        Uart1Handle.Init.OverSampling = UART_OVERSAMPLING_16;
+        if (HAL_UART_Init(&Uart1Handle) != HAL_OK)
+        {
+            Error_Handler();
+        }
 
         CLEAR_BIT(USART1->SR, USART_SR_TC);   /* 清除TC发送完成标志 */
         CLEAR_BIT(USART1->SR, USART_SR_RXNE); /* 清除RXNE接收标志 */
@@ -441,11 +483,53 @@ static void InitHardUart(void)
         HAL_GPIO_Init(USART2_RX_GPIO_PORT, &GPIO_InitStruct);
 
         /* 配置NVIC the NVIC for UART */   
-        HAL_NVIC_SetPriority(USART2_IRQn, 0, 3);
+        HAL_NVIC_SetPriority(USART2_IRQn, 2, 0);
         HAL_NVIC_EnableIRQ(USART2_IRQn);
       
         /* 配置波特率、奇偶校验 */
         bsp_SetUartParam(USART2,  UART2_BAUD, UART_PARITY_NONE, UART_MODE_TX_RX);	// UART_MODE_TX_RX
+
+        CLEAR_BIT(USART2->SR, USART_SR_TC);   /* 清除TC发送完成标志 */
+        CLEAR_BIT(USART2->SR, USART_SR_RXNE); /* 清除RXNE接收标志 */
+        SET_BIT(USART2->CR1, USART_CR1_RXNEIE);	/* 使能PE. RX接受中断 */
+    #else
+        /* 使能 GPIO TX/RX 时钟 */
+        USART2_TX_GPIO_CLK_ENABLE();
+        USART2_RX_GPIO_CLK_ENABLE();
+        
+        /* 使能 USARTx 时钟 */
+        USART2_CLK_ENABLE();	
+
+        /* 配置TX引脚 */
+        GPIO_InitStruct.Pin       = USART2_TX_PIN;
+        GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull      = GPIO_PULLUP;
+        GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = USART2_TX_AF;
+        HAL_GPIO_Init(USART2_TX_GPIO_PORT, &GPIO_InitStruct);	
+        
+        /* 配置RX引脚 */
+        GPIO_InitStruct.Pin = USART2_RX_PIN;
+        GPIO_InitStruct.Alternate = USART2_RX_AF;
+        HAL_GPIO_Init(USART2_RX_GPIO_PORT, &GPIO_InitStruct);
+
+        /* 配置NVIC the NVIC for UART */   
+        HAL_NVIC_SetPriority(USART2_IRQn, 0, 3);
+        HAL_NVIC_EnableIRQ(USART2_IRQn);
+      
+        /* 配置波特率、奇偶校验 */
+        Uart2Handle.Instance        = USART2;
+        Uart2Handle.Init.BaudRate   = 460800;
+        Uart2Handle.Init.WordLength = UART_WORDLENGTH_8B;
+        Uart2Handle.Init.StopBits   = UART_STOPBITS_1;
+        Uart2Handle.Init.Parity     = UART_PARITY_NONE;
+        Uart2Handle.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
+        Uart2Handle.Init.Mode       = UART_MODE_TX_RX;
+        Uart2Handle.Init.OverSampling = UART_OVERSAMPLING_16;
+        if (HAL_UART_Init(&Uart2Handle) != HAL_OK)
+        {
+            Error_Handler();
+        }
 
         CLEAR_BIT(USART2->SR, USART_SR_TC);   /* 清除TC发送完成标志 */
         CLEAR_BIT(USART2->SR, USART_SR_RXNE); /* 清除RXNE接收标志 */
@@ -474,7 +558,7 @@ static void InitHardUart(void)
         HAL_GPIO_Init(USART6_RX_GPIO_PORT, &GPIO_InitStruct);
 
         /* 配置NVIC the NVIC for UART */   
-        HAL_NVIC_SetPriority(USART6_IRQn, 0, 1);
+        HAL_NVIC_SetPriority(USART6_IRQn, 1, 0);
         HAL_NVIC_EnableIRQ(USART6_IRQn);
         
         /* 配置波特率、奇偶校验 */
@@ -483,8 +567,53 @@ static void InitHardUart(void)
         CLEAR_BIT(USART6->SR, USART_SR_TC);   /* 清除TC发送完成标志 */
         CLEAR_BIT(USART6->SR, USART_SR_RXNE); /* 清除RXNE接收标志 */
         SET_BIT(USART6->CR1, USART_CR1_RXNEIE);	/* 使能PE. RX接受中断 */
+    #else
+        /* 使能 GPIO TX/RX 时钟 */
+        USART6_TX_GPIO_CLK_ENABLE();
+        USART6_RX_GPIO_CLK_ENABLE();
+        
+        /* 使能 USARTx 时钟 */
+        USART6_CLK_ENABLE();	
+
+        /* 配置TX引脚 */
+        GPIO_InitStruct.Pin       = USART6_TX_PIN;
+        GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull      = GPIO_PULLUP;
+        GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = USART6_TX_AF;
+        HAL_GPIO_Init(USART6_TX_GPIO_PORT, &GPIO_InitStruct);	
+        
+        /* 配置RX引脚 */
+        GPIO_InitStruct.Pin = USART6_RX_PIN;
+        GPIO_InitStruct.Alternate = USART6_RX_AF;
+        HAL_GPIO_Init(USART6_RX_GPIO_PORT, &GPIO_InitStruct);
+
+        /* 配置NVIC the NVIC for UART */   
+        HAL_NVIC_SetPriority(USART6_IRQn, 0, 1);
+        HAL_NVIC_EnableIRQ(USART6_IRQn);
+        
+        /* 配置波特率、奇偶校验 */
+        Uart6Handle.Instance        = USART6;
+        Uart6Handle.Init.BaudRate   = 460800;
+        Uart6Handle.Init.WordLength = UART_WORDLENGTH_8B;
+        Uart6Handle.Init.StopBits   = UART_STOPBITS_1;
+        Uart6Handle.Init.Parity     = UART_PARITY_NONE;
+        Uart6Handle.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
+        Uart6Handle.Init.Mode       = UART_MODE_TX_RX;
+        Uart6Handle.Init.OverSampling = UART_OVERSAMPLING_16;
+        if (HAL_UART_Init(&Uart6Handle) != HAL_OK)
+        {
+            Error_Handler();
+        }
+
+        CLEAR_BIT(USART6->SR, USART_SR_TC);   /* 清除TC发送完成标志 */
+        CLEAR_BIT(USART6->SR, USART_SR_RXNE); /* 清除RXNE接收标志 */
+        SET_BIT(USART6->CR1, USART_CR1_RXNEIE);	/* 使能PE. RX接受中断 */
     #endif
 }
+
+
+
 /*
 *********************************************************************************************************
 *	函 数 名: UartSend
@@ -504,9 +633,9 @@ static void UartSend(UART_T *_pUart, uint8_t *_ucaBuf, uint16_t _usLen)
 		{
 			__IO uint16_t usCount;
 
-			taskENTER_CRITICAL();       //进入基本临界区
+			vPortEnterCritical();       //禁止全局中断
 			usCount = _pUart->usTxCount;
-			taskEXIT_CRITICAL();        //退出基本临界区
+			vPortExitCritical();        //使能全局中断
 
 			if (usCount < _pUart->usTxBufSize)
 			{
@@ -524,13 +653,13 @@ static void UartSend(UART_T *_pUart, uint8_t *_ucaBuf, uint16_t _usLen)
 		/* 将新数据填入发送缓冲区 */
 		_pUart->pTxBuf[_pUart->usTxWrite] = _ucaBuf[i];
 
-		taskENTER_CRITICAL();       //进入基本临界区
+		vPortEnterCritical();       //禁止全局中断
 		if (++_pUart->usTxWrite >= _pUart->usTxBufSize)
 		{
 			_pUart->usTxWrite = 0;
 		}
 		_pUart->usTxCount++;
-		taskEXIT_CRITICAL();        //退出基本临界区
+		vPortExitCritical();        //使能全局中断
 	}
 
 	SET_BIT(_pUart->uart->CR1, USART_CR1_TXEIE);	/* 使能发送中断（缓冲区空） */
@@ -550,9 +679,9 @@ static uint8_t UartGetChar(UART_T *_pUart, uint8_t *_pByte)
 	uint16_t usCount;
 
 	/* usRxWrite 变量在中断函数中被改写，主程序读取该变量时，必须进行临界区保护 */
-	taskENTER_CRITICAL();       //进入基本临界区
+	vPortEnterCritical();       //禁止全局中断
 	usCount = _pUart->usRxCount;
-	taskEXIT_CRITICAL();        //退出基本临界区
+	vPortExitCritical();        //使能全局中断
 
 	/* 如果读和写索引相同，则返回0 */
 	if (usCount == 0)	/* 已经没有数据 */
@@ -564,13 +693,13 @@ static uint8_t UartGetChar(UART_T *_pUart, uint8_t *_pByte)
 		*_pByte = _pUart->pRxBuf[_pUart->usRxRead];		/* 从串口接收FIFO取1个数据 */
 
 		/* 改写FIFO读索引 */
-		taskENTER_CRITICAL();       //进入基本临界区
+		vPortEnterCritical();       //禁止全局中断
 		if (++_pUart->usRxRead >= _pUart->usRxBufSize)
 		{
 			_pUart->usRxRead = 0;
 		}
 		_pUart->usRxCount--;
-		taskEXIT_CRITICAL();        //退出基本临界区
+		vPortExitCritical();        //使能全局中断
 		return 1;
 	}
 }
@@ -615,7 +744,11 @@ static void UartIRQ(UART_T *_pUart)
 	uint32_t isrflags   = READ_REG(_pUart->uart->SR);
 	uint32_t cr1its     = READ_REG(_pUart->uart->CR1);
 	uint32_t cr3its     = READ_REG(_pUart->uart->CR3);
+    
+    UBaseType_t uxSavedInterruptStatus;
 	
+    /* 进入临界段，临界段可以嵌套 */
+	uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
 	/* 处理接收中断  */
 	if ((isrflags & USART_SR_RXNE) != RESET)
 	{
@@ -680,13 +813,6 @@ static void UartIRQ(UART_T *_pUart)
 			/* 如果发送FIFO的数据全部发送完毕，禁止数据发送完毕中断 */
 			//USART_ITConfig(_pUart->uart, USART_IT_TC, DISABLE);
 			CLEAR_BIT(_pUart->uart->CR1, USART_CR1_TCIE);
-
-			/* 回调函数, 一般用来处理RS485通信，将RS485芯片设置为接收模式，避免抢占总线 */
-			if(_pUart->SendOver)
-			{
-				_pUart->SendOver();
-			}
-			_pUart->Sending = 0;
 		}
 		else
 		{
@@ -702,6 +828,9 @@ static void UartIRQ(UART_T *_pUart)
 			_pUart->usTxCount--;
 		}
 	}
+    
+    /* 退出临界段 */
+	taskEXIT_CRITICAL_FROM_ISR(uxSavedInterruptStatus); 	
 }
 
 /*
@@ -717,6 +846,8 @@ void USART1_IRQHandler(void)
 {
 	UartIRQ(&g_tUart1);
 }
+#else
+
 #endif
 
 #if UART2_FIFO_EN == 1
@@ -724,12 +855,35 @@ void USART2_IRQHandler(void)
 {
 	UartIRQ(&g_tUart2);
 }
+#else
+
 #endif
 
 #if UART6_FIFO_EN == 1
 void USART6_IRQHandler(void)
 {
 	UartIRQ(&g_tUart6);
+}
+#else
+void  USART6_IRQHandler(void)
+{
+  uint8_t ch=0; 
+  
+	if(__HAL_UART_GET_FLAG( &Uart6Handle, UART_FLAG_RXNE ) != RESET)
+	{		
+        ch=( uint16_t)READ_REG(Uart6Handle.Instance->DR);
+        //WRITE_REG(UartHandle.Instance->DR,ch); 
+ 
+	}
+}
+#endif
+
+#if UART6_FIFO_EN == 0u
+void SPP_SendString(uint8_t *str, uint16_t size)
+{
+	unsigned int k=0;
+    HAL_UART_Transmit(&Uart6Handle,(uint8_t *)(str + k) ,size,1000);
+  
 }
 #endif
 
