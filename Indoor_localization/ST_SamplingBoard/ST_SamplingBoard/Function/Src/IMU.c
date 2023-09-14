@@ -204,15 +204,15 @@ static void AutoScanSensor(void)
             }
 			if(s_cDataUpdate != 0)
 			{
-				printf("%d baud find sensor\r\n\r\n", c_uiBaud[i]);
+				//printf("%d baud find sensor\r\n\r\n", c_uiBaud[i]);
 				ShowHelp();
 				return ;
 			}
 			iRetry--;
 		}while(iRetry);		
 	}
-	printf("can not find sensor\r\n");
-	printf("please check your connection\r\n");
+	//printf("can not find sensor\r\n");
+	//printf("please check your connection\r\n");
 }
 
 /*

@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/background/xiaowang.jpg</file>
+        <file>image/chartlet/close.png</file>
+        <file>image/chartlet/minimize.png</file>
+        <file>image/icon/usb.png</file>
+        <file>image/icon/个人资料.png</file>
+        <file>image/icon/画板.png</file>
+        <file>image/icon/密码.png</file>
+        <file>image/icon/拍照.png</file>
+        <file>image/icon/配置.png</file>
+        <file>image/icon/平台.png</file>
+        <file>image/icon/日历.png</file>
+        <file>image/icon/时间.png</file>
+        <file>image/icon/视频.png</file>
+        <file>image/icon/收音机.png</file>
+        <file>image/icon/通讯录.png</file>
+        <file>image/icon/通知.png</file>
+        <file>image/icon/图片.png</file>
+        <file>image/icon/文件夹.png</file>
+        <file>image/icon/心电图.png</file>
+        <file>image/icon/音乐.png</file>
+        <file>image/icon/游戏.png</file>
+        <file>image/icon/指南.png</file>
+        <file>image/icon/资讯.png</file>
+        <file>image/chartlet/cpu.png</file>
+        <file>image/chartlet/emmc.png</file>
+        <file>image/chartlet/memory.png</file>
+        <file>image/chartlet/ratio.png</file>
+        <file>image/icon/串口.png</file>
+    </qresource>
+</RCC>

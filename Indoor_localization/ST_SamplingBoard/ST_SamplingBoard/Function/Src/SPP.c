@@ -36,7 +36,7 @@ const bt_ch04_init_at_cmd_t bt_hc04_init_resp_list[BT_HC04_INIT_CMD_COUNT] =
     {"AT+BAUD=460800,N\r\n", "OK+BAUD=460800\r\n"},
 
     // 设置蓝牙名称
-    {"AT+NAME=ST-Slave-R\r\n", "OKsetNAME\r\n"},
+    {"AT+NAME=ST-Slave-L\r\n", "OKsetNAME\r\n"},
 
     // 设置角色为从机
     {"AT+ROLE=Slave\r\n", "OK+ROLE=Slave\r\n"},

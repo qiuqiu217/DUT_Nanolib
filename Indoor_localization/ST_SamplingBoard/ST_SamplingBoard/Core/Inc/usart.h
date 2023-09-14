@@ -83,12 +83,12 @@ extern "C" {
 
 /* 定义串口波特率和FIFO缓冲区大小，分为发送缓冲区和接收缓冲区, 支持全双工 */
 #if UART1_FIFO_EN == 1
-	#define UART1_BAUD			460800
+	#define UART1_BAUD			115200
 	#define UART1_TX_BUF_SIZE	4*1024
 	#define UART1_RX_BUF_SIZE	4*1024   
 #endif
 #if UART2_FIFO_EN == 1
-	#define UART2_BAUD			115200
+	#define UART2_BAUD			460800
 	#define UART2_TX_BUF_SIZE	1*1024
 	#define UART2_RX_BUF_SIZE	6*1024
 #endif
@@ -163,9 +163,6 @@ void SPP_RxBuf_Init(void);
 void SPP_RxBuf_Putin(uint8_t *_pByte);
 int8_t SPP_Load_Command(void);
 
-#if UART6_FIFO_EN == 0u
-void SPP_SendString(uint8_t *str, uint16_t size);
-#endif
 
 /* USER CODE END Prototypes */
 

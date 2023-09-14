@@ -840,8 +840,6 @@ void USART1_IRQHandler(void)
 {
 	UartIRQ(&g_tUart1);
 }
-#else
-
 #endif
 
 #if UART2_FIFO_EN == 1
@@ -849,8 +847,6 @@ void USART2_IRQHandler(void)
 {
 	UartIRQ(&g_tUart2);
 }
-#else
-
 #endif
 
 #if UART6_FIFO_EN == 1
@@ -858,28 +854,8 @@ void USART6_IRQHandler(void)
 {
 	UartIRQ(&g_tUart6);
 }
-#else
-void  USART6_IRQHandler(void)
-{
-  uint8_t ch=0; 
-  
-	if(__HAL_UART_GET_FLAG( &Uart6Handle, UART_FLAG_RXNE ) != RESET)
-	{		
-        ch=( uint16_t)READ_REG(Uart6Handle.Instance->DR);
-        //WRITE_REG(UartHandle.Instance->DR,ch); 
- 
-	}
-}
 #endif
 
-#if UART6_FIFO_EN == 0u
-void SPP_SendString(uint8_t *str, uint16_t size)
-{
-	unsigned int k=0;
-    HAL_UART_Transmit(&Uart6Handle,(uint8_t *)(str + k) ,size,1000);
-  
-}
-#endif
 
 /*
 *********************************************************************************************************
@@ -983,7 +959,7 @@ int8_t Uart_Load_Command(void)
     for(i=0;i<13;i++)
     {
         Command_Buff[i] = *(Uart_Receive.RxBuf + i + Uart_Receive.WriteCtr - 15);
-        printf("%02X ", Command_Buff[i]);
+        //printf("%02X ", Command_Buff[i]);
     }
     Uart_RxBuf_Clear();
     #if 0
@@ -1043,7 +1019,7 @@ int8_t SPP_Load_Command(void)
     for(i=0;i<13;i++)
     {
         Command_Buff[i] = *(SPP_Receive.RxBuf + i + SPP_Receive.WriteCtr - 14);
-        printf("%02X ", Command_Buff[i]);
+        //printf("%02X ", Command_Buff[i]);
     }
     SPP_RxBuf_Clear();
     #if 0

@@ -263,7 +263,7 @@ static void AppTask_Start(void *argument)
     /* 创建压力传感器采集任务 */
     Task_PlantarHandle = osThreadNew(AppTask_Plantar, NULL, &Task_Plantar_attributes);
     /* 创建IMU采集任务 */
-    Task_IMUHandle = osThreadNew(AppTask_IMU, NULL, &Task_IMU_attributes);
+    //Task_IMUHandle = osThreadNew(AppTask_IMU, NULL, &Task_IMU_attributes);
     /* 创建压力数据打包发送任务 */
     Task_PlantarDataHandle = osThreadNew(AppTask_PlantarData, NULL, &Task_PlantarData_attributes);
     /* 创建IMU数据打包发送任务 */
@@ -289,7 +289,7 @@ static void AppTask_Led(void *argument)
         osDelay(pdMS_TO_TICKS(1000));
         #if 0
             taskENTER_CRITICAL();       //进入基本临界区
-            TASK_LOG("LED Toggle\n\r");
+            printf("LED Toggle\n\r");
             taskEXIT_CRITICAL();        //退出基本临界区
         #endif
     }
@@ -409,12 +409,12 @@ static void AppTask_Command(void *argument)
                 result = Command_Parsing(Command_Buff);
                 if(result == RET_ERROR)
                 {
-                    comSendBuf(SPP_COM, RET_OK_BUFF, sizeof(RET_ERROR_BUFF));
+                    comSendBuf(SPP_COM, RET_ERROR_BUFF, sizeof(RET_ERROR_BUFF));
                     TASK_LOG("Command parsing failure \r\n");
                 }
                 else if(result == RET_INVALID)
                 {
-                    comSendBuf(SPP_COM, RET_OK_BUFF, sizeof(RET_ERROR_BUFF));
+                    comSendBuf(SPP_COM, RET_ERROR_BUFF, sizeof(RET_ERROR_BUFF));
                     TASK_LOG("Invalid command \r\n");
                 }
                 else
@@ -536,7 +536,7 @@ static void AppTask_IMU(void *argument)
     (void)x_return;
     
     /* IMU初始化 */
-    IMU_Init();
+    //IMU_Init();
     IMU_Buff_Init();
     IMU_Data_Frame_Init();
      
@@ -712,11 +712,11 @@ static void AppTask_SPPConnect(void *argument)
     osDelay(pdMS_TO_TICKS(500));
     if(HC04_Init() == RET_OK)
     {
-        printf("SPP init succeeded!! \r\n");
+        //printf("SPP init succeeded!! \r\n");
     }
     else
     {
-        printf("SPP init failed!! \r\n");
+        //printf("SPP init failed!! \r\n");
     }
                 
     while(true)
@@ -809,8 +809,8 @@ static void AppTask_RunTimeStats(void *argument)
             {
                 memset(RunTimeInfo,'\0',400);				//信息缓冲区清零
                 vTaskGetRunTimeStats(RunTimeInfo);		//获取任务运行时间信息
-                printf("Task\t\tRunTime\t\tPercentage\r\n");
-                printf("%s\r\n",RunTimeInfo);
+                //printf("Task\t\tRunTime\t\tPercentage\r\n");
+                //printf("%s\r\n",RunTimeInfo);
             }
         }
 	}
